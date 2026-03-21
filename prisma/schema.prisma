@@ -1,0 +1,373 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                   String           @id @default(cuid())
+  name                 String?
+  email                String           @unique
+  password             String?
+  role                 String           @default("seeker")
+  active               Boolean          @default(true)
+  premium              Boolean          @default(false)
+  premiumSince         DateTime?
+  premiumUntil         DateTime?
+  stripeCustomerId     String?
+  stripeSubscriptionId     String?
+  notificationPreferences  String?          // JSON string for notification preferences
+  createdAt                DateTime         @default(now())
+  updatedAt            DateTime         @updatedAt
+  seekerProfile        SeekerProfile?
+  employerProfile      EmployerProfile?
+  savedProfiles        SavedProfile[]
+  contactsSent         ContactRequest[]
+  jobNeeds             JobNeed[]
+  needInterests        NeedInterest[]
+  reviewsGiven         Review[]         @relation("GivenReviews")
+  reportsGiven         Report[]         @relation("GivenReports")
+  notifications        Notification[]
+  reportResponses      ReportResponse[]
+  profileViewsMade     ProfileView[]    @relation("ProfileViewer")
+  savedSearches        SavedSearch[]
+  conversationParticipants ConversationParticipant[]
+  sentMessages             Message[]
+  foundingMemberNumber     Int?             @unique  // null = not a founding member, 1-250 = their number
+  activityEvents           ActivityEvent[] @relation("activityActor")
+}
+
+model SeekerProfile {
+  id               String           @id @default(cuid())
+  userId           String           @unique
+  username         String           @unique
+  avatarUrl        String?
+  bio              String?
+  location         String?
+  hourlyRate       Float?
+  availability     String           @default("open")
+  englishRating    Int              @default(5)
+  featured         Boolean          @default(false)
+  profileViews     Int              @default(0)
+  title            String?
+  videoIntroUrl    String?
+  timezone         String?
+  lastActiveAt     DateTime?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  user             User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skills           SeekerSkill[]
+  savedBy          SavedProfile[]
+  contactsReceived ContactRequest[] @relation("ReceiverContacts")
+  portfolioLinks   PortfolioLink[]
+  certificates     Certificate[]
+  projectImages    ProjectImage[]
+  languages        Language[]
+  reviewsReceived  Review[]
+  reports          Report[]
+  viewHistory      ProfileView[]
+}
+
+model ProfileView {
+  id              String        @id @default(cuid())
+  seekerProfileId String
+  viewerUserId    String
+  createdAt       DateTime      @default(now())
+  viewerUser      User          @relation("ProfileViewer", fields: [viewerUserId], references: [id], onDelete: Cascade)
+  seekerProfile   SeekerProfile @relation(fields: [seekerProfileId], references: [id], onDelete: Cascade)
+}
+
+model Skill {
+  id           String        @id @default(cuid())
+  name         String        @unique
+  slug         String        @unique
+  category     String
+  isCustom     Boolean       @default(false)
+  active       Boolean       @default(true)
+  createdAt    DateTime      @default(now())
+  seekerSkills SeekerSkill[]
+}
+
+model SeekerSkill {
+  id        String        @id @default(cuid())
+  profileId String
+  skillId   String
+  rating    Int
+  yearsExp  Float?
+  profile   SeekerProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  skill     Skill         @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  @@unique([profileId, skillId])
+}
+
+model SavedProfile {
+  id         String        @id @default(cuid())
+  employerId String
+  profileId  String
+  createdAt  DateTime      @default(now())
+  employer   User          @relation(fields: [employerId], references: [id], onDelete: Cascade)
+  profile    SeekerProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  @@unique([employerId, profileId])
+}
+
+model ContactRequest {
+  id          String        @id @default(cuid())
+  senderId    String
+  receiverId  String
+  message     String
+  senderEmail String
+  status      String        @default("pending")
+  createdAt   DateTime      @default(now())
+  sender      User          @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  receiver    SeekerProfile @relation("ReceiverContacts", fields: [receiverId], references: [id], onDelete: Cascade)
+}
+
+model AdSlot {
+  id         String    @id @default(cuid())
+  name       String
+  placement  String
+  imageUrl   String
+  linkUrl    String
+  altText    String
+  active     Boolean   @default(true)
+  startsAt   DateTime?
+  endsAt     DateTime?
+  clickCount Int       @default(0)
+  viewCount  Int       @default(0)
+  advertiser String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+model PortfolioLink {
+  id        String        @id @default(cuid())
+  profileId String
+  label     String
+  url       String
+  order     Int           @default(0)
+  profile   SeekerProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+}
+
+model Certificate {
+  id        String        @id @default(cuid())
+  profileId String
+  name      String
+  issuer    String
+  year      Int?
+  imageUrl  String?
+  createdAt DateTime      @default(now())
+  profile   SeekerProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+}
+
+model ProjectImage {
+  id          String        @id @default(cuid())
+  profileId   String
+  title       String
+  description String?
+  imageUrl    String
+  order       Int           @default(0)
+  createdAt   DateTime      @default(now())
+  profile     SeekerProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+}
+
+model Language {
+  id        String        @id @default(cuid())
+  profileId String
+  name      String
+  level     String        @default("conversational")
+  profile   SeekerProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+}
+
+model JobNeed {
+  id           String         @id @default(cuid())
+  employerId   String
+  employer     User           @relation(fields: [employerId], references: [id], onDelete: Cascade)
+  title        String
+  description  String
+  category     String
+  skills       String
+  minRate      Float?
+  maxRate      Float?
+  availability String         @default("open")
+  status       String         @default("active")
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  interests    NeedInterest[]
+}
+
+model NeedInterest {
+  id        String   @id @default(cuid())
+  needId    String
+  seekerId  String
+  message   String?
+  createdAt DateTime @default(now())
+  need      JobNeed  @relation(fields: [needId], references: [id], onDelete: Cascade)
+  seeker    User     @relation(fields: [seekerId], references: [id], onDelete: Cascade)
+  @@unique([needId, seekerId])
+}
+
+model SiteSetting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  email     String
+  token     String   @unique
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model EmployerProfile {
+  id              String    @id @default(cuid())
+  userId          String    @unique
+  companyName     String?
+  website         String?
+  linkedIn        String?
+  description     String?
+  logoUrl         String?
+  verified        Boolean   @default(false)
+  verifiedAt      DateTime?
+  newEmployer     Boolean   @default(true)
+  // Verification tier: "partner" = self-serve $12.99, "vf_verified" = admin-awarded after consultation
+  verificationTier String?
+  // Partner-only fields
+  industry        String?
+  companySize     String?
+  location        String?
+  foundedYear     Int?
+  techStack       String?
+  benefits        String?
+  cultureStatement String?
+  videoIntroUrl   String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reviewsReceived Review[]  @relation("EmployerReviews")
+  reports         Report[]  @relation("ReportedEmployer")
+}
+
+model Review {
+  id                String           @id @default(cuid())
+  reviewerUserId    String
+  type              String
+  rating            Int
+  comment           String?
+  seekerProfileId   String?
+  employerProfileId String?
+  createdAt         DateTime         @default(now())
+  reviewerUser      User             @relation("GivenReviews", fields: [reviewerUserId], references: [id], onDelete: Cascade)
+  seekerProfile     SeekerProfile?   @relation(fields: [seekerProfileId], references: [id], onDelete: Cascade)
+  employerProfile   EmployerProfile? @relation("EmployerReviews", fields: [employerProfileId], references: [id], onDelete: Cascade)
+  @@unique([reviewerUserId, seekerProfileId])
+  @@unique([reviewerUserId, employerProfileId])
+}
+
+model Report {
+  id                String           @id @default(cuid())
+  reporterUserId    String
+  reportedUserId    String?
+  reportedJobId     String?
+  reason            String
+  description       String?
+  status            String           @default("pending")
+  seekerProfileId   String?
+  employerProfileId String?
+  createdAt         DateTime         @default(now())
+  reviewedAt        DateTime?
+  reporter          User             @relation("GivenReports", fields: [reporterUserId], references: [id], onDelete: Cascade)
+  seekerProfile     SeekerProfile?   @relation(fields: [seekerProfileId], references: [id], onDelete: Cascade)
+  employerProfile   EmployerProfile? @relation("ReportedEmployer", fields: [employerProfileId], references: [id], onDelete: Cascade)
+  response          ReportResponse?
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String
+  title     String
+  message   String
+  actionUrl String?
+  relatedId String?
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ReportResponse {
+  id        String   @id @default(cuid())
+  reportId  String   @unique
+  userId    String
+  message   String
+  createdAt DateTime @default(now())
+  report    Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model SkillSearch {
+  id        String   @id @default(cuid())
+  skillName String
+  category  String?
+  createdAt DateTime @default(now())
+}
+
+model SavedSearch {
+  id           String    @id @default(cuid())
+  employerId   String
+  name         String
+  search       String?
+  category     String?
+  availability String?
+  minRate      Float?
+  maxRate      Float?
+  minEnglish   Int?
+  lastNotified DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  employer     User      @relation(fields: [employerId], references: [id], onDelete: Cascade)
+}
+
+model Conversation {
+  id           String                    @id @default(cuid())
+  createdAt    DateTime                  @default(now())
+  updatedAt    DateTime                  @updatedAt
+  messages     Message[]
+  participants ConversationParticipant[]
+}
+
+model ConversationParticipant {
+  id             String       @id @default(cuid())
+  conversationId String
+  userId         String
+  lastReadAt     DateTime?
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([conversationId, userId])
+}
+
+model Message {
+  id             String       @id @default(cuid())
+  content        String
+  createdAt      DateTime     @default(now())
+  conversationId String
+  senderId       String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender         User         @relation(fields: [senderId], references: [id])
+}
+
+model ActivityEvent {
+  id        String   @id @default(cuid())
+  type      String
+  actorId   String?
+  actor     User?    @relation("activityActor", fields: [actorId], references: [id], onDelete: SetNull)
+  metadata  String?
+  isPublic  Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
