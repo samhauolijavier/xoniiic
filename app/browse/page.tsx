@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic"
 import { Suspense } from 'react'
 import { FilterPanel } from '@/components/employer/FilterPanel'
 import { ProfileCard } from '@/components/seeker/ProfileCard'
