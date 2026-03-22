@@ -4,6 +4,8 @@ import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
 import { logActivity } from '@/lib/activity'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET() {
   try {
     const session = await getServerSession(authOptions)

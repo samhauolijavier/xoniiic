@@ -6,6 +6,8 @@ import { FREE_ACTIVE_JOB_POSTS } from '@/lib/stripe'
 import { logActivity } from '@/lib/activity'
 import { isMonetizationEnabled } from '@/lib/monetization'
 
+export const dynamic = 'force-dynamic'
+
 export async function POST(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions)

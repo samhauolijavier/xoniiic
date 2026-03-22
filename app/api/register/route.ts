@@ -3,6 +3,8 @@ import bcrypt from 'bcryptjs'
 import { db } from '@/lib/db'
 import { logActivity } from '@/lib/activity'
 
+export const dynamic = 'force-dynamic'
+
 function slugify(name: string): string {
   return name
     .toLowerCase()

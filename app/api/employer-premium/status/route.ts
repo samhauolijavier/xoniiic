@@ -4,6 +4,8 @@ import { db } from '@/lib/db'
 import { NextResponse } from 'next/server'
 import { FREE_CONTACTS_PER_MONTH, FREE_ACTIVE_JOB_POSTS } from '@/lib/stripe'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET() {
   const session = await getServerSession(authOptions)
   if (!session?.user) {

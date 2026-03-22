@@ -3,6 +3,8 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { NextRequest, NextResponse } from 'next/server'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET() {
   try {
     const settings = await db.siteSetting.findMany()

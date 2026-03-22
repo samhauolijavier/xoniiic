@@ -4,6 +4,8 @@ import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
 import { getNotificationPreferences, DEFAULT_NOTIFICATION_PREFERENCES } from '@/lib/notifications'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET() {
   try {
     const session = await getServerSession(authOptions)

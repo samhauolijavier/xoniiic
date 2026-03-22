@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 
+export const dynamic = 'force-dynamic'
+
 const SEED_SKILLS = [
   { skillName: 'React', changePercent: 34, trending: 'up' as const },
   { skillName: 'Figma', changePercent: 22, trending: 'up' as const },

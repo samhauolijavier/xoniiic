@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 
+export const dynamic = 'force-dynamic'
+
 const CATEGORIES = ['Development', 'Design', 'Virtual Assistant', 'Writing', 'Marketing', 'Other']
 
 export async function GET(request: Request) {

@@ -4,6 +4,8 @@ import { db } from '@/lib/db'
 import { stripe, EMPLOYER_PREMIUM_PRICE } from '@/lib/stripe'
 import { NextResponse } from 'next/server'
 
+export const dynamic = 'force-dynamic'
+
 export async function POST() {
   const session = await getServerSession(authOptions)
   if (!session?.user) {

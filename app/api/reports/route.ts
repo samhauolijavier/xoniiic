@@ -3,6 +3,8 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
 
+export const dynamic = 'force-dynamic'
+
 const VALID_REASONS = ['scam', 'spam', 'fake', 'inappropriate', 'unpaid', 'other']
 
 export async function POST(req: NextRequest) {

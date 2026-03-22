@@ -6,6 +6,8 @@ import { FREE_CONTACTS_PER_MONTH } from '@/lib/stripe'
 import { createNotification } from '@/lib/notifications'
 import { isMonetizationEnabled } from '@/lib/monetization'
 
+export const dynamic = 'force-dynamic'
+
 export async function POST(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions)

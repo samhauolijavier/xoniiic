@@ -5,6 +5,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { writeFile } from 'fs/promises'
 import path from 'path'
 
+export const dynamic = 'force-dynamic'
+
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions)
   const user = session?.user as { role?: string } | undefined

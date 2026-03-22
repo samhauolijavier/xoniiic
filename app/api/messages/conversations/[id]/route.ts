@@ -3,6 +3,8 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
 
+export const dynamic = 'force-dynamic'
+
 // GET — Get single conversation with messages
 export async function GET(
   req: NextRequest,
