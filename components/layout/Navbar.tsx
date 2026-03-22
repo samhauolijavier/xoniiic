@@ -209,6 +209,7 @@ export function Navbar() {
       { href: '/admin', label: 'Dashboard' },
       { href: '/admin/branding', label: 'Branding' },
       { href: '/admin/employers', label: '\u{1F454} Employers' },
+      { href: '/admin/leads', label: '\u{1F4CB} Leads' },
       { href: '/browse', label: 'Browse' },
     ],
   }

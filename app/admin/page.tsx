@@ -84,6 +84,7 @@ export default async function AdminPage() {
           { href: '/admin/employers', label: 'Employers', desc: 'Verify employer accounts', icon: '👔' },
           { href: '/admin/reports', label: 'Reports', desc: 'Review user-submitted reports', icon: '🚩' },
           { href: '/admin/founding-members', label: 'Founding Members', desc: 'Manage founding member badges (#1-250)', icon: '👑' },
+          { href: '/admin/leads', label: 'Lead List', desc: 'View and export all registered users', icon: '👥' },
         ].map((link) => (
           <Link key={link.href} href={link.href} className="card p-5 hover-glow group">
             <div className="text-2xl mb-2">{link.icon}</div>

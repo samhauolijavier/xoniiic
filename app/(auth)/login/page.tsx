@@ -137,15 +137,6 @@ export default function LoginPage() {
             </p>
           </div>
 
-          {/* Demo accounts */}
-          <div className="mt-4 p-3 rounded-lg bg-brand-border/50 border border-brand-border">
-            <p className="text-xs text-brand-muted font-medium mb-2">Demo accounts:</p>
-            <div className="space-y-1 text-xs text-brand-muted font-mono">
-              <div>Admin: admin@virtualfreaks.com / admin123</div>
-              <div>Seeker: alex.dev@example.com / seeker123</div>
-              <div>Employer: hiring@techcorp.com / employer123</div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
