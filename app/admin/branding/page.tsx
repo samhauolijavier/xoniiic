@@ -75,6 +75,14 @@ export default function BrandingPage() {
   const [error, setError] = useState('')
   const fileRef = useRef<HTMLInputElement>(null)
 
+  // Favicon state
+  const [currentFavicon, setCurrentFavicon] = useState<string | null>(null)
+  const [faviconPreview, setFaviconPreview] = useState<string | null>(null)
+  const [faviconUploading, setFaviconUploading] = useState(false)
+  const [faviconSuccess, setFaviconSuccess] = useState(false)
+  const [faviconError, setFaviconError] = useState('')
+  const faviconFileRef = useRef<HTMLInputElement>(null)
+
   // Font state
   const [fontSize, setFontSize] = useState('1.5rem')
   const [savedFontSize, setSavedFontSize] = useState('1.5rem')
@@ -130,6 +138,7 @@ export default function BrandingPage() {
   // Section open states
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     logo: true,
+    favicon: false,
     font: false,
     hero: false,
     banner: false,
@@ -150,6 +159,7 @@ export default function BrandingPage() {
         if (!text) return
         const data = JSON.parse(text)
         if (data.logoUrl) setCurrentLogo(data.logoUrl)
+        if (data.faviconUrl) setCurrentFavicon(data.faviconUrl)
         if (data.brandFontSize) { setFontSize(data.brandFontSize); setSavedFontSize(data.brandFontSize) }
         // Hero
         if (data.heroTag) setHeroTag(data.heroTag)
@@ -238,6 +248,50 @@ export default function BrandingPage() {
     await fetch('/api/admin/logo', { method: 'DELETE' })
     setCurrentLogo(null)
     setPreview(null)
+  }
+
+  // Favicon handlers
+  function handleFaviconFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setFaviconError('')
+    const reader = new FileReader()
+    reader.onload = (ev) => setFaviconPreview(ev.target?.result as string)
+    reader.readAsDataURL(file)
+  }
+
+  async function handleFaviconUpload() {
+    const file = faviconFileRef.current?.files?.[0]
+    if (!file) { setFaviconError('Please select a file first'); return }
+    setFaviconUploading(true)
+    setFaviconError('')
+    const form = new FormData()
+    form.append('favicon', file)
+    let data: { faviconUrl?: string; error?: string } = {}
+    try {
+      const res = await fetch('/api/admin/favicon', { method: 'POST', body: form })
+      const text = await res.text()
+      data = text ? JSON.parse(text) : {}
+      if (!res.ok) { setFaviconUploading(false); setFaviconError(data.error || 'Upload failed'); return }
+    } catch (err) {
+      setFaviconUploading(false)
+      setFaviconError('Upload failed — check console for details')
+      console.error(err)
+      return
+    }
+    setFaviconUploading(false)
+    setCurrentFavicon(data.faviconUrl || null)
+    setFaviconPreview(null)
+    if (faviconFileRef.current) faviconFileRef.current.value = ''
+    setFaviconSuccess(true)
+    setTimeout(() => setFaviconSuccess(false), 3000)
+  }
+
+  async function handleFaviconReset() {
+    if (!confirm('Reset to the default favicon?')) return
+    await fetch('/api/admin/favicon', { method: 'DELETE' })
+    setCurrentFavicon(null)
+    setFaviconPreview(null)
   }
 
   async function handleSaveFont() {
@@ -380,6 +434,64 @@ export default function BrandingPage() {
                 </button>
                 {currentLogo && (
                   <button onClick={handleReset} className="btn-secondary text-red-400 hover:text-red-300 text-sm">
+                    Reset to Default
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* ─── Favicon Upload ─── */}
+        <div className="card p-6">
+          <SectionHeader
+            icon="⭐"
+            title="Site Favicon"
+            description="Upload a custom favicon (browser tab icon)"
+            open={openSections.favicon}
+            onToggle={() => toggleSection('favicon')}
+          />
+          {openSections.favicon && (
+            <div className="mt-5 pt-5 border-t border-brand-border">
+              {currentFavicon && (
+                <div className="mb-4">
+                  <p className="text-sm text-brand-muted mb-2">Current favicon:</p>
+                  <img src={currentFavicon} alt="Current favicon" className="h-8 w-8 object-contain rounded border border-brand-border" />
+                </div>
+              )}
+              <div
+                className="border-2 border-dashed border-brand-border rounded-xl p-8 text-center cursor-pointer hover:border-brand-purple transition-colors mb-4"
+                onClick={() => faviconFileRef.current?.click()}
+              >
+                {faviconPreview ? (
+                  <img src={faviconPreview} alt="Favicon preview" className="max-h-16 mx-auto object-contain" />
+                ) : (
+                  <div className="space-y-2">
+                    <div className="text-3xl">⭐</div>
+                    <p className="text-brand-text font-medium">Click to select favicon file</p>
+                    <p className="text-brand-muted text-sm">ICO, PNG, or SVG — Recommended size: 32x32px or 64x64px</p>
+                  </div>
+                )}
+              </div>
+              <input
+                ref={faviconFileRef}
+                type="file"
+                accept="image/png,image/x-icon,image/vnd.microsoft.icon,image/svg+xml,.ico"
+                className="hidden"
+                onChange={handleFaviconFileChange}
+              />
+              {faviconError && <p className="text-red-400 text-sm mb-3">{faviconError}</p>}
+              {faviconSuccess && <p className="text-emerald-400 text-sm mb-3">Favicon updated!</p>}
+              <div className="flex gap-3">
+                <button
+                  onClick={handleFaviconUpload}
+                  disabled={!faviconPreview || faviconUploading}
+                  className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                >
+                  {faviconUploading ? 'Uploading...' : 'Upload & Apply'}
+                </button>
+                {currentFavicon && (
+                  <button onClick={handleFaviconReset} className="btn-secondary text-red-400 hover:text-red-300 text-sm">
                     Reset to Default
                   </button>
                 )}

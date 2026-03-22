@@ -6,6 +6,7 @@ import { Footer } from '@/components/layout/Footer'
 import { AnnouncementBanner } from '@/components/layout/AnnouncementBanner'
 import { SessionProvider } from '@/components/providers/SessionProvider'
 import { ActiveTracker } from '@/components/providers/ActiveTracker'
+import { db } from '@/lib/db'
 
 const syne = Bebas_Neue({
   subsets: ['latin'],
@@ -29,13 +30,29 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
+async function getFaviconUrl(): Promise<string | null> {
+  try {
+    const setting = await db.siteSetting.findUnique({
+      where: { key: 'faviconUrl' },
+    })
+    return setting?.value || null
+  } catch {
+    return null
+  }
+}
+
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const faviconUrl = await getFaviconUrl()
+
   return (
     <html lang="en" className={`dark ${syne.variable} ${inter.variable}`}>
+      <head>
+        {faviconUrl && <link rel="icon" href={faviconUrl} />}
+      </head>
       <body className="bg-brand-bg text-brand-text min-h-screen font-sans">
         <SessionProvider>
           <ActiveTracker />
