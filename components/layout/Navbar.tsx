@@ -52,7 +52,7 @@ export function Navbar() {
   const [unreadCount, setUnreadCount] = useState(0)
   const [unreadMsgCount, setUnreadMsgCount] = useState(0)
   const [isPremium, setIsPremium] = useState(false)
-  const [monetizationEnabled, setMonetizationEnabled] = useState(true)
+  const [monetizationEnabled, setMonetizationEnabled] = useState(false)
   const [recentNotifs, setRecentNotifs] = useState<NavNotification[]>([])
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
