@@ -7,12 +7,13 @@ import { CategoryGrid } from '@/components/home/CategoryGrid'
 import { ProfileCard } from '@/components/seeker/ProfileCard'
 import { TrendingSkills } from '@/components/ui/TrendingSkills'
 import { db } from '@/lib/db'
+import { excludeDemoAccounts } from '@/lib/constants'
 import Link from 'next/link'
 import Image from 'next/image'
 
 async function getFeaturedSeekers() {
   return db.seekerProfile.findMany({
-    where: { featured: true, user: { active: true } },
+    where: { featured: true, openToWork: true, user: { active: true, ...excludeDemoAccounts() } },
     take: 6,
     orderBy: { profileViews: 'desc' },
     include: {
@@ -24,7 +25,7 @@ async function getFeaturedSeekers() {
 
 async function getRecentSeekers() {
   return db.seekerProfile.findMany({
-    where: { user: { active: true } },
+    where: { openToWork: true, user: { active: true, ...excludeDemoAccounts() } },
     take: 4,
     orderBy: { createdAt: 'desc' },
     include: {
@@ -48,7 +49,7 @@ async function getTopTalent() {
 
   if (useSparseData) {
     return db.seekerProfile.findMany({
-      where: { user: { active: true } },
+      where: { user: { active: true, ...excludeDemoAccounts() } },
       orderBy: { profileViews: 'desc' },
       take: 5,
       include: {
@@ -202,8 +203,8 @@ export default async function Home() {
         </section>
       )}
 
-      {/* Featured Talent */}
-      {featuredSeekers.length > 0 && (
+      {/* Featured Talent — or early adopter CTA */}
+      {featuredSeekers.length > 0 ? (
         <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-10 flex-wrap gap-3">
             <div>
@@ -220,6 +221,26 @@ export default async function Home() {
             {featuredSeekers.map((profile) => (
               <ProfileCard key={profile.id} profile={profile} />
             ))}
+          </div>
+        </section>
+      ) : (
+        <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="card p-10 text-center border-brand-purple/30 bg-gradient-to-br from-brand-purple/5 to-brand-orange/5">
+            <div className="text-5xl mb-4">🚀</div>
+            <h2 className="text-2xl sm:text-3xl font-black text-brand-text mb-3">
+              Be Among the <span className="gradient-text">First</span>
+            </h2>
+            <p className="text-brand-muted max-w-lg mx-auto mb-6">
+              Virtual Freaks just launched! Create your profile now and earn an exclusive Founding Member badge. Early members get seen first by employers.
+            </p>
+            <div className="flex gap-4 justify-center flex-wrap">
+              <Link href="/register" className="btn-primary px-8 py-3 text-lg font-bold">
+                Join Now — It&apos;s Free
+              </Link>
+              <Link href="/browse" className="btn-secondary px-6 py-3">
+                Browse Talent
+              </Link>
+            </div>
           </div>
         </section>
       )}

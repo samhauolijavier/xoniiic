@@ -53,6 +53,7 @@ model SeekerProfile {
   rateType         String           @default("hourly") // "hourly" or "monthly"
   availability     String           @default("open")
   englishRating    Int              @default(5)
+  openToWork       Boolean          @default(true)
   featured         Boolean          @default(false)
   profileViews     Int              @default(0)
   title            String?

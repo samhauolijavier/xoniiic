@@ -23,6 +23,7 @@ interface ProfileData {
   hourlyRate: string
   rateType: string
   availability: string
+  openToWork: boolean
   englishRating: number
   avatarUrl: string | null
   username: string
@@ -105,6 +106,7 @@ export default function ProfileEditPage() {
     hourlyRate: '',
     rateType: 'hourly',
     availability: 'open',
+    openToWork: true,
     englishRating: 5,
     avatarUrl: null,
     username: '',
@@ -161,6 +163,7 @@ export default function ProfileEditPage() {
             hourlyRate: p.hourlyRate?.toString() || '',
             rateType: p.rateType || 'hourly',
             availability: p.availability || 'open',
+            openToWork: p.openToWork !== false,
             englishRating: p.englishRating || 5,
             avatarUrl: p.avatarUrl,
             username: p.username,
@@ -233,6 +236,7 @@ export default function ProfileEditPage() {
           hourlyRate: profileData.hourlyRate || null,
           rateType: profileData.rateType,
           availability: profileData.availability,
+          openToWork: profileData.openToWork,
           englishRating: profileData.englishRating,
           title: profileData.title,
           videoIntroUrl: profileData.videoIntroUrl,
@@ -667,6 +671,31 @@ export default function ProfileEditPage() {
                 <option value="part-time">Part-time Available</option>
                 <option value="unavailable">Not Available</option>
               </select>
+            </div>
+
+            {/* Open to Work Toggle */}
+            <div className="flex items-center justify-between p-4 rounded-xl bg-brand-border/30 border border-brand-border">
+              <div>
+                <p className="text-sm font-medium text-brand-text">Open to Work</p>
+                <p className="text-xs text-brand-muted mt-0.5">
+                  {profileData.openToWork
+                    ? 'Your profile is visible to employers'
+                    : 'Your profile is hidden from browse & search'}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setProfileData({ ...profileData, openToWork: !profileData.openToWork })}
+                className={`relative inline-flex h-7 w-12 items-center rounded-full transition-colors ${
+                  profileData.openToWork ? 'bg-emerald-500' : 'bg-brand-border'
+                }`}
+              >
+                <span
+                  className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform ${
+                    profileData.openToWork ? 'translate-x-6' : 'translate-x-1'
+                  }`}
+                />
+              </button>
             </div>
 
             <div>

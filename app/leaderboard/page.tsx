@@ -1,5 +1,6 @@
 export const dynamic = "force-dynamic"
 import { db } from '@/lib/db'
+import { excludeDemoAccounts } from '@/lib/constants'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Badge } from '@/components/ui/Badge'
@@ -24,7 +25,7 @@ async function getLeaderboard(category?: string) {
   const useSparseData = profileViewCounts.length < 3
 
   const whereClause: Record<string, unknown> = {
-    user: { active: true },
+    user: { active: true, ...excludeDemoAccounts() },
   }
   if (category && category !== 'All') {
     whereClause.skills = { some: { skill: { category } } }
