@@ -234,29 +234,31 @@ export function Navbar() {
               <div className="w-8 h-8 rounded-full bg-brand-card animate-pulse" />
             ) : session ? (
               <>
-                <div className="hidden md:flex items-center gap-2">
-                  {links.map((link) => (
+                {user?.role !== 'admin' && (
+                  <div className="hidden md:flex items-center gap-2">
+                    {links.map((link) => (
+                      <Link
+                        key={link.href}
+                        href={link.href}
+                        className={`text-sm transition-colors px-3 py-1.5 rounded-lg hover:bg-brand-card ${
+                          (link.href === '/premium' && !isPremium)
+                            ? 'text-amber-400 hover:text-amber-300 font-medium'
+                            : link.href === '/verified-partner' && !isPremium
+                            ? 'text-purple-400 hover:text-purple-300 font-medium'
+                            : 'text-brand-muted hover:text-brand-text'
+                        }`}
+                      >
+                        {link.label}
+                      </Link>
+                    ))}
                     <Link
-                      key={link.href}
-                      href={link.href}
-                      className={`text-sm transition-colors px-3 py-1.5 rounded-lg hover:bg-brand-card ${
-                        (link.href === '/premium' && !isPremium)
-                          ? 'text-amber-400 hover:text-amber-300 font-medium'
-                          : link.href === '/verified-partner' && !isPremium
-                          ? 'text-purple-400 hover:text-purple-300 font-medium'
-                          : 'text-brand-muted hover:text-brand-text'
-                      }`}
+                      href="/activity"
+                      className="text-sm transition-colors px-3 py-1.5 rounded-lg hover:bg-brand-card text-brand-muted hover:text-brand-text"
                     >
-                      {link.label}
+                      Activity
                     </Link>
-                  ))}
-                  <Link
-                    href="/activity"
-                    className="text-sm transition-colors px-3 py-1.5 rounded-lg hover:bg-brand-card text-brand-muted hover:text-brand-text"
-                  >
-                    Activity
-                  </Link>
-                </div>
+                  </div>
+                )}
 
                 {/* Messages Icon */}
                 <Link
