@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
 
     const ext = file.name.split('.').pop() || 'png'
     const filename = `favicon-${Date.now()}.${ext}`
-    const storagePath = `favicons/${filename}`
+    const storagePath = filename
 
     // Delete old favicon from Supabase if it exists
     const existing = await db.siteSetting.findUnique({ where: { key: 'faviconUrl' } })

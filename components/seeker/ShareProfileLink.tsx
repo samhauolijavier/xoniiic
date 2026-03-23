@@ -11,7 +11,7 @@ interface ShareProfileLinkProps {
 export function ShareProfileLink({ username, profileName, compact = false }: ShareProfileLinkProps) {
   const [copied, setCopied] = useState(false)
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://virtualfreaks.com'
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://virtualfreaks.co'
   const profileUrl = `${appUrl}/talent/${username}`
 
   const handleCopy = async () => {

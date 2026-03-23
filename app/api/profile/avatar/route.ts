@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
     // Generate unique filename
     const ext = file.name.split('.').pop() || 'jpg'
     const filename = `${uuidv4()}.${ext}`
-    const storagePath = `avatars/${user.id}/${filename}`
+    const storagePath = `${user.id}/${filename}`
 
     // Delete old avatar from Supabase if it exists
     const profile = await db.seekerProfile.findUnique({ where: { userId: user.id } })

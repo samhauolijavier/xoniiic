@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
 
     const ext = file.name.split('.').pop() || 'png'
     const filename = `logo-${Date.now()}.${ext}`
-    const storagePath = `logos/${filename}`
+    const storagePath = filename
 
     // Delete old logo from Supabase if it exists
     const existing = await db.siteSetting.findUnique({ where: { key: 'logoUrl' } })

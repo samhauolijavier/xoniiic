@@ -49,7 +49,7 @@ export async function generateMetadata({ params }: { params: { username: string 
 
   if (!profile) return { title: 'Not Found' }
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://virtualfreaks.com'
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://virtualfreaks.co'
   const canonicalUrl = `${appUrl}/talent/${params.username}`
   const name = profile.user.name || profile.username
   const title = profile.title ? `${name} — ${profile.title} | Virtual Freaks` : `${name} | Virtual Freaks`
@@ -194,7 +194,7 @@ export default async function TalentProfilePage({ params }: { params: { username
   const youtubeId = profile.videoIntroUrl ? getYouTubeId(profile.videoIntroUrl) : null
   const isVimeo = profile.videoIntroUrl ? isVimeoUrl(profile.videoIntroUrl) : false
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://virtualfreaks.com'
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://virtualfreaks.co'
   const profileUrl = `${appUrl}/talent/${profile.username}`
   const personSchema = {
     '@context': 'https://schema.org',

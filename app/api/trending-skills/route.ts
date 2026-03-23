@@ -3,15 +3,16 @@ import { db } from '@/lib/db'
 
 export const dynamic = 'force-dynamic'
 
+// Realistic 2026 remote work market trending skills
 const SEED_SKILLS = [
-  { skillName: 'React', changePercent: 34, trending: 'up' as const },
-  { skillName: 'Figma', changePercent: 22, trending: 'up' as const },
-  { skillName: 'Python', changePercent: 18, trending: 'up' as const },
-  { skillName: 'Node.js', changePercent: 12, trending: 'up' as const },
-  { skillName: 'TypeScript', changePercent: 8, trending: 'up' as const },
-  { skillName: 'WordPress', changePercent: -5, trending: 'down' as const },
-  { skillName: 'Copywriting', changePercent: 15, trending: 'up' as const },
-  { skillName: 'Video Editing', changePercent: 28, trending: 'up' as const },
+  { skillName: 'AI Prompt Engineering', changePercent: 67, trending: 'up' as const },
+  { skillName: 'Short-Form Video Editing', changePercent: 42, trending: 'up' as const },
+  { skillName: 'Virtual Assistance', changePercent: 31, trending: 'up' as const },
+  { skillName: 'Social Media Management', changePercent: 26, trending: 'up' as const },
+  { skillName: 'SEO & Digital Marketing', changePercent: 19, trending: 'up' as const },
+  { skillName: 'No-Code Development', changePercent: 38, trending: 'up' as const },
+  { skillName: 'Bookkeeping & Accounting', changePercent: 14, trending: 'up' as const },
+  { skillName: 'Data Entry', changePercent: -8, trending: 'down' as const },
 ]
 
 export async function GET() {

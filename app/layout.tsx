@@ -20,13 +20,41 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'Virtual Freaks | Find Remote Talent',
-  description: 'Connect with top remote talent worldwide. Browse skilled freelancers in development, design, marketing, writing, and more.',
-  keywords: 'remote work, freelancers, virtual assistants, hire talent, remote jobs',
+  metadataBase: new URL('https://virtualfreaks.co'),
+  title: {
+    default: 'Virtual Freaks | The Marketplace for Remote Talent',
+    template: '%s | Virtual Freaks',
+  },
+  description: 'Connect with top remote talent worldwide. Browse skilled freelancers in development, design, marketing, virtual assistance, and more — completely free for employers.',
+  keywords: 'remote work, freelancers, virtual assistants, hire talent, remote jobs, hire developers, hire designers, virtual freaks, remote talent marketplace',
+  authors: [{ name: 'Virtual Freaks' }],
+  creator: 'Virtual Freaks',
   openGraph: {
-    title: 'Virtual Freaks | Find Remote Talent',
-    description: 'Connect with top remote talent worldwide.',
+    title: 'Virtual Freaks | The Marketplace for Remote Talent',
+    description: 'Connect with top remote talent worldwide. Browse skilled freelancers — completely free for employers.',
+    url: 'https://virtualfreaks.co',
+    siteName: 'Virtual Freaks',
     type: 'website',
+    locale: 'en_US',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Virtual Freaks — The Marketplace for Remote Talent',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Virtual Freaks | The Marketplace for Remote Talent',
+    description: 'Connect with top remote talent worldwide. Browse skilled freelancers — completely free for employers.',
+    images: ['/og-image.png'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, 'max-video-preview': -1, 'max-image-preview': 'large', 'max-snippet': -1 },
   },
 }
 

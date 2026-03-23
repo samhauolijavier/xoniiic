@@ -767,7 +767,7 @@ export default function BrandingPage() {
               {/* Google preview */}
               <div className="bg-white rounded-lg p-4 mb-2">
                 <p className="text-blue-700 text-lg font-medium truncate">{seoTitle || 'Virtual Freaks'}</p>
-                <p className="text-green-700 text-sm">virtualfreaks.com</p>
+                <p className="text-green-700 text-sm">virtualfreaks.co</p>
                 <p className="text-gray-600 text-sm mt-1 line-clamp-2">{seoDescription || 'No description set.'}</p>
               </div>
 

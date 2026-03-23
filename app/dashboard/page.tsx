@@ -266,7 +266,7 @@ export default async function DashboardPage() {
             <div className="flex items-center gap-4">
               <Badge status={profile.availability} />
               <span className="text-sm text-brand-muted">
-                Public profile: virtualfreaks.com/talent/{profile.username}
+                Public profile: virtualfreaks.co/talent/{profile.username}
               </span>
             </div>
             <Link href={`/talent/${profile.username}`} className="text-sm text-brand-purple hover:underline" target="_blank">
