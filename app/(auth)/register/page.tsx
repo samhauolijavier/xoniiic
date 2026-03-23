@@ -61,13 +61,14 @@ export default function RegisterPage() {
         return
       }
 
-      // Redirect to email verification if required
-      if (data.requiresVerification) {
-        router.push(`/verify-email?email=${encodeURIComponent(formData.email)}`)
-        return
-      }
+      // Email verification hibernated — skip straight to sign in
+      // When ready to enable: uncomment the block below
+      // if (data.requiresVerification) {
+      //   router.push(`/verify-email?email=${encodeURIComponent(formData.email)}`)
+      //   return
+      // }
 
-      // Auto sign in (fallback if verification not required)
+      // Auto sign in
       const signInResult = await signIn('credentials', {
         email: formData.email,
         password: formData.password,

@@ -92,20 +92,7 @@ export default async function EmployerDashboardPage() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      {/* Email Verification Banner */}
-      {dbUser && !dbUser.emailVerified && (
-        <div className="mb-6 p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between flex-wrap gap-3">
-          <p className="text-sm text-amber-400 font-medium">
-            Please verify your email to get the most out of Virtual Freaks
-          </p>
-          <Link
-            href={`/verify-email?email=${encodeURIComponent(dbUser.email)}`}
-            className="text-sm font-semibold text-amber-400 hover:text-amber-300 transition-colors underline underline-offset-2"
-          >
-            Verify now
-          </Link>
-        </div>
-      )}
+      {/* Email Verification Banner — hibernated, enable when SES is ready */}
 
       {/* Header */}
       <div className="flex items-start justify-between mb-8 flex-wrap gap-4">

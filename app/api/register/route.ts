@@ -109,16 +109,16 @@ export async function POST(req: NextRequest) {
       console.error('Founding member assignment error:', e)
     }
 
-    // Generate verification code and send email
-    const verificationCode = Math.floor(100000 + Math.random() * 900000).toString()
-    await db.user.update({
-      where: { id: user.id },
-      data: {
-        verificationToken: verificationCode,
-        verificationTokenExpiry: new Date(Date.now() + 24 * 60 * 60 * 1000),
-      },
-    })
-    await sendVerificationEmail(email, verificationCode, name)
+    // Email verification hibernated — uncomment when SES is ready
+    // const verificationCode = Math.floor(100000 + Math.random() * 900000).toString()
+    // await db.user.update({
+    //   where: { id: user.id },
+    //   data: {
+    //     verificationToken: verificationCode,
+    //     verificationTokenExpiry: new Date(Date.now() + 24 * 60 * 60 * 1000),
+    //   },
+    // })
+    // await sendVerificationEmail(email, verificationCode, name)
 
     // Log activity event
     const activityType = role === 'seeker' ? 'new_seeker' : 'new_employer'
@@ -126,7 +126,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       message: 'Account created successfully',
-      requiresVerification: true,
+      requiresVerification: false,
       user: { id: user.id, email: user.email, role: user.role, username, foundingMemberNumber },
     }, { status: 201 })
   } catch (error) {
