@@ -57,7 +57,7 @@ export async function generateMetadata({ params }: { params: { username: string 
 
   let description = profile.bio
     ? profile.bio.slice(0, 160)
-    : `${name} is${topSkill ? ` a ${topSkill}` : ''} on Virtual Freaks.${profile.hourlyRate ? ` $${profile.hourlyRate}/hr.` : ''} Browse their full profile and portfolio.`
+    : `${name} is${topSkill ? ` a ${topSkill}` : ''} on Virtual Freaks.${profile.hourlyRate ? ` $${profile.hourlyRate}${profile.rateType === 'monthly' ? '/mo' : '/hr'}.` : ''} Browse their full profile and portfolio.`
 
   if (description.length > 160) {
     description = description.slice(0, 157) + '...'
@@ -320,7 +320,7 @@ export default async function TalentProfilePage({ params }: { params: { username
                 <div className="font-bold gradient-text text-lg">
                   {profile.hourlyRate ? `$${profile.hourlyRate}` : 'TBD'}
                 </div>
-                <div className="text-brand-muted text-xs">per hour</div>
+                <div className="text-brand-muted text-xs">{profile.rateType === 'monthly' ? 'per month' : 'per hour'}</div>
               </div>
               <div className="text-center">
                 <div className="font-bold text-brand-text text-lg">{profile.englishRating}/10</div>
@@ -589,7 +589,7 @@ export default async function TalentProfilePage({ params }: { params: { username
               <div className="bg-brand-border/50 rounded-xl p-4">
                 <div className="text-xs text-brand-muted mb-1">Rate</div>
                 <div className="font-semibold gradient-text">
-                  {profile.hourlyRate ? `$${profile.hourlyRate}/hr` : 'Negotiable'}
+                  {profile.hourlyRate ? `$${profile.hourlyRate}${profile.rateType === 'monthly' ? '/mo' : '/hr'}` : 'Negotiable'}
                 </div>
               </div>
             </div>

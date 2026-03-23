@@ -50,6 +50,7 @@ model SeekerProfile {
   bio              String?
   location         String?
   hourlyRate       Float?
+  rateType         String           @default("hourly") // "hourly" or "monthly"
   availability     String           @default("open")
   englishRating    Int              @default(5)
   featured         Boolean          @default(false)

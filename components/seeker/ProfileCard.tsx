@@ -14,6 +14,7 @@ interface ProfileCardProps {
     bio: string | null
     location: string | null
     hourlyRate: number | null
+    rateType?: string | null
     availability: string
     englishRating: number
     featured: boolean
@@ -140,7 +141,7 @@ export function ProfileCard({ profile, hideMonetization }: ProfileCardProps) {
           <div>
             {profile.hourlyRate ? (
               <span className="text-sm font-semibold gradient-text-h">
-                ${profile.hourlyRate}/hr
+                ${profile.hourlyRate}{profile.rateType === 'monthly' ? '/mo' : '/hr'}
               </span>
             ) : (
               <span className="text-sm text-brand-muted">Rate negotiable</span>

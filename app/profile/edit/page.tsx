@@ -21,6 +21,7 @@ interface ProfileData {
   bio: string
   location: string
   hourlyRate: string
+  rateType: string
   availability: string
   englishRating: number
   avatarUrl: string | null
@@ -102,6 +103,7 @@ export default function ProfileEditPage() {
     bio: '',
     location: '',
     hourlyRate: '',
+    rateType: 'hourly',
     availability: 'open',
     englishRating: 5,
     avatarUrl: null,
@@ -157,6 +159,7 @@ export default function ProfileEditPage() {
             bio: p.bio || '',
             location: p.location || '',
             hourlyRate: p.hourlyRate?.toString() || '',
+            rateType: p.rateType || 'hourly',
             availability: p.availability || 'open',
             englishRating: p.englishRating || 5,
             avatarUrl: p.avatarUrl,
@@ -228,6 +231,7 @@ export default function ProfileEditPage() {
           bio: profileData.bio,
           location: profileData.location,
           hourlyRate: profileData.hourlyRate || null,
+          rateType: profileData.rateType,
           availability: profileData.availability,
           englishRating: profileData.englishRating,
           title: profileData.title,
@@ -639,10 +643,20 @@ export default function ProfileEditPage() {
             <h2 className="text-lg font-semibold text-brand-text">Work Preferences</h2>
 
             <div>
-              <label className="block text-sm font-medium text-brand-text mb-1.5">Hourly Rate (USD)</label>
-              <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-muted text-sm">$</span>
-                <input type="number" value={profileData.hourlyRate} onChange={(e) => setProfileData({ ...profileData, hourlyRate: e.target.value })} placeholder="25" min={1} step={0.5} className="input-field pl-7" />
+              <label className="block text-sm font-medium text-brand-text mb-1.5">Rate (USD)</label>
+              <div className="flex gap-2">
+                <div className="relative flex-1">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-brand-muted text-sm">$</span>
+                  <input type="number" value={profileData.hourlyRate} onChange={(e) => setProfileData({ ...profileData, hourlyRate: e.target.value })} placeholder={profileData.rateType === 'hourly' ? '25' : '2000'} min={1} step={0.5} className="input-field pl-7" />
+                </div>
+                <select
+                  value={profileData.rateType}
+                  onChange={(e) => setProfileData({ ...profileData, rateType: e.target.value })}
+                  className="input-field w-36"
+                >
+                  <option value="hourly">Per Hour</option>
+                  <option value="monthly">Per Month</option>
+                </select>
               </div>
             </div>
 
