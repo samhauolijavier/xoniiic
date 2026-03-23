@@ -16,6 +16,9 @@ model User {
   password             String?
   role                 String           @default("seeker")
   active               Boolean          @default(true)
+  emailVerified        Boolean          @default(false)
+  verificationToken    String?          @unique
+  verificationTokenExpiry DateTime?
   premium              Boolean          @default(false)
   premiumSince         DateTime?
   premiumUntil         DateTime?

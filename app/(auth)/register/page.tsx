@@ -61,7 +61,13 @@ export default function RegisterPage() {
         return
       }
 
-      // Auto sign in
+      // Redirect to email verification if required
+      if (data.requiresVerification) {
+        router.push(`/verify-email?email=${encodeURIComponent(formData.email)}`)
+        return
+      }
+
+      // Auto sign in (fallback if verification not required)
       const signInResult = await signIn('credentials', {
         email: formData.email,
         password: formData.password,
