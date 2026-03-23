@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
 import { uploadFile, deleteFile } from '@/lib/supabase-storage'
+import { moderateImage } from '@/lib/moderation'
 import { v4 as uuidv4 } from 'uuid'
 
 export const dynamic = 'force-dynamic'
@@ -36,6 +37,15 @@ export async function POST(req: NextRequest) {
 
     const bytes = await file.arrayBuffer()
     const buffer = Buffer.from(bytes)
+
+    // NSFW moderation check (Sightengine — profile pictures only)
+    const moderation = await moderateImage(buffer, file.type)
+    if (!moderation.safe) {
+      return NextResponse.json(
+        { error: moderation.reason || 'Image rejected: inappropriate content detected' },
+        { status: 400 }
+      )
+    }
 
     // Generate unique filename
     const ext = file.name.split('.').pop() || 'jpg'
