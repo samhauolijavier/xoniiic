@@ -19,7 +19,7 @@ interface AnalyticsData {
   viewsPerDay?: DayData[]
 }
 
-export function AnalyticsSection({ isPremium }: { isPremium: boolean }) {
+export function AnalyticsSection({ isPremium, hideMonetization }: { isPremium: boolean; hideMonetization?: boolean }) {
   const [data, setData] = useState<AnalyticsData | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -40,7 +40,7 @@ export function AnalyticsSection({ isPremium }: { isPremium: boolean }) {
     )
   }
 
-  if (!isPremium) {
+  if (!isPremium && !hideMonetization) {
     return (
       <div className="card p-6 mb-6 relative overflow-hidden">
         <div className="flex items-center justify-between mb-4 flex-wrap gap-3">

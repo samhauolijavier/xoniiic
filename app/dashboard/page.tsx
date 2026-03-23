@@ -157,10 +157,10 @@ export default async function DashboardPage() {
       </div>
 
       {/* Who Viewed Your Profile */}
-      <WhoViewedSection isPremium={isPremium} />
+      <WhoViewedSection isPremium={isPremium} hideMonetization={!monetizationOn} />
 
       {/* Analytics Section */}
-      <AnalyticsSection isPremium={isPremium} />
+      <AnalyticsSection isPremium={isPremium} hideMonetization={!monetizationOn} />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Contact Requests */}

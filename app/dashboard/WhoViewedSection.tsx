@@ -16,6 +16,7 @@ interface ViewsData {
   weekCount: number
   viewers: Viewer[]
   isPremium: boolean
+  hideMonetization?: boolean
 }
 
 function timeAgo(dateStr: string): string {
@@ -34,7 +35,7 @@ const BLUR_PLACEHOLDERS = [
   { company: '██████████████ Inc', time: '3 days ago' },
 ]
 
-export function WhoViewedSection({ isPremium }: { isPremium: boolean }) {
+export function WhoViewedSection({ isPremium, hideMonetization }: { isPremium: boolean; hideMonetization?: boolean }) {
   const [data, setData] = useState<ViewsData | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -77,7 +78,7 @@ export function WhoViewedSection({ isPremium }: { isPremium: boolean }) {
             )}
           </p>
         </div>
-        {!isPremium && (
+        {!isPremium && !hideMonetization && (
           <Link
             href="/premium"
             className="px-4 py-2 rounded-xl text-sm font-bold bg-gradient-to-r from-amber-500 to-yellow-400 text-amber-950 hover:opacity-90 transition-all"
@@ -162,6 +163,7 @@ export function WhoViewedSection({ isPremium }: { isPremium: boolean }) {
           </div>
 
           {/* Upgrade CTA */}
+          {!hideMonetization && (
           <div className="rounded-xl bg-amber-500/5 border border-amber-500/20 p-5 text-center">
             <p className="text-brand-text font-medium mb-1">
               🔓 Upgrade to Premium to see who&apos;s interested in you
@@ -178,6 +180,7 @@ export function WhoViewedSection({ isPremium }: { isPremium: boolean }) {
               Unlock Now → $2.99/mo
             </Link>
           </div>
+          )}
         </>
       )}
     </div>
