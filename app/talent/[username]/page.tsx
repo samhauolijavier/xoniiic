@@ -411,7 +411,7 @@ export default async function TalentProfilePage({ params }: { params: { username
 
             {/* Share button */}
             <div className="mt-4 pt-4 border-t border-brand-border">
-              <ShareProfileLink username={profile.username} compact />
+              <ShareProfileLink username={profile.username} profileName={profile.user.name || profile.username} compact />
             </div>
           </div>
 
