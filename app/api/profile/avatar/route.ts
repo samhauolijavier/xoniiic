@@ -2,8 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
-import { writeFile, mkdir } from 'fs/promises'
-import { join } from 'path'
+import { uploadFile, deleteFile } from '@/lib/supabase-storage'
 import { v4 as uuidv4 } from 'uuid'
 
 export const dynamic = 'force-dynamic'
@@ -38,18 +37,26 @@ export async function POST(req: NextRequest) {
     const bytes = await file.arrayBuffer()
     const buffer = Buffer.from(bytes)
 
-    // Create directory if it doesn't exist
-    const uploadDir = join(process.cwd(), 'public', 'uploads', 'avatars')
-    await mkdir(uploadDir, { recursive: true })
-
     // Generate unique filename
     const ext = file.name.split('.').pop() || 'jpg'
     const filename = `${uuidv4()}.${ext}`
-    const filepath = join(uploadDir, filename)
+    const storagePath = `avatars/${user.id}/${filename}`
 
-    await writeFile(filepath, buffer)
+    // Delete old avatar from Supabase if it exists
+    const profile = await db.seekerProfile.findUnique({ where: { userId: user.id } })
+    if (profile?.avatarUrl && profile.avatarUrl.includes('supabase')) {
+      const oldPath = profile.avatarUrl.split('/avatars/')[1]
+      if (oldPath) {
+        await deleteFile('avatars', oldPath)
+      }
+    }
 
-    const avatarUrl = `/uploads/avatars/${filename}`
+    // Upload to Supabase Storage
+    const avatarUrl = await uploadFile('avatars', storagePath, buffer, file.type)
+
+    if (!avatarUrl) {
+      return NextResponse.json({ error: 'Upload failed. Storage service may not be configured.' }, { status: 500 })
+    }
 
     // Update profile
     await db.seekerProfile.update({

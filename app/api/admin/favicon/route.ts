@@ -2,8 +2,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
 import { NextRequest, NextResponse } from 'next/server'
-import { writeFile } from 'fs/promises'
-import path from 'path'
+import { uploadFile, deleteFile } from '@/lib/supabase-storage'
 
 export const dynamic = 'force-dynamic'
 
@@ -40,11 +39,26 @@ export async function POST(req: NextRequest) {
 
     const ext = file.name.split('.').pop() || 'png'
     const filename = `favicon-${Date.now()}.${ext}`
-    const uploadPath = path.join(process.cwd(), 'public', 'uploads', filename)
+    const storagePath = `favicons/${filename}`
 
-    await writeFile(uploadPath, buffer)
+    // Delete old favicon from Supabase if it exists
+    const existing = await db.siteSetting.findUnique({ where: { key: 'faviconUrl' } })
+    if (existing?.value && existing.value.includes('supabase')) {
+      const oldPath = existing.value.split('/favicons/')[1]
+      if (oldPath) {
+        await deleteFile('favicons', oldPath)
+      }
+    }
 
-    const faviconUrl = `/uploads/${filename}`
+    // Upload to Supabase Storage
+    const faviconUrl = await uploadFile('favicons', storagePath, buffer, file.type)
+
+    if (!faviconUrl) {
+      return NextResponse.json(
+        { error: 'Upload failed. Storage service may not be configured.' },
+        { status: 500 }
+      )
+    }
 
     await db.siteSetting.upsert({
       where: { key: 'faviconUrl' },
@@ -67,6 +81,15 @@ export async function DELETE() {
   const user = session?.user as { role?: string } | undefined
   if (!session || user?.role !== 'admin') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  // Delete from Supabase if stored there
+  const existing = await db.siteSetting.findUnique({ where: { key: 'faviconUrl' } })
+  if (existing?.value && existing.value.includes('supabase')) {
+    const oldPath = existing.value.split('/favicons/')[1]
+    if (oldPath) {
+      await deleteFile('favicons', oldPath)
+    }
   }
 
   await db.siteSetting.deleteMany({ where: { key: 'faviconUrl' } })
