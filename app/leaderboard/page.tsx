@@ -114,11 +114,18 @@ export default async function LeaderboardPage({
         ))}
       </div>
 
-      {leaderboard.length === 0 ? (
-        <div className="card p-16 text-center">
+      {leaderboard.length < 3 ? (
+        <div className="card p-16 text-center border-brand-purple/30 bg-gradient-to-br from-brand-purple/5 to-brand-orange/5">
           <div className="text-5xl mb-4">🏆</div>
-          <h3 className="text-xl font-semibold text-brand-text mb-2">No data yet</h3>
-          <p className="text-brand-muted">Check back soon as talent builds up their profile views.</p>
+          <h3 className="text-xl font-semibold mb-2">
+            <span className="gradient-text">Leaderboard Coming Soon</span>
+          </h3>
+          <p className="text-brand-muted max-w-md mx-auto mb-6">
+            Leaderboard rankings appear as more members join and complete their profiles. Fill out yours to claim your spot!
+          </p>
+          <Link href="/profile/edit" className="btn-primary px-6 py-3">
+            Complete Your Profile
+          </Link>
         </div>
       ) : (
         <>

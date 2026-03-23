@@ -571,6 +571,52 @@ export default function ProfileEditPage() {
             </div>
           </div>
 
+          {/* Open to Work Toggle — saves immediately */}
+          <div className="card p-5">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-semibold text-brand-text">Open to Work</p>
+                <p className="text-xs text-brand-muted mt-0.5">
+                  {profileData.openToWork
+                    ? 'Your profile is visible to employers in browse and search'
+                    : 'Your profile is hidden from browse and search. Employers can still view your profile via direct link.'}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={async () => {
+                  const next = !profileData.openToWork
+                  setProfileData(prev => ({ ...prev, openToWork: next }))
+                  try {
+                    const res = await fetch('/api/profile', {
+                      method: 'PATCH',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ openToWork: next }),
+                    })
+                    if (res.ok) {
+                      setMessage({ type: 'success', text: next ? 'You are now visible to employers' : 'Your profile is now hidden from browse' })
+                    } else {
+                      setProfileData(prev => ({ ...prev, openToWork: !next }))
+                      setMessage({ type: 'error', text: 'Failed to update visibility' })
+                    }
+                  } catch {
+                    setProfileData(prev => ({ ...prev, openToWork: !next }))
+                    setMessage({ type: 'error', text: 'Failed to update visibility' })
+                  }
+                }}
+                className={`relative inline-flex h-7 w-12 flex-shrink-0 items-center rounded-full transition-colors ${
+                  profileData.openToWork ? 'bg-brand-purple' : 'bg-brand-border'
+                }`}
+              >
+                <span
+                  className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform ${
+                    profileData.openToWork ? 'translate-x-6' : 'translate-x-1'
+                  }`}
+                />
+              </button>
+            </div>
+          </div>
+
           {/* Basic Info */}
           <div className="card p-6 space-y-4">
             <h2 className="text-lg font-semibold text-brand-text">Basic Information</h2>
@@ -673,30 +719,7 @@ export default function ProfileEditPage() {
               </select>
             </div>
 
-            {/* Open to Work Toggle */}
-            <div className="flex items-center justify-between p-4 rounded-xl bg-brand-border/30 border border-brand-border">
-              <div>
-                <p className="text-sm font-medium text-brand-text">Open to Work</p>
-                <p className="text-xs text-brand-muted mt-0.5">
-                  {profileData.openToWork
-                    ? 'Your profile is visible to employers'
-                    : 'Your profile is hidden from browse & search'}
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={() => setProfileData({ ...profileData, openToWork: !profileData.openToWork })}
-                className={`relative inline-flex h-7 w-12 items-center rounded-full transition-colors ${
-                  profileData.openToWork ? 'bg-emerald-500' : 'bg-brand-border'
-                }`}
-              >
-                <span
-                  className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform ${
-                    profileData.openToWork ? 'translate-x-6' : 'translate-x-1'
-                  }`}
-                />
-              </button>
-            </div>
+            {/* Open to Work toggle moved to top of profile form */}
 
             <div>
               <label className="block text-sm font-medium text-brand-text mb-1.5">English Proficiency: {profileData.englishRating}/10</label>

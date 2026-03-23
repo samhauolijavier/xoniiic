@@ -49,7 +49,7 @@ async function getTopTalent() {
 
   if (useSparseData) {
     return db.seekerProfile.findMany({
-      where: { user: { active: true, ...excludeDemoAccounts() } },
+      where: { openToWork: true, user: { active: true, ...excludeDemoAccounts() } },
       orderBy: { profileViews: 'desc' },
       take: 5,
       include: {
@@ -74,7 +74,7 @@ async function getTopTalent() {
   const ids = profileViewCounts.slice(0, 5).map((v) => v.seekerProfileId)
   const viewCountMap = new Map(profileViewCounts.map((v) => [v.seekerProfileId, v._count.id]))
   const profiles = await db.seekerProfile.findMany({
-    where: { id: { in: ids }, user: { active: true } },
+    where: { id: { in: ids }, openToWork: true, user: { active: true, ...excludeDemoAccounts() } },
     include: {
       user: { select: { id: true, name: true, premium: true } },
       skills: { include: { skill: true }, orderBy: { rating: 'desc' }, take: 1 },
@@ -142,8 +142,8 @@ export default async function Home() {
 
       <CategoryGrid />
 
-      {/* Top Talent This Week */}
-      {topTalent.length > 0 && (
+      {/* Top Talent This Week — only show with 3+ entries so it doesn't look sparse */}
+      {topTalent.length >= 3 && (
         <section className="py-12 bg-brand-card/20 border-y border-brand-border">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between mb-8 flex-wrap gap-3">
@@ -226,21 +226,16 @@ export default async function Home() {
       ) : (
         <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="card p-10 text-center border-brand-purple/30 bg-gradient-to-br from-brand-purple/5 to-brand-orange/5">
-            <div className="text-5xl mb-4">🚀</div>
+            <div className="text-5xl mb-4">🌍</div>
             <h2 className="text-2xl sm:text-3xl font-black text-brand-text mb-3">
-              Be Among the <span className="gradient-text">First</span>
+              Join <span className="gradient-text">Virtual Freaks</span>
             </h2>
             <p className="text-brand-muted max-w-lg mx-auto mb-6">
-              Virtual Freaks just launched! Create your profile now and earn an exclusive Founding Member badge. Early members get seen first by employers.
+              Create your profile and get discovered by employers worldwide. Early members earn exclusive Founding Member badges.
             </p>
-            <div className="flex gap-4 justify-center flex-wrap">
-              <Link href="/register" className="btn-primary px-8 py-3 text-lg font-bold">
-                Join Now — It&apos;s Free
-              </Link>
-              <Link href="/browse" className="btn-secondary px-6 py-3">
-                Browse Talent
-              </Link>
-            </div>
+            <Link href="/register" className="inline-block btn-primary px-8 py-3 text-lg font-bold">
+              Register Now
+            </Link>
           </div>
         </section>
       )}
@@ -279,7 +274,7 @@ export default async function Home() {
       </section>
 
       {/* Recently Joined */}
-      {recentSeekers.length > 0 && (
+      {recentSeekers.length >= 2 ? (
         <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-10 flex-wrap gap-3">
             <div>
@@ -297,6 +292,20 @@ export default async function Home() {
             {recentSeekers.map((profile) => (
               <ProfileCard key={profile.id} profile={profile} />
             ))}
+          </div>
+        </section>
+      ) : (
+        <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="card p-10 text-center border-brand-purple/30 bg-gradient-to-br from-brand-purple/5 to-brand-orange/5">
+            <h2 className="text-2xl sm:text-3xl font-black text-brand-text mb-3">
+              <span className="gradient-text">Be One of the First!</span>
+            </h2>
+            <p className="text-brand-muted max-w-lg mx-auto mb-6">
+              Be one of the first to join! Early members earn exclusive Founding Member badges 👑
+            </p>
+            <Link href="/register" className="inline-block btn-primary px-8 py-3 text-lg font-bold">
+              Register Now
+            </Link>
           </div>
         </section>
       )}

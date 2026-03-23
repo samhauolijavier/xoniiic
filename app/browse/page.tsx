@@ -168,12 +168,25 @@ export default async function BrowsePage({
           </div>
 
           {profiles.length === 0 ? (
-            <div className="card p-16 text-center">
-              <div className="text-5xl mb-4">🔍</div>
-              <h3 className="text-xl font-semibold text-brand-text mb-2">No results found</h3>
-              <p className="text-brand-muted mb-6">Try adjusting your filters or search term</p>
-              <Link href="/browse" className="btn-primary">Clear Filters</Link>
-            </div>
+            activeFilters.length > 0 ? (
+              <div className="card p-16 text-center">
+                <div className="text-5xl mb-4">🔍</div>
+                <h3 className="text-xl font-semibold text-brand-text mb-2">No results found</h3>
+                <p className="text-brand-muted mb-6">Try adjusting your filters or search term</p>
+                <Link href="/browse" className="btn-primary">Clear Filters</Link>
+              </div>
+            ) : (
+              <div className="card p-16 text-center border-brand-purple/30 bg-gradient-to-br from-brand-purple/5 to-brand-orange/5">
+                <div className="text-5xl mb-4">🚀</div>
+                <h3 className="text-xl font-semibold mb-2">
+                  <span className="gradient-text">We&apos;re Just Getting Started!</span>
+                </h3>
+                <p className="text-brand-muted mb-6 max-w-md mx-auto">
+                  More talented freelancers join every day. Check back soon or invite someone to join!
+                </p>
+                <Link href="/register?role=seeker" className="btn-primary">Invite a Freelancer</Link>
+              </div>
+            )
           ) : (
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">

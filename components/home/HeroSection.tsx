@@ -115,15 +115,26 @@ export function HeroSection() {
             </p>
           )}
 
-          {/* Stats */}
-          <div className="mt-16 grid grid-cols-3 gap-6 max-w-lg mx-auto">
-            {stats.map((stat) => (
-              <div key={stat.label} className="text-center">
-                <div className="text-2xl sm:text-3xl font-black gradient-text">{stat.value}</div>
-                <div className="text-xs sm:text-sm text-brand-muted mt-1">{stat.label}</div>
+          {/* Stats — hide any stat whose value is a bare number under 10 (e.g. "2") */}
+          {(() => {
+            const visible = stats.filter((s) => {
+              const n = parseInt(s.value, 10)
+              // If the value is purely numeric and less than 10, hide it
+              if (!isNaN(n) && String(n) === s.value.trim() && n < 10) return false
+              return true
+            })
+            if (visible.length === 0) return null
+            return (
+              <div className={`mt-16 grid gap-6 max-w-lg mx-auto ${visible.length === 3 ? 'grid-cols-3' : visible.length === 2 ? 'grid-cols-2' : 'grid-cols-1'}`}>
+                {visible.map((stat) => (
+                  <div key={stat.label} className="text-center">
+                    <div className="text-2xl sm:text-3xl font-black gradient-text">{stat.value}</div>
+                    <div className="text-xs sm:text-sm text-brand-muted mt-1">{stat.label}</div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            )
+          })()}
         </div>
       </div>
     </section>

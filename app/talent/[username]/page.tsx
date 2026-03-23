@@ -270,6 +270,14 @@ export default async function TalentProfilePage({ params }: { params: { username
             )}
             <p className="text-brand-muted text-sm mt-0.5">@{profile.username}</p>
 
+            {!profile.openToWork && (
+              <div className="mt-2">
+                <span className="inline-flex items-center gap-1 text-xs font-medium px-3 py-1 rounded-full bg-brand-border/60 text-brand-muted border border-brand-border">
+                  ⏸️ Not currently looking for work
+                </span>
+              </div>
+            )}
+
             <div className="mt-3 flex flex-col items-center gap-2">
               <Badge status={profile.availability} />
               {profile.lastActiveAt && (

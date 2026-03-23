@@ -92,6 +92,25 @@ export default async function DashboardPage() {
         </div>
       </div>
 
+      {/* Open to Work Status */}
+      <div className={`mb-4 px-4 py-3 rounded-xl text-sm font-medium ${
+        profile.openToWork
+          ? 'bg-emerald-500/10 border border-emerald-500/30 text-emerald-400'
+          : 'bg-brand-border/30 border border-brand-border text-brand-muted'
+      }`}>
+        {profile.openToWork
+          ? '🟢 You\u2019re visible to employers'
+          : (
+            <>
+              ⏸️ Your profile is hidden from browse —{' '}
+              <Link href="/profile/edit" className="underline hover:text-brand-text transition-colors">
+                Toggle on in Edit Profile
+              </Link>
+            </>
+          )
+        }
+      </div>
+
       {/* Profile Completion Meter */}
       <div className="card p-6 mb-8 border-brand-purple/30 bg-brand-purple/5">
         <div className="flex items-center justify-between mb-4 flex-wrap gap-3">

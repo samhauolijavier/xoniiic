@@ -105,11 +105,13 @@ export default function ActivityFeedPage() {
       <p className="text-brand-muted mb-8">See what&apos;s happening on the platform</p>
 
       {events.length === 0 ? (
-        <div className="card p-12 text-center">
-          <div className="text-5xl mb-4">📡</div>
-          <h3 className="text-lg font-bold text-brand-text mb-2">No activity yet</h3>
-          <p className="text-brand-muted text-sm">
-            Activity from the community will show up here.
+        <div className="card p-12 text-center border-brand-purple/30 bg-gradient-to-br from-brand-purple/5 to-brand-orange/5">
+          <div className="text-5xl mb-4">🌟</div>
+          <h3 className="text-lg font-bold mb-2">
+            <span className="gradient-text">Stay Tuned</span>
+          </h3>
+          <p className="text-brand-muted text-sm max-w-sm mx-auto">
+            The activity feed will light up as members join and start connecting!
           </p>
         </div>
       ) : (
