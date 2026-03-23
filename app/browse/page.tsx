@@ -95,9 +95,25 @@ export default async function BrowsePage({
     } catch { /* silent */ }
   }
 
-  const { profiles, total, page, totalPages } = await getSeekers(searchParams)
+  let profiles: Awaited<ReturnType<typeof getSeekers>>['profiles'] = []
+  let total = 0
+  let page = 1
+  let totalPages = 1
+  let dbError = false
+
+  try {
+    const result = await getSeekers(searchParams)
+    profiles = result.profiles
+    total = result.total
+    page = result.page
+    totalPages = result.totalPages
+  } catch (error) {
+    console.error('Browse page DB query failed:', error)
+    dbError = true
+  }
+
   const sessionUser = session.user as { id: string; role: string }
-  const monetizationOn = await isMonetizationEnabled()
+  const monetizationOn = await isMonetizationEnabled().catch(() => false)
 
   const activeFilters = [
     searchParams.search && `"${searchParams.search}"`,
@@ -167,7 +183,14 @@ export default async function BrowsePage({
             </Suspense>
           </div>
 
-          {profiles.length === 0 ? (
+          {dbError ? (
+            <div className="card p-16 text-center">
+              <div className="text-5xl mb-4">⚡</div>
+              <h3 className="text-xl font-semibold text-brand-text mb-2">Temporarily unavailable</h3>
+              <p className="text-brand-muted mb-6">We&apos;re having trouble loading profiles right now. Please try again in a moment.</p>
+              <Link href="/browse" className="btn-primary">Try Again</Link>
+            </div>
+          ) : profiles.length === 0 ? (
             activeFilters.length > 0 ? (
               <div className="card p-16 text-center">
                 <div className="text-5xl mb-4">🔍</div>
