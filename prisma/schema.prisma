@@ -63,6 +63,12 @@ model SeekerProfile {
   videoIntroUrl    String?
   timezone         String?
   lastActiveAt     DateTime?
+  linkedinUrl      String?
+  githubUrl        String?
+  twitterUrl       String?
+  facebookUrl      String?
+  instagramUrl     String?
+  portfolioUrl     String?
   createdAt        DateTime         @default(now())
   updatedAt        DateTime         @updatedAt
   user             User             @relation(fields: [userId], references: [id], onDelete: Cascade)

@@ -125,11 +125,20 @@ export default async function Home() {
     if (user.role === 'admin') redirect('/admin')
   }
 
-  const [featuredSeekers, recentSeekers, topTalent] = await Promise.all([
-    getFeaturedSeekers(),
-    getRecentSeekers(),
-    getTopTalent(),
-  ])
+  let featuredSeekers: Awaited<ReturnType<typeof getFeaturedSeekers>> = []
+  let recentSeekers: Awaited<ReturnType<typeof getRecentSeekers>> = []
+  let topTalent: Awaited<ReturnType<typeof getTopTalent>> = []
+
+  try {
+    ;[featuredSeekers, recentSeekers, topTalent] = await Promise.all([
+      getFeaturedSeekers(),
+      getRecentSeekers(),
+      getTopTalent(),
+    ])
+  } catch (error) {
+    console.error('Homepage DB query failed:', error)
+    // Page renders with empty arrays — shows inviting empty states instead of crashing
+  }
 
   return (
     <div>

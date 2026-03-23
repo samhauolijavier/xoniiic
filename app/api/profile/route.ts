@@ -73,6 +73,12 @@ export async function PATCH(req: NextRequest) {
       timezone,
       portfolioLinks,
       languages,
+      linkedinUrl,
+      githubUrl,
+      twitterUrl,
+      facebookUrl,
+      instagramUrl,
+      portfolioUrl,
     } = body
 
     // Update user name
@@ -97,6 +103,12 @@ export async function PATCH(req: NextRequest) {
         ...(title !== undefined && { title }),
         ...(videoIntroUrl !== undefined && { videoIntroUrl }),
         ...(timezone !== undefined && { timezone }),
+        ...(linkedinUrl !== undefined && { linkedinUrl }),
+        ...(githubUrl !== undefined && { githubUrl }),
+        ...(twitterUrl !== undefined && { twitterUrl }),
+        ...(facebookUrl !== undefined && { facebookUrl }),
+        ...(instagramUrl !== undefined && { instagramUrl }),
+        ...(portfolioUrl !== undefined && { portfolioUrl }),
       },
     })
 
