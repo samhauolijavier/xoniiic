@@ -85,22 +85,31 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ user, account }) {
       if (account?.provider === 'google') {
-        try {
-          const existingUser = await withRetry(() => db.user.findUnique({ where: { email: user.email! } }))
-          if (!existingUser) {
-            await withRetry(() => db.user.create({
-              data: {
-                email: user.email!,
-                name: user.name,
-                role: 'pending',
-                active: true,
-              },
-            }))
+        // Retry up to 4 times with longer delays for Google sign-in
+        for (let attempt = 0; attempt < 5; attempt++) {
+          try {
+            const existingUser = await db.user.findUnique({ where: { email: user.email! } })
+            if (!existingUser) {
+              await db.user.create({
+                data: {
+                  email: user.email!,
+                  name: user.name,
+                  role: 'pending',
+                  active: true,
+                },
+              })
+            }
+            return true
+          } catch (error) {
+            console.error(`Google sign-in DB error (attempt ${attempt + 1}/5):`, error)
+            if (attempt < 4) {
+              await new Promise(r => setTimeout(r, 1000 * (attempt + 1)))
+            }
           }
-        } catch (error) {
-          console.error('Google sign-in DB error:', error)
-          return false
         }
+        // All retries failed — still allow sign-in, JWT callback will handle DB lookup later
+        console.warn('Google sign-in: all DB retries failed, allowing sign-in anyway')
+        return true
       }
       return true
     },
