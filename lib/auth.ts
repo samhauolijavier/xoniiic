@@ -2,7 +2,7 @@ import { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
 import bcrypt from 'bcryptjs'
-import { db } from '@/lib/db'
+import { db, withRetry } from '@/lib/db'
 
 function slugify(name: string): string {
   return name
@@ -18,7 +18,7 @@ async function generateUniqueUsername(baseName: string): Promise<string> {
   let username = base
   let count = 1
   while (true) {
-    const existing = await db.seekerProfile.findUnique({ where: { username } })
+    const existing = await withRetry(() => db.seekerProfile.findUnique({ where: { username } }))
     if (!existing) return username
     username = `${base}-${count}`
     count++
@@ -48,31 +48,36 @@ export const authOptions: NextAuthOptions = {
           return null
         }
 
-        const user = await db.user.findUnique({
-          where: { email: credentials.email },
-          include: { seekerProfile: true },
-        })
+        try {
+          const user = await withRetry(() => db.user.findUnique({
+            where: { email: credentials.email },
+            include: { seekerProfile: true },
+          }))
 
-        if (!user || !user.password) {
-          return null
-        }
+          if (!user || !user.password) {
+            return null
+          }
 
-        const isPasswordValid = await bcrypt.compare(credentials.password, user.password)
+          const isPasswordValid = await bcrypt.compare(credentials.password, user.password)
 
-        if (!isPasswordValid) {
-          return null
-        }
+          if (!isPasswordValid) {
+            return null
+          }
 
-        if (!user.active) {
-          return null
-        }
+          if (!user.active) {
+            return null
+          }
 
-        return {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          role: user.role,
-          username: user.seekerProfile?.username ?? null,
+          return {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            role: user.role,
+            username: user.seekerProfile?.username ?? null,
+          }
+        } catch (error) {
+          console.error('Auth DB error:', error)
+          throw new Error('Database connection failed. Please try again.')
         }
       },
     }),
@@ -80,17 +85,21 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ user, account }) {
       if (account?.provider === 'google') {
-        // Upsert Google user
-        const existingUser = await db.user.findUnique({ where: { email: user.email! } })
-        if (!existingUser) {
-          await db.user.create({
-            data: {
-              email: user.email!,
-              name: user.name,
-              role: 'pending', // role chosen during onboarding
-              active: true,
-            },
-          })
+        try {
+          const existingUser = await withRetry(() => db.user.findUnique({ where: { email: user.email! } }))
+          if (!existingUser) {
+            await withRetry(() => db.user.create({
+              data: {
+                email: user.email!,
+                name: user.name,
+                role: 'pending',
+                active: true,
+              },
+            }))
+          }
+        } catch (error) {
+          console.error('Google sign-in DB error:', error)
+          return false
         }
       }
       return true
@@ -101,16 +110,19 @@ export const authOptions: NextAuthOptions = {
         token.id = user.id
         token.username = (user as { username?: string | null }).username ?? null
       }
-      // For Google sign-in, fetch the DB user to get role/id/username
       if (account?.provider === 'google' && token.email) {
-        const dbUser = await db.user.findUnique({
-          where: { email: token.email as string },
-          include: { seekerProfile: true },
-        })
-        if (dbUser) {
-          token.id = dbUser.id
-          token.role = dbUser.role
-          token.username = dbUser.seekerProfile?.username ?? null
+        try {
+          const dbUser = await withRetry(() => db.user.findUnique({
+            where: { email: token.email as string },
+            include: { seekerProfile: true },
+          }))
+          if (dbUser) {
+            token.id = dbUser.id
+            token.role = dbUser.role
+            token.username = dbUser.seekerProfile?.username ?? null
+          }
+        } catch (error) {
+          console.error('JWT DB error:', error)
         }
       }
       return token
