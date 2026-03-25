@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     locale: 'en_US',
     images: [
       {
-        url: '/og-image.png',
+        url: '/api/og',
         width: 1200,
         height: 630,
         alt: 'Virtual Freaks — The Marketplace for Remote Talent',
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Virtual Freaks | The Marketplace for Remote Talent',
     description: 'Connect with top remote talent worldwide. Browse skilled freelancers — completely free for employers.',
-    images: ['/og-image.png'],
+    images: ['/api/og'],
   },
   robots: {
     index: true,

@@ -74,15 +74,20 @@ export async function generateMetadata({ params }: { params: { username: string 
       description,
       url: canonicalUrl,
       type: 'profile',
-      images: profile.avatarUrl
-        ? [{ url: profile.avatarUrl, width: 400, height: 400, alt: name }]
-        : [],
+      images: [
+        {
+          url: `${appUrl}/api/og?title=${encodeURIComponent(name + (profile.title ? ' — ' + profile.title : ''))}&description=${encodeURIComponent(description)}`,
+          width: 1200,
+          height: 630,
+          alt: name,
+        },
+      ],
     },
     twitter: {
-      card: 'summary',
+      card: 'summary_large_image',
       title,
       description,
-      images: profile.avatarUrl ? [profile.avatarUrl] : [],
+      images: [`${appUrl}/api/og?title=${encodeURIComponent(name + (profile.title ? ' — ' + profile.title : ''))}&description=${encodeURIComponent(description)}`],
     },
   }
 }

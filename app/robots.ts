@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/api/', '/admin/', '/dashboard/', '/employer-dashboard/', '/profile/edit', '/settings/', '/messages/'],
+        disallow: ['/api/', '/admin/', '/dashboard/', '/employer-dashboard/', '/settings/', '/messages/'],
       },
     ],
     sitemap: 'https://virtualfreaks.co/sitemap.xml',

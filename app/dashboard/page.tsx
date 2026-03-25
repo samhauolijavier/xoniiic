@@ -93,6 +93,33 @@ export default async function DashboardPage() {
         </div>
       </div>
 
+      {/* Profile Completion Nudge Banner */}
+      {completion.score < 70 && (
+        <div className="mb-4 px-5 py-4 rounded-xl bg-gradient-to-r from-brand-purple/10 to-brand-orange/10 border border-brand-purple/30">
+          <div className="flex items-center justify-between flex-wrap gap-3">
+            <div className="flex items-center gap-3">
+              <span className="text-2xl">{completion.score < 40 ? '🚨' : '💪'}</span>
+              <div>
+                <p className="text-sm font-semibold text-brand-text">
+                  {completion.score < 40
+                    ? 'Your profile needs work — employers can\'t find you yet!'
+                    : 'Almost there! Complete your profile to stand out to employers.'}
+                </p>
+                <p className="text-xs text-brand-muted mt-0.5">
+                  {completion.items.filter(i => !i.done).length} items remaining — profiles above 70% get 3x more views
+                </p>
+              </div>
+            </div>
+            <Link
+              href="/profile/edit"
+              className="text-sm font-medium px-4 py-2 rounded-lg bg-gradient-to-r from-brand-purple to-brand-orange text-white hover:opacity-90 transition-all flex-shrink-0"
+            >
+              Complete Profile
+            </Link>
+          </div>
+        </div>
+      )}
+
       {/* Open to Work Status */}
       <div className={`mb-4 px-4 py-3 rounded-xl text-sm font-medium ${
         profile.openToWork

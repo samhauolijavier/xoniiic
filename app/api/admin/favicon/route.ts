@@ -1,6 +1,6 @@
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-import { db } from '@/lib/db'
+import { db, withRetry } from '@/lib/db'
 import { NextRequest, NextResponse } from 'next/server'
 import { uploadFile, deleteFile } from '@/lib/supabase-storage'
 
@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
     const storagePath = filename
 
     // Delete old favicon from Supabase if it exists
-    const existing = await db.siteSetting.findUnique({ where: { key: 'faviconUrl' } })
+    const existing = await withRetry(() => db.siteSetting.findUnique({ where: { key: 'faviconUrl' } }))
     if (existing?.value && existing.value.includes('supabase')) {
       const oldPath = existing.value.split('/favicons/')[1]
       if (oldPath) {
@@ -55,16 +55,16 @@ export async function POST(req: NextRequest) {
 
     if (!faviconUrl) {
       return NextResponse.json(
-        { error: 'Upload failed. Storage service may not be configured.' },
+        { error: 'Upload failed. Make sure SUPABASE_SERVICE_ROLE_KEY is set in Vercel environment variables.' },
         { status: 500 }
       )
     }
 
-    await db.siteSetting.upsert({
+    await withRetry(() => db.siteSetting.upsert({
       where: { key: 'faviconUrl' },
       update: { value: faviconUrl },
       create: { key: 'faviconUrl', value: faviconUrl },
-    })
+    }))
 
     return NextResponse.json({ faviconUrl })
   } catch (err) {
@@ -84,7 +84,7 @@ export async function DELETE() {
   }
 
   // Delete from Supabase if stored there
-  const existing = await db.siteSetting.findUnique({ where: { key: 'faviconUrl' } })
+  const existing = await withRetry(() => db.siteSetting.findUnique({ where: { key: 'faviconUrl' } }))
   if (existing?.value && existing.value.includes('supabase')) {
     const oldPath = existing.value.split('/favicons/')[1]
     if (oldPath) {
@@ -92,6 +92,6 @@ export async function DELETE() {
     }
   }
 
-  await db.siteSetting.deleteMany({ where: { key: 'faviconUrl' } })
+  await withRetry(() => db.siteSetting.deleteMany({ where: { key: 'faviconUrl' } }))
   return NextResponse.json({ success: true })
 }
