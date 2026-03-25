@@ -90,7 +90,7 @@ export async function POST(req: NextRequest) {
       type: 'contact_request',
       title: 'New Contact Request',
       message: `${senderName} wants to connect with you`,
-      actionUrl: '/dashboard',
+      actionUrl: '/dashboard#contact-requests',
     })
 
     return NextResponse.json({ message: 'Contact request sent', contact }, { status: 201 })

@@ -213,7 +213,7 @@ export default async function DashboardPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Contact Requests */}
-        <div className="card p-6">
+        <div id="contact-requests" className="card p-6 scroll-mt-20">
           <h2 className="text-lg font-semibold text-brand-text mb-4">Contact Requests</h2>
           {profile.contactsReceived.length === 0 ? (
             <div className="text-center py-8">

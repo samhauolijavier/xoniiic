@@ -6,6 +6,7 @@ import { Footer } from '@/components/layout/Footer'
 import { AnnouncementBanner } from '@/components/layout/AnnouncementBanner'
 import { SessionProvider } from '@/components/providers/SessionProvider'
 import { ActiveTracker } from '@/components/providers/ActiveTracker'
+import { ChatBubble } from '@/components/ui/ChatBubble'
 import { db } from '@/lib/db'
 
 const syne = Bebas_Neue({
@@ -92,6 +93,7 @@ export default async function RootLayout({
             </main>
             <Footer />
           </div>
+          <ChatBubble />
         </SessionProvider>
       </body>
     </html>
