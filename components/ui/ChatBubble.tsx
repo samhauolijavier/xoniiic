@@ -45,19 +45,27 @@ export function ChatBubble() {
   const user = session?.user as { id: string; name?: string } | undefined
 
   // Fetch conversations
-  const fetchConversations = useCallback(async () => {
+  const fetchConversations = useCallback(async (retries = 2) => {
     if (!session) return
-    try {
-      const res = await fetch('/api/messages/conversations')
-      if (!res.ok) return
-      const data = await res.json()
-      // API returns { conversations: [...] }
-      if (data.conversations && Array.isArray(data.conversations)) {
-        setConversations(data.conversations)
-      } else if (Array.isArray(data)) {
-        setConversations(data)
+    for (let attempt = 0; attempt <= retries; attempt++) {
+      try {
+        const res = await fetch('/api/messages/conversations')
+        if (!res.ok) {
+          if (attempt < retries) { await new Promise(r => setTimeout(r, 1000)); continue }
+          return
+        }
+        const data = await res.json()
+        // API returns { conversations: [...] }
+        if (data.conversations && Array.isArray(data.conversations)) {
+          setConversations(data.conversations)
+        } else if (Array.isArray(data)) {
+          setConversations(data)
+        }
+        return
+      } catch {
+        if (attempt < retries) { await new Promise(r => setTimeout(r, 1000)); continue }
       }
-    } catch { /* silent */ }
+    }
   }, [session])
 
   // Fetch unread count
