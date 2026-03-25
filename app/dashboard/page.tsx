@@ -13,6 +13,7 @@ import { WhoViewedSection } from './WhoViewedSection'
 import { AnalyticsSection } from './AnalyticsSection'
 import { ActivityFeedWidget } from '@/components/ui/ActivityFeedWidget'
 import { isMonetizationEnabled } from '@/lib/monetization'
+import { ContactRequestCard } from './ContactRequestCard'
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions)
@@ -196,29 +197,7 @@ export default async function DashboardPage() {
           ) : (
             <div className="space-y-3">
               {profile.contactsReceived.map((contact) => (
-                <div key={contact.id} className="p-4 rounded-xl bg-brand-border/30 border border-brand-border">
-                  <div className="flex items-start justify-between gap-3 mb-2">
-                    <div>
-                      <p className="font-medium text-brand-text text-sm">
-                        {contact.sender.name || 'Employer'}
-                      </p>
-                      <p className="text-xs text-brand-muted">{contact.senderEmail}</p>
-                    </div>
-                    <div className="flex flex-col items-end gap-1">
-                      <span className={`text-xs px-2 py-0.5 rounded-full ${
-                        contact.status === 'pending'
-                          ? 'bg-yellow-900/40 text-yellow-400'
-                          : 'bg-emerald-900/40 text-emerald-400'
-                      }`}>
-                        {contact.status}
-                      </span>
-                      <span className="text-xs text-brand-muted">
-                        {new Date(contact.createdAt).toLocaleDateString()}
-                      </span>
-                    </div>
-                  </div>
-                  <p className="text-sm text-brand-muted line-clamp-2">{contact.message}</p>
-                </div>
+                <ContactRequestCard key={contact.id} contact={contact} />
               ))}
             </div>
           )}
