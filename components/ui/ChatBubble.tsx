@@ -15,6 +15,9 @@ interface Conversation {
     senderId: string
     createdAt: string
   }[]
+  lastMessage?: {
+    content: string
+  }
   updatedAt: string
 }
 
@@ -41,9 +44,6 @@ export function ChatBubble() {
 
   const user = session?.user as { id: string; name?: string } | undefined
 
-  // Don't show on messages page (they have full UI there)
-  if (pathname === '/messages') return null
-
   // Fetch conversations
   const fetchConversations = useCallback(async () => {
     if (!session) return
@@ -51,7 +51,12 @@ export function ChatBubble() {
       const res = await fetch('/api/messages/conversations')
       if (!res.ok) return
       const data = await res.json()
-      if (Array.isArray(data)) setConversations(data)
+      // API returns { conversations: [...] }
+      if (data.conversations && Array.isArray(data.conversations)) {
+        setConversations(data.conversations)
+      } else if (Array.isArray(data)) {
+        setConversations(data)
+      }
     } catch { /* silent */ }
   }, [session])
 
@@ -74,10 +79,11 @@ export function ChatBubble() {
       if (!res.ok) return
       const data = await res.json()
       if (Array.isArray(data.messages)) setMessages(data.messages)
+      else if (Array.isArray(data)) setMessages(data)
     } catch { /* silent */ }
   }, [activeConvo])
 
-  // Initial load + poll
+  // Initial load + poll unread
   useEffect(() => {
     if (!session) return
     fetchUnread()
@@ -129,11 +135,19 @@ export function ChatBubble() {
   }
 
   const getLastMessage = (convo: Conversation) => {
-    if (!convo.messages?.length) return 'No messages yet'
-    return convo.messages[0]?.content?.slice(0, 40) + (convo.messages[0]?.content?.length > 40 ? '...' : '')
+    if (convo.lastMessage?.content) {
+      const c = convo.lastMessage.content
+      return c.length > 40 ? c.slice(0, 40) + '...' : c
+    }
+    if (convo.messages?.length) {
+      const c = convo.messages[0]?.content || ''
+      return c.length > 40 ? c.slice(0, 40) + '...' : c
+    }
+    return 'No messages yet'
   }
 
-  if (!session) return null
+  // Don't render if not logged in or on /messages page (all hooks are above)
+  if (!session || pathname === '/messages') return null
 
   return (
     <>
