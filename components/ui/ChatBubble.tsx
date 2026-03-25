@@ -86,8 +86,14 @@ export function ChatBubble() {
       const res = await fetch(`/api/messages/conversations/${activeConvo}`)
       if (!res.ok) return
       const data = await res.json()
-      if (Array.isArray(data.messages)) setMessages(data.messages)
-      else if (Array.isArray(data)) setMessages(data)
+      // API returns { conversation: { messages: [...] } }
+      if (data.conversation?.messages && Array.isArray(data.conversation.messages)) {
+        setMessages(data.conversation.messages)
+      } else if (Array.isArray(data.messages)) {
+        setMessages(data.messages)
+      } else if (Array.isArray(data)) {
+        setMessages(data)
+      }
     } catch { /* silent */ }
   }, [activeConvo])
 
