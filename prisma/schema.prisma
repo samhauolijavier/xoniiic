@@ -43,6 +43,9 @@ model User {
   sentMessages             Message[]
   foundingMemberNumber     Int?             @unique  // null = not a founding member, 1-250 = their number
   activityEvents           ActivityEvent[] @relation("activityActor")
+  hiresAsEmployer          Hire[]          @relation("EmployerHires")
+  hiresAsSeeker            Hire[]          @relation("SeekerHires")
+  hireReviews              HireReview[]
 }
 
 model SeekerProfile {
@@ -208,6 +211,7 @@ model JobNeed {
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
   interests    NeedInterest[]
+  hires        Hire[]
 }
 
 model NeedInterest {
@@ -373,6 +377,40 @@ model Message {
   senderId       String
   conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
   sender         User         @relation(fields: [senderId], references: [id])
+}
+
+model Hire {
+  id              String          @id @default(cuid())
+  employerId      String
+  seekerId        String
+  jobNeedId       String?
+  status          String          @default("active") // active, completed, cancelled
+  title           String
+  startDate       DateTime        @default(now())
+  endDate         DateTime?
+  rateAgreed      Float?
+  rateType        String?         // hourly, monthly, fixed
+  notes           String?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  employer        User            @relation("EmployerHires", fields: [employerId], references: [id], onDelete: Cascade)
+  seeker          User            @relation("SeekerHires", fields: [seekerId], references: [id], onDelete: Cascade)
+  jobNeed         JobNeed?        @relation(fields: [jobNeedId], references: [id], onDelete: SetNull)
+  reviews         HireReview[]
+}
+
+model HireReview {
+  id          String   @id @default(cuid())
+  hireId      String
+  reviewerId  String
+  rating      Int      // 1-5
+  comment     String?
+  type        String   // "employer_to_seeker" or "seeker_to_employer"
+  createdAt   DateTime @default(now())
+  hire        Hire     @relation(fields: [hireId], references: [id], onDelete: Cascade)
+  reviewer    User     @relation(fields: [reviewerId], references: [id], onDelete: Cascade)
+
+  @@unique([hireId, reviewerId])
 }
 
 model ActivityEvent {

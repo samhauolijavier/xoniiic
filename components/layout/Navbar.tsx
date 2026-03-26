@@ -184,6 +184,7 @@ export function Navbar() {
   const baseSeekerLinks = [
     { href: '/dashboard', label: 'Dashboard' },
     { href: '/profile/edit', label: 'My Profile' },
+    { href: '/jobs', label: 'Jobs' },
   ]
 
   const showPremiumLinks = monetizationEnabled
@@ -196,12 +197,14 @@ export function Navbar() {
       ? [
           { href: '/employer-dashboard', label: 'Dashboard' },
           { href: '/browse', label: 'Browse Talent' },
+          { href: '/jobs', label: 'Jobs' },
           { href: '/saved', label: 'Saved' },
           { href: '/employer-profile', label: 'Company Profile' },
         ]
       : [
           { href: '/employer-dashboard', label: 'Dashboard' },
           { href: '/browse', label: 'Browse Talent' },
+          { href: '/jobs', label: 'Jobs' },
           { href: '/employer-profile', label: 'Company Profile' },
           { href: '/verified-partner', label: '\u{1F6E1}\uFE0F Partner' },
         ],
@@ -453,6 +456,13 @@ export function Navbar() {
                           Activity
                         </Link>
                         <Link
+                          href="/hires"
+                          onClick={() => setDropdownOpen(false)}
+                          className="block px-4 py-2 text-sm text-brand-muted hover:text-brand-text hover:bg-brand-border transition-all"
+                        >
+                          Hires
+                        </Link>
+                        <Link
                           href="/messages"
                           onClick={() => setDropdownOpen(false)}
                           className="flex items-center justify-between px-4 py-2 text-sm text-brand-muted hover:text-brand-text hover:bg-brand-border transition-all"
@@ -505,6 +515,9 @@ export function Navbar() {
               </>
             ) : (
               <div className="flex items-center gap-2">
+                <Link href="/jobs" className="hidden md:block text-sm text-brand-muted hover:text-brand-text transition-colors px-3 py-1.5">
+                  Jobs
+                </Link>
                 <Link href="/leaderboard" className="hidden md:block text-sm text-brand-muted hover:text-brand-text transition-colors px-3 py-1.5">
                   Leaderboard
                 </Link>
