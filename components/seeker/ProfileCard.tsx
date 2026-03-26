@@ -7,6 +7,7 @@ import { FoundingMemberBadge } from '@/components/ui/FoundingMemberBadge'
 
 interface ProfileCardProps {
   hideMonetization?: boolean
+  hideRate?: boolean
   profile: {
     id: string
     username: string
@@ -40,7 +41,7 @@ interface ProfileCardProps {
   }
 }
 
-export function ProfileCard({ profile, hideMonetization }: ProfileCardProps) {
+export function ProfileCard({ profile, hideMonetization, hideRate }: ProfileCardProps) {
   const topSkills = profile.skills
     .sort((a, b) => b.rating - a.rating)
     .slice(0, 3)
@@ -141,7 +142,9 @@ export function ProfileCard({ profile, hideMonetization }: ProfileCardProps) {
         {/* Footer */}
         <div className="flex items-center justify-between pt-3 border-t border-brand-border mt-auto">
           <div className="flex items-center gap-2">
-            {profile.hourlyRate ? (
+            {hideRate ? (
+              <span className="text-sm text-brand-muted">Rate hidden</span>
+            ) : profile.hourlyRate ? (
               <span className="text-sm font-semibold gradient-text-h">
                 ${profile.hourlyRate}{profile.rateType === 'monthly' ? '/mo' : '/hr'}
               </span>

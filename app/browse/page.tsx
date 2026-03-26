@@ -214,7 +214,7 @@ export default async function BrowsePage({
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
                 {profiles.map((profile) => (
-                  <ProfileCard key={profile.id} profile={profile} hideMonetization={!monetizationOn} />
+                  <ProfileCard key={profile.id} profile={profile} hideMonetization={!monetizationOn} hideRate={sessionUser.role === 'seeker'} />
                 ))}
               </div>
 

@@ -127,6 +127,8 @@ export default async function TalentProfilePage({ params }: { params: { username
   const user = session?.user as { id: string; role: string } | undefined
   const isOwner = user?.id === profile.userId
   const isEmployer = user?.role === 'employer'
+  const isOtherSeeker = user?.role === 'seeker' && !isOwner
+  const hideRate = isOtherSeeker
 
   // Track profile view: record employer visits (not the seeker themselves, not admin)
   try {
@@ -375,9 +377,9 @@ export default async function TalentProfilePage({ params }: { params: { username
             <div className="mt-4 pt-4 border-t border-brand-border grid grid-cols-2 gap-3 text-sm">
               <div className="text-center">
                 <div className="font-bold gradient-text text-lg">
-                  {profile.hourlyRate ? `$${profile.hourlyRate}` : 'TBD'}
+                  {hideRate ? '—' : profile.hourlyRate ? `$${profile.hourlyRate}` : 'TBD'}
                 </div>
-                <div className="text-brand-muted text-xs">{profile.rateType === 'monthly' ? 'per month' : 'per hour'}</div>
+                <div className="text-brand-muted text-xs">{hideRate ? 'Rate hidden' : profile.rateType === 'monthly' ? 'per month' : 'per hour'}</div>
               </div>
               <div className="text-center">
                 <div className="font-bold text-brand-text text-lg">{profile.englishRating}/10</div>
@@ -646,7 +648,7 @@ export default async function TalentProfilePage({ params }: { params: { username
               <div className="bg-brand-border/50 rounded-xl p-4">
                 <div className="text-xs text-brand-muted mb-1">Rate</div>
                 <div className="font-semibold gradient-text">
-                  {profile.hourlyRate ? `$${profile.hourlyRate}${profile.rateType === 'monthly' ? '/mo' : '/hr'}` : 'Negotiable'}
+                  {hideRate ? 'Hidden' : profile.hourlyRate ? `$${profile.hourlyRate}${profile.rateType === 'monthly' ? '/mo' : '/hr'}` : 'Negotiable'}
                 </div>
               </div>
             </div>
