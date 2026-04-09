@@ -6,6 +6,71 @@ import { authOptions } from '@/lib/auth'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ApplyButton } from './ApplyButton'
+import { JsonLd } from '@/components/seo/JsonLd'
+
+export async function generateMetadata({ params }: { params: { id: string } }) {
+  const job = await db.jobNeed.findUnique({
+    where: { id: params.id },
+    include: {
+      employer: {
+        select: {
+          name: true,
+          employerProfile: { select: { companyName: true } },
+        },
+      },
+    },
+  })
+
+  if (!job || job.status !== 'active') return { title: 'Job Not Found' }
+
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://virtualfreaks.co'
+  const canonicalUrl = `${appUrl}/jobs/${params.id}`
+  const companyName = job.employer.employerProfile?.companyName || job.employer.name || 'Company'
+  const title = `${job.title} at ${companyName} | Virtual Freaks`
+
+  const ratePart = job.minRate && job.maxRate
+    ? ` $${job.minRate}-$${job.maxRate}/hr.`
+    : job.minRate
+      ? ` From $${job.minRate}/hr.`
+      : job.maxRate
+        ? ` Up to $${job.maxRate}/hr.`
+        : ''
+
+  let description = job.description
+    ? job.description.slice(0, 140)
+    : `${job.title} — ${job.category} role at ${companyName}.${ratePart}`
+
+  if (description.length > 160) {
+    description = description.slice(0, 157) + '...'
+  }
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title,
+      description,
+      url: canonicalUrl,
+      type: 'website',
+      images: [
+        {
+          url: `${appUrl}/api/og?title=${encodeURIComponent(job.title + ' at ' + companyName)}&description=${encodeURIComponent(description)}`,
+          width: 1200,
+          height: 630,
+          alt: job.title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+    },
+  }
+}
 
 async function getJob(id: string) {
   return withRetry(() =>
@@ -92,8 +157,42 @@ export default async function JobDetailPage({
     job.employer.employerProfile?.companyName || job.employer.name || 'Company'
   const profile = job.employer.employerProfile
 
+  const jobPostingSchema: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "JobPosting",
+    "title": job.title,
+    "description": job.description,
+    "datePosted": job.createdAt.toISOString(),
+    "employmentType": job.availability === 'full-time' ? 'FULL_TIME' : job.availability === 'part-time' ? 'PART_TIME' : 'CONTRACTOR',
+    "jobLocationType": "TELECOMMUTE",
+    "hiringOrganization": {
+      "@type": "Organization",
+      "name": companyName,
+      ...(profile?.logoUrl ? { logo: profile.logoUrl } : {}),
+      ...(profile?.website ? { sameAs: profile.website } : {}),
+    },
+    ...(job.minRate || job.maxRate
+      ? {
+          baseSalary: {
+            "@type": "MonetaryAmount",
+            "currency": "USD",
+            "value": {
+              "@type": "QuantitativeValue",
+              ...(job.minRate ? { minValue: job.minRate } : {}),
+              ...(job.maxRate ? { maxValue: job.maxRate } : {}),
+              "unitText": "HOUR",
+            },
+          },
+        }
+      : {}),
+    ...(skillsList.length > 0 ? { skills: skillsList.join(', ') } : {}),
+    "industry": job.category,
+    "url": `https://virtualfreaks.co/jobs/${job.id}`,
+  }
+
   return (
     <div className="min-h-screen bg-brand-bg">
+      <JsonLd data={jobPostingSchema} />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Back Link */}
         <Link

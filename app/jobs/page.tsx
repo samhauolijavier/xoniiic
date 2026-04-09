@@ -1,4 +1,14 @@
+import type { Metadata } from 'next'
+
 export const dynamic = 'force-dynamic'
+
+export const metadata: Metadata = {
+  title: 'Remote Job Board',
+  description: 'Browse remote job opportunities from employers worldwide. Find freelance and full-time remote positions in development, design, marketing, and more.',
+  alternates: {
+    canonical: 'https://virtualfreaks.co/jobs',
+  },
+}
 
 import { db, withRetry } from '@/lib/db'
 import { excludeDemoAccounts } from '@/lib/constants'

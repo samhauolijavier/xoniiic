@@ -132,6 +132,8 @@ export function Footer() {
                 { href: '/profile/edit', label: 'Edit Profile' },
                 { href: '/dashboard', label: 'Dashboard' },
                 { href: '/leaderboard', label: 'Leaderboard' },
+                { href: '/faq', label: 'FAQ' },
+                { href: '/about', label: 'About' },
               ].map((link) => (
                 <li key={link.href}>
                   <Link href={link.href} className="text-sm text-brand-muted hover:text-brand-text transition-colors">

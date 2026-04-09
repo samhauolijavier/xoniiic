@@ -8,11 +8,15 @@ export default function ForgotPasswordPage() {
   const [loading, setLoading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState('')
+  const [resetUrl, setResetUrl] = useState('')
+  const [googleOnly, setGoogleOnly] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError('')
+    setResetUrl('')
+    setGoogleOnly(false)
 
     try {
       const res = await fetch('/api/auth/forgot-password', {
@@ -28,11 +32,23 @@ export default function ForgotPasswordPage() {
         return
       }
 
+      const data = await res.json()
+
+      if (data.googleOnly) {
+        setGoogleOnly(true)
+        setLoading(false)
+        return
+      }
+
+      if (data.resetUrl) {
+        setResetUrl(data.resetUrl)
+      }
+
       setSubmitted(true)
     } catch {
       setError('Something went wrong. Please try again.')
-      setLoading(false)
     }
+    setLoading(false)
   }
 
   return (
@@ -49,23 +65,68 @@ export default function ForgotPasswordPage() {
           <h1 className="text-2xl font-bold text-brand-text">Reset your password</h1>
           <p className="text-brand-muted mt-1">
             {submitted
-              ? 'Check your inbox'
-              : "Enter your email and we'll send you a reset link"}
+              ? 'Your reset link is ready'
+              : "Enter your email and we'll generate a reset link"}
           </p>
         </div>
 
         <div className="card p-8">
-          {submitted ? (
+          {googleOnly ? (
+            <div className="text-center space-y-4">
+              <div className="w-16 h-16 rounded-full bg-blue-900/30 border border-blue-700/40 flex items-center justify-center mx-auto">
+                <svg className="w-8 h-8 text-blue-400" viewBox="0 0 24 24">
+                  <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                  <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                </svg>
+              </div>
+              <p className="text-brand-text font-medium">Google Account Detected</p>
+              <p className="text-sm text-brand-muted">
+                The account for <span className="text-brand-text">{email}</span> uses Google sign-in.
+                No password reset is needed.
+              </p>
+              <Link
+                href="/login"
+                className="inline-block btn-primary px-6 py-2.5 text-sm"
+              >
+                Sign in with Google
+              </Link>
+            </div>
+          ) : submitted ? (
             <div className="text-center space-y-4">
               <div className="w-16 h-16 rounded-full bg-emerald-900/30 border border-emerald-700/40 flex items-center justify-center mx-auto">
                 <svg className="w-8 h-8 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                 </svg>
               </div>
-              <p className="text-brand-text font-medium">Email sent!</p>
-              <p className="text-sm text-brand-muted">
-                If an account exists for <span className="text-brand-text">{email}</span>, you&apos;ll receive a reset link shortly.
-              </p>
+
+              {resetUrl ? (
+                <>
+                  <p className="text-brand-text font-medium">Reset link generated!</p>
+                  <p className="text-sm text-brand-muted">
+                    Click below to reset your password. This link expires in 1 hour.
+                  </p>
+                  <Link
+                    href={resetUrl}
+                    className="inline-block btn-primary px-6 py-2.5 text-sm"
+                  >
+                    Reset My Password
+                  </Link>
+                  <p className="text-xs text-brand-muted mt-2">
+                    Link not working? Copy this URL:
+                  </p>
+                  <div className="bg-brand-border/30 border border-brand-border rounded-lg p-3 text-xs text-brand-muted break-all select-all">
+                    {resetUrl}
+                  </div>
+                </>
+              ) : (
+                <>
+                  <p className="text-brand-text font-medium">Request received</p>
+                  <p className="text-sm text-brand-muted">
+                    If an account exists for <span className="text-brand-text">{email}</span>, a reset link will be available shortly.
+                  </p>
+                </>
+              )}
+
               <Link
                 href="/login"
                 className="inline-block mt-2 text-sm text-brand-purple hover:text-purple-400 transition-colors"
@@ -102,9 +163,9 @@ export default function ForgotPasswordPage() {
                   className="btn-primary w-full justify-center py-3 text-base"
                 >
                   {loading ? (
-                    <><span className="spinner w-4 h-4" /> Sending...</>
+                    <><span className="spinner w-4 h-4" /> Generating...</>
                   ) : (
-                    'Send Reset Link'
+                    'Get Reset Link'
                   )}
                 </button>
               </form>

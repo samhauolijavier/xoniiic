@@ -7,6 +7,7 @@ import { AnnouncementBanner } from '@/components/layout/AnnouncementBanner'
 import { SessionProvider } from '@/components/providers/SessionProvider'
 import { ActiveTracker } from '@/components/providers/ActiveTracker'
 import { ChatBubble } from '@/components/ui/ChatBubble'
+import { JsonLd } from '@/components/seo/JsonLd'
 import { db } from '@/lib/db'
 
 const syne = Bebas_Neue({
@@ -83,6 +84,35 @@ export default async function RootLayout({
         {faviconUrl && <link rel="icon" href={faviconUrl} />}
       </head>
       <body className="bg-brand-bg text-brand-text min-h-screen font-sans">
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "Virtual Freaks",
+            "url": "https://virtualfreaks.co",
+            "logo": "https://virtualfreaks.co/api/og",
+            "description": "Remote talent marketplace connecting businesses with skilled virtual professionals worldwide.",
+            "sameAs": [],
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "contactType": "customer service",
+              "url": "https://virtualfreaks.co",
+            },
+          }}
+        />
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "Virtual Freaks",
+            "url": "https://virtualfreaks.co",
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": "https://virtualfreaks.co/browse?search={search_term_string}",
+              "query-input": "required name=search_term_string",
+            },
+          }}
+        />
         <SessionProvider>
           <ActiveTracker />
           <div className="flex flex-col min-h-screen">

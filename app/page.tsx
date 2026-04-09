@@ -1,4 +1,16 @@
+import type { Metadata } from 'next'
+
 export const dynamic = "force-dynamic"
+
+export const metadata: Metadata = {
+  title: 'Virtual Freaks — Hire Remote Talent & Virtual Assistants',
+  description: 'Find and hire top remote professionals, virtual assistants, developers, designers, and more. Virtual Freaks is the modern marketplace for remote talent.',
+  keywords: ['hire remote talent', 'virtual assistant', 'freelancer marketplace', 'remote workers', 'hire developers', 'virtual professionals', 'remote jobs', 'hire VA'],
+  alternates: {
+    canonical: 'https://virtualfreaks.co',
+  },
+}
+
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { redirect } from 'next/navigation'

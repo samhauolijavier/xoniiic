@@ -1,0 +1,33 @@
+# Virtual Freaks
+
+> Virtual Freaks is a remote talent marketplace where businesses hire skilled virtual professionals — developers, designers, virtual assistants, marketers, and more. Free for employers. No commissions. No service fees.
+
+## About
+Virtual Freaks (virtualfreaks.co) is a modern alternative to Upwork, Fiverr, and OnlineJobs.ph. Founded to make hiring remote talent simple, transparent, and free for employers.
+
+## Key Features
+- Free for employers — no subscriptions, no commissions, no service fees
+- Verified talent profiles with portfolios, video intros, and skill badges
+- Direct messaging between employers and freelancers
+- Built-in hire tracking and review system
+- Job board for employers to post remote positions
+- Founding member program for early adopters
+- Leaderboard showcasing top talent
+
+## Talent Categories
+Development, Design, Marketing, Virtual Assistance, Content Writing, Video Editing, Data Entry, Customer Support, Project Management, SEO, Social Media Management, Bookkeeping, Sales, and more.
+
+## How It Works
+1. Employers browse talent profiles or post jobs
+2. Connect directly with freelancers — no middleman
+3. Hire and track work through the platform
+4. Leave reviews after completed projects
+
+## Links
+- Homepage: https://virtualfreaks.co
+- Browse Talent: https://virtualfreaks.co/browse
+- Job Board: https://virtualfreaks.co/jobs
+- FAQ: https://virtualfreaks.co/faq
+- About: https://virtualfreaks.co/about
+- Create Employer Account: https://virtualfreaks.co/register?role=employer
+- Create Freelancer Profile: https://virtualfreaks.co/register?role=seeker

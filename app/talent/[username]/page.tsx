@@ -14,6 +14,7 @@ import { SeekerProfileClient } from './SeekerProfileClient'
 import { PremiumBadge } from '@/components/ui/PremiumBadge'
 import { FoundingMemberBadge } from '@/components/ui/FoundingMemberBadge'
 import { createNotification } from '@/lib/notifications'
+import { JsonLd } from '@/components/seo/JsonLd'
 
 async function getProfile(username: string) {
   return db.seekerProfile.findUnique({
@@ -220,10 +221,7 @@ export default async function TalentProfilePage({ params }: { params: { username
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       {/* JSON-LD structured data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
-      />
+      <JsonLd data={personSchema} />
 
       {!isLoggedIn && (
         <div className="mb-6 p-4 rounded-xl bg-brand-purple/10 border border-brand-purple/30 flex flex-col sm:flex-row items-center justify-between gap-4">

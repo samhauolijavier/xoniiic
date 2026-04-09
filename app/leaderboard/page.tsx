@@ -1,4 +1,15 @@
+import type { Metadata } from 'next'
+
 export const dynamic = "force-dynamic"
+
+export const metadata: Metadata = {
+  title: 'Top Remote Talent Leaderboard',
+  description: 'See the top-rated remote professionals on Virtual Freaks. Our leaderboard showcases the most skilled and reviewed talent available for hire.',
+  alternates: {
+    canonical: 'https://virtualfreaks.co/leaderboard',
+  },
+}
+
 import { db } from '@/lib/db'
 import { excludeDemoAccounts } from '@/lib/constants'
 import Image from 'next/image'

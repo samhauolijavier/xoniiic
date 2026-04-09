@@ -1,4 +1,15 @@
+import type { Metadata } from 'next'
+
 export const dynamic = "force-dynamic"
+
+export const metadata: Metadata = {
+  title: 'Browse Remote Talent',
+  description: 'Browse skilled remote professionals available for hire. Filter by skills, experience, and availability. Find your next virtual team member on Virtual Freaks.',
+  alternates: {
+    canonical: 'https://virtualfreaks.co/browse',
+  },
+}
+
 import { Suspense } from 'react'
 import { FilterPanel } from '@/components/employer/FilterPanel'
 import { ProfileCard } from '@/components/seeker/ProfileCard'
