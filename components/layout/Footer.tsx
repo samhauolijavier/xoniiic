@@ -151,10 +151,38 @@ export function Footer() {
           <p className="text-sm text-brand-muted">
             &copy; {new Date().getFullYear()} {copyright}. All rights reserved.
           </p>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 flex-wrap justify-center">
             <Link href="/terms" className="text-xs text-brand-muted hover:text-brand-text transition-colors">Terms of Service</Link>
             <Link href="/privacy" className="text-xs text-brand-muted hover:text-brand-text transition-colors">Privacy Policy</Link>
+            <Link href="/cookie-policy" className="text-xs text-brand-muted hover:text-brand-text transition-colors">Cookie Policy</Link>
           </div>
+        </div>
+
+        {/* CCPA Compliance Links */}
+        <div className="mt-6 flex flex-col sm:flex-row justify-center items-center gap-3 text-center">
+          <button
+            type="button"
+            onClick={() => {
+              if (typeof window !== 'undefined') {
+                (window as Window & { __vfCcpaModal?: (type: string) => void }).__vfCcpaModal?.('sell')
+              }
+            }}
+            className="text-xs text-brand-muted hover:text-brand-text transition-colors underline"
+          >
+            Do Not Sell or Share My Personal Information
+          </button>
+          <span className="text-brand-muted/40 hidden sm:inline">|</span>
+          <button
+            type="button"
+            onClick={() => {
+              if (typeof window !== 'undefined') {
+                (window as Window & { __vfCcpaModal?: (type: string) => void }).__vfCcpaModal?.('sensitive')
+              }
+            }}
+            className="text-xs text-brand-muted hover:text-brand-text transition-colors underline"
+          >
+            Limit the Use of My Sensitive Personal Information
+          </button>
         </div>
       </div>
     </footer>

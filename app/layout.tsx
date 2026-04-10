@@ -7,6 +7,8 @@ import { AnnouncementBanner } from '@/components/layout/AnnouncementBanner'
 import { SessionProvider } from '@/components/providers/SessionProvider'
 import { ActiveTracker } from '@/components/providers/ActiveTracker'
 import { ChatBubble } from '@/components/ui/ChatBubble'
+import { CookieBanner } from '@/components/ui/CookieBanner'
+import { CcpaModal } from '@/components/ui/CcpaModal'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { db } from '@/lib/db'
 
@@ -124,6 +126,8 @@ export default async function RootLayout({
             <Footer />
           </div>
           <ChatBubble />
+          <CookieBanner />
+          <CcpaModal />
         </SessionProvider>
       </body>
     </html>
