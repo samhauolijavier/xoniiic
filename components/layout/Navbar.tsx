@@ -114,7 +114,7 @@ export function Navbar() {
     }
 
     fetchUnread()
-    intervalRef.current = setInterval(fetchUnread, 30000)
+    intervalRef.current = setInterval(fetchUnread, 60000)
 
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current)
