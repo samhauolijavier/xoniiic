@@ -117,7 +117,6 @@ function MessagesContent() {
   const [loading, setLoading] = useState(true)
   const [mobileShowThread, setMobileShowThread] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
-  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   const currentUserId = (session?.user as { id: string } | undefined)?.id
 
@@ -167,20 +166,6 @@ function MessagesContent() {
   useEffect(() => {
     scrollToBottom()
   }, [activeConversation?.messages, scrollToBottom])
-
-  // Poll for new messages every 5 seconds
-  useEffect(() => {
-    if (!selectedConversationId) return
-
-    pollRef.current = setInterval(() => {
-      fetchMessages(selectedConversationId)
-      fetchConversations()
-    }, 5000)
-
-    return () => {
-      if (pollRef.current) clearInterval(pollRef.current)
-    }
-  }, [selectedConversationId, fetchMessages, fetchConversations])
 
   const selectConversation = (convId: string) => {
     router.push(`/messages?conversation=${convId}`, { scroll: false })

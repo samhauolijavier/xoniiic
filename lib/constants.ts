@@ -1,8 +1,3 @@
-// Feature flags — set to true to enable, false to disable
-export const FEATURES = {
-  chat: false, // Toggle to true when ready to re-enable the chat bubble
-}
-
 // Demo/seed account emails to hide from public-facing pages
 export const DEMO_EMAIL_PATTERNS = [
   '@example.com',
