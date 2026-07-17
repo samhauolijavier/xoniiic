@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- REPLACE: brand name + city in title/description for local SEO -->
+<title>CoolBreeze Aircon — Aircon Cleaning & Installation | Same-Week Service</title>
+<meta name="description" content="Professional aircon cleaning, servicing & installation. Before-and-after photos on every job. Same-week service, upfront pricing. Book in 60 seconds.">
+<style>
+  :root{
+    --blue:#0e7ac4; --blue-dark:#0a5a91; --ice:#eaf6fd; --navy:#0d2436;
+    --accent:#ff8a00; --accent-dark:#e07600; --text:#2a3b47; --muted:#5f7484;
+    --white:#fff; --radius:14px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;color:var(--text);line-height:1.6;background:var(--white)}
+  img{max-width:100%;display:block}
+  a{color:var(--blue)}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+  .btn{display:inline-block;padding:15px 28px;border-radius:999px;font-weight:700;font-size:1.05rem;text-decoration:none;text-align:center;cursor:pointer;border:none;transition:transform .1s ease, background .2s}
+  .btn:active{transform:scale(.97)}
+  .btn-accent{background:var(--accent);color:#fff}
+  .btn-accent:hover{background:var(--accent-dark)}
+  .btn-ghost{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.7)}
+  .btn-ghost:hover{border-color:#fff}
+
+  /* Top bar */
+  .topbar{background:var(--navy);color:#fff;font-size:.9rem;padding:8px 0;text-align:center}
+  .topbar a{color:#ffd9a8;font-weight:700;text-decoration:none}
+
+  /* Header */
+  header{background:#fff;border-bottom:1px solid #e6eef4;position:sticky;top:0;z-index:50}
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+  .logo{font-size:1.3rem;font-weight:800;color:var(--navy);text-decoration:none}
+  .logo span{color:var(--blue)}
+  .nav .btn{padding:10px 20px;font-size:.95rem}
+
+  /* Hero */
+  .hero{background:linear-gradient(135deg,var(--navy) 0%,var(--blue-dark) 60%,var(--blue) 100%);color:#fff;padding:56px 0 64px}
+  .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:44px;align-items:center}
+  .badge{display:inline-block;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);padding:6px 14px;border-radius:999px;font-size:.85rem;font-weight:600;margin-bottom:18px}
+  h1{font-size:clamp(1.9rem,4.5vw,2.9rem);line-height:1.15;font-weight:800;margin-bottom:16px}
+  h1 em{font-style:normal;color:#ffc46b}
+  .hero p.sub{font-size:1.12rem;color:#dceafb;margin-bottom:26px;max-width:34rem}
+  .hero-ctas{display:flex;gap:14px;flex-wrap:wrap}
+  .hero-note{margin-top:14px;font-size:.9rem;color:#b9d6ef}
+
+  /* Form card */
+  .form-card{background:#fff;color:var(--text);border-radius:var(--radius);padding:28px;box-shadow:0 20px 50px rgba(0,0,0,.3)}
+  .form-card h3{color:var(--navy);font-size:1.25rem;margin-bottom:4px}
+  .form-card p{font-size:.92rem;color:var(--muted);margin-bottom:16px}
+  .form-card label{display:block;font-size:.85rem;font-weight:600;margin:12px 0 4px}
+  .form-card input,.form-card select{width:100%;padding:12px 14px;border:1.5px solid #d5e2ec;border-radius:9px;font-size:1rem;background:#fbfdfe}
+  .form-card input:focus,.form-card select:focus{outline:none;border-color:var(--blue)}
+  .form-card .btn{width:100%;margin-top:18px}
+  .form-card .privacy{font-size:.78rem;color:var(--muted);margin-top:10px;text-align:center}
+
+  /* Trust strip */
+  .trust{background:var(--ice);padding:22px 0}
+  .trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;text-align:center}
+  .trust-item strong{display:block;color:var(--navy);font-size:1.25rem}
+  .trust-item span{font-size:.88rem;color:var(--muted)}
+
+  /* Sections */
+  section{padding:64px 0}
+  .kicker{text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;font-weight:700;color:var(--blue);margin-bottom:8px}
+  h2{font-size:clamp(1.5rem,3.4vw,2.1rem);color:var(--navy);margin-bottom:12px}
+  .lead{color:var(--muted);max-width:44rem;margin-bottom:36px}
+
+  /* Before / After */
+  .ba-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .ba-card{border-radius:var(--radius);overflow:hidden;border:1px solid #e2ecf3;background:#fff}
+  .ba-imgs{display:grid;grid-template-columns:1fr 1fr}
+  .ba-imgs .ph{aspect-ratio:4/5;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;color:#fff}
+  .ph-before{background:#7a8b98}
+  .ph-after{background:var(--blue)}
+  .ba-card figcaption{padding:14px 16px;font-size:.9rem;color:var(--muted)}
+
+  /* Services */
+  .services{background:var(--ice)}
+  .svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .svc{background:#fff;border-radius:var(--radius);padding:28px;border:1px solid #dfebf3;display:flex;flex-direction:column}
+  .svc .tag{align-self:flex-start;background:var(--ice);color:var(--blue-dark);font-size:.75rem;font-weight:700;padding:4px 10px;border-radius:999px;margin-bottom:12px}
+  .svc.popular{border:2px solid var(--accent);position:relative}
+  .svc.popular .tag{background:#fff1de;color:var(--accent-dark)}
+  .svc h3{color:var(--navy);font-size:1.2rem;margin-bottom:8px}
+  .svc .price{font-size:1.5rem;font-weight:800;color:var(--navy);margin:8px 0 2px}
+  .svc .price small{font-size:.85rem;font-weight:500;color:var(--muted)}
+  .svc ul{list-style:none;margin:14px 0 20px;flex:1}
+  .svc li{padding-left:26px;position:relative;margin-bottom:9px;font-size:.95rem}
+  .svc li::before{content:"✓";position:absolute;left:0;color:var(--blue);font-weight:800}
+  .svc .btn{font-size:.95rem;padding:12px 20px}
+
+  /* Reviews */
+  .rev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .rev{background:#fff;border:1px solid #e2ecf3;border-radius:var(--radius);padding:24px}
+  .stars{color:#ffb400;letter-spacing:2px;margin-bottom:10px}
+  .rev p{font-size:.95rem;margin-bottom:14px}
+  .rev .who{font-weight:700;color:var(--navy);font-size:.9rem}
+  .rev .where{font-size:.8rem;color:var(--muted)}
+
+  /* Steps */
+  .steps{background:var(--navy);color:#fff}
+  .steps h2{color:#fff}
+  .steps .lead{color:#b9d6ef}
+  .step-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+  .step .num{width:44px;height:44px;border-radius:50%;background:var(--accent);color:#fff;font-weight:800;font-size:1.2rem;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+  .step h3{margin-bottom:6px;font-size:1.1rem}
+  .step p{color:#c8dcef;font-size:.95rem}
+
+  /* FAQ */
+  details{border:1px solid #e2ecf3;border-radius:10px;margin-bottom:12px;background:#fff}
+  summary{padding:16px 20px;font-weight:700;color:var(--navy);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center}
+  summary::after{content:"+";font-size:1.3rem;color:var(--blue)}
+  details[open] summary::after{content:"–"}
+  details .a{padding:0 20px 16px;color:var(--muted);font-size:.95rem}
+
+  /* Final CTA */
+  .final{background:linear-gradient(135deg,var(--blue-dark),var(--blue));color:#fff;text-align:center}
+  .final h2{color:#fff}
+  .final p{color:#dceafb;margin-bottom:24px}
+
+  footer{background:var(--navy);color:#93a9ba;font-size:.85rem;padding:28px 0;text-align:center}
+  footer a{color:#c8dcef}
+
+  /* Sticky mobile call bar */
+  .callbar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:100;background:#fff;box-shadow:0 -4px 20px rgba(0,0,0,.15);padding:10px 14px;gap:10px}
+  .callbar a{flex:1;padding:13px 10px;font-size:1rem}
+
+  @media(max-width:820px){
+    .hero-grid,.ba-grid,.svc-grid,.rev-grid,.step-grid{grid-template-columns:1fr}
+    .trust-grid{grid-template-columns:repeat(2,1fr)}
+    .hero{padding:40px 0 48px}
+    .callbar{display:flex}
+    body{padding-bottom:70px}
+    .nav .btn{display:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- REPLACE: phone number everywhere it appears (search for 555-0100) -->
+<div class="topbar">🔥 Summer Special: 2nd unit HALF PRICE — first 20 bookings this month · <a href="tel:+15555550100">Call (555) 555-0100</a></div>
+
+<header>
+  <div class="wrap nav">
+    <!-- REPLACE: your business name / logo -->
+    <a class="logo" href="#">Cool<span>Breeze</span> Aircon</a>
+    <a class="btn btn-accent" href="#book">Book a Cleaning</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="badge">⭐ Rated 4.9/5 by local customers</span> <!-- REPLACE: real rating once you have 10+ reviews -->
+      <h1>Your Aircon, <em>Ice-Cold Again</em> — Cleaned, Serviced or Installed This Week</h1>
+      <p class="sub">Deep cleaning that cuts your power bill and kills the musty smell. Before-and-after photos on every job, upfront pricing, and a 30-day fresh-air guarantee.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-accent" href="#book">Get My Free Quote →</a>
+        <a class="btn btn-ghost" href="tel:+15555550100">📞 (555) 555-0100</a>
+      </div>
+      <p class="hero-note">Serving [Area 1] · [Area 2] · [Area 3] <!-- REPLACE: your service areas --></p>
+    </div>
+
+    <!-- LEAD FORM — wire this to your GoHighLevel form webhook -->
+    <div class="form-card" id="book">
+      <h3>Book in 60 seconds</h3>
+      <p>We reply within 5 minutes during business hours.</p>
+      <!-- REPLACE: set form action to your GHL form/webhook URL, or embed your GHL form here instead -->
+      <form method="POST" action="#REPLACE-WITH-GHL-WEBHOOK">
+        <label for="f-name">Name</label>
+        <input id="f-name" name="name" required placeholder="Juan Dela Cruz">
+        <label for="f-phone">Mobile number</label>
+        <input id="f-phone" name="phone" type="tel" required placeholder="(555) 555-0100">
+        <label for="f-area">Your suburb / area</label>
+        <input id="f-area" name="area" required placeholder="e.g. Northside">
+        <label for="f-service">What do you need?</label>
+        <select id="f-service" name="service" required>
+          <option value="">Choose a service…</option>
+          <option>Aircon deep cleaning</option>
+          <option>Repair / not cooling</option>
+          <option>New installation quote</option>
+          <option>Maintenance plan</option>
+        </select>
+        <button class="btn btn-accent" type="submit">Get My Free Quote</button>
+        <p class="privacy">No spam, ever. We only use this to contact you about your booking.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<div class="trust">
+  <div class="wrap trust-grid">
+    <!-- REPLACE: real numbers -->
+    <div class="trust-item"><strong>1,200+</strong><span>Units cleaned</span></div>
+    <div class="trust-item"><strong>4.9★</strong><span>Google rating</span></div>
+    <div class="trust-item"><strong>Same-week</strong><span>Service guarantee</span></div>
+    <div class="trust-item"><strong>Licensed</strong><span>& fully insured</span></div>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <p class="kicker">Proof, not promises</p>
+    <h2>See What's Hiding Inside Your Aircon</h2>
+    <p class="lead">Every job comes with before-and-after photos. This is what we pull out of units that "seem fine" — and why your air smells musty and your power bill keeps climbing.</p>
+    <div class="ba-grid">
+      <!-- REPLACE: swap .ph divs for real before/after <img> photos -->
+      <figure class="ba-card">
+        <div class="ba-imgs"><div class="ph ph-before">BEFORE</div><div class="ph ph-after">AFTER</div></div>
+        <figcaption>Split unit, 2 years no cleaning — mold on blower wheel removed, airflow doubled.</figcaption>
+      </figure>
+      <figure class="ba-card">
+        <div class="ba-imgs"><div class="ph ph-before">BEFORE</div><div class="ph ph-after">AFTER</div></div>
+        <figcaption>Window unit — clogged coils causing 30% higher power draw. Restored to factory flow.</figcaption>
+      </figure>
+      <figure class="ba-card">
+        <div class="ba-imgs"><div class="ph ph-before">BEFORE</div><div class="ph ph-after">AFTER</div></div>
+        <figcaption>Café ceiling cassette — deep clean after hours, zero business downtime.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="services">
+  <div class="wrap">
+    <p class="kicker">Services & pricing</p>
+    <h2>Simple, Upfront Pricing</h2>
+    <p class="lead">No call-out surprises. The price we quote is the price you pay.</p>
+    <div class="svc-grid">
+      <div class="svc">
+        <span class="tag">Most booked</span>
+        <h3>Deep Cleaning</h3>
+        <!-- REPLACE: your real prices -->
+        <div class="price">$79 <small>/ unit · 2nd unit 50% off</small></div>
+        <ul>
+          <li>Full coil, blower & filter deep wash</li>
+          <li>Anti-mold treatment included</li>
+          <li>Before & after photos</li>
+          <li>30-day fresh-air guarantee</li>
+        </ul>
+        <a class="btn btn-accent" href="#book">Book Deep Clean</a>
+      </div>
+      <div class="svc popular">
+        <span class="tag">⭐ Best value</span>
+        <h3>"Cool Club" Maintenance Plan</h3>
+        <div class="price">$12<small>/mo per unit</small></div>
+        <ul>
+          <li>2 deep cleans per year, auto-scheduled</li>
+          <li>Priority same-day booking</li>
+          <li>10% off all repairs & parts</li>
+          <li>Free seasonal check-ups</li>
+        </ul>
+        <a class="btn btn-accent" href="#book">Join the Club</a>
+      </div>
+      <div class="svc">
+        <span class="tag">High comfort</span>
+        <h3>Installation & Replacement</h3>
+        <div class="price">Free <small>on-site sizing & quote</small></div>
+        <ul>
+          <li>Right-sized unit recommendation (no overselling)</li>
+          <li>Clean, certified installation</li>
+          <li>Old unit disposal included</li>
+          <li>Workmanship warranty</li>
+        </ul>
+        <a class="btn btn-accent" href="#book">Get Install Quote</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="kicker">What customers say</p>
+    <h2>Rated 4.9/5 by Your Neighbors</h2>
+    <div class="rev-grid">
+      <!-- REPLACE: paste 3 real Google reviews (name + suburb) as soon as you have them -->
+      <div class="rev"><div class="stars">★★★★★</div><p>"They showed me the before and after photos — I couldn't believe what was inside. House smells fresh again and the unit cools way faster."</p><div class="who">Maria T.</div><div class="where">[Area 1]</div></div>
+      <div class="rev"><div class="stars">★★★★★</div><p>"Booked in the morning, cleaned by the afternoon. On time, tidy, and the price was exactly what they quoted. Signed up for the maintenance plan."</p><div class="who">Devon R.</div><div class="where">[Area 2]</div></div>
+      <div class="rev"><div class="stars">★★★★★</div><p>"They installed two units for our shop after hours so we never closed. Professional from quote to cleanup."</p><div class="who">Lena S. — Café Owner</div><div class="where">[Area 3]</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="steps">
+  <div class="wrap">
+    <p class="kicker" style="color:#7fc0ef">Dead simple</p>
+    <h2>How It Works</h2>
+    <p class="lead">From "it's blowing warm air" to ice-cold in three steps.</p>
+    <div class="step-grid">
+      <div class="step"><div class="num">1</div><h3>Book in 60 seconds</h3><p>Call, message, or use the form. Send a photo of your unit and get a quote in minutes.</p></div>
+      <div class="step"><div class="num">2</div><h3>We arrive on time</h3><p>Uniformed, licensed tech. We protect your floors and walls, and show you the "before."</p></div>
+      <div class="step"><div class="num">3</div><h3>Ice-cold + proof</h3><p>After photos, a performance check, and your 30-day fresh-air guarantee. Done.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap" style="max-width:760px">
+    <p class="kicker">Questions</p>
+    <h2>Frequently Asked</h2>
+    <details open><summary>How much does aircon cleaning cost?</summary><div class="a">Deep cleaning starts at $79 per unit, with the 2nd unit half price. You'll get an exact quote before we start — the price never changes mid-job. <!-- REPLACE: real price --></div></details>
+    <details><summary>How often should I clean my aircon?</summary><div class="a">Every 6 months for daily-use units. A dirty unit works harder, uses up to 30% more electricity, and blows mold spores into your room. Our Cool Club plan handles the schedule for you.</div></details>
+    <details><summary>How long does a cleaning take?</summary><div class="a">About 45–60 minutes per unit. We cover the area, deep-wash the coils, blower and filters, apply anti-mold treatment, and test performance before we leave.</div></details>
+    <details><summary>Do you service my area?</summary><div class="a">We cover [Area 1], [Area 2], [Area 3] and surrounds. Not sure? Message us your location — if we can't come, we'll refer someone good. <!-- REPLACE: areas --></div></details>
+    <details><summary>What if I'm not happy with the clean?</summary><div class="a">30-day fresh-air guarantee: if the smell returns or cooling doesn't improve, we come back and re-do it free.</div></details>
+  </div>
+</section>
+
+<section class="final">
+  <div class="wrap">
+    <h2>Ready for Ice-Cold, Fresh Air Again?</h2>
+    <p>Same-week service · Upfront pricing · Before-and-after proof on every job</p>
+    <a class="btn btn-accent" href="#book">Book My Cleaning →</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <!-- REPLACE: business name, license #, socials, real links -->
+    <p><strong>CoolBreeze Aircon</strong> · Licensed & Insured · Lic #00000</p>
+    <p><a href="tel:+15555550100">(555) 555-0100</a> · <a href="#">Facebook</a> · <a href="#">Instagram</a> · <a href="#">WhatsApp</a></p>
+    <p>© 2026 CoolBreeze Aircon. All rights reserved.</p>
+  </div>
+</footer>
+
+<!-- Sticky mobile bar: the #1 mobile conversion feature — keep it -->
+<div class="callbar">
+  <a class="btn btn-ghost" style="color:var(--blue);border-color:var(--blue)" href="tel:+15555550100">📞 Call Now</a>
+  <a class="btn btn-accent" href="#book">Book Online</a>
+</div>
+
+</body>
+</html>
