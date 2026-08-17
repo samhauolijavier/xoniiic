@@ -1,0 +1,85 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   Virtual Freaks — Operator
+   ─────────────────────────────────────────────────────────────────────────
+   The old palette was purple → pink → orange on near-black with glow
+   shadows. That exact combination shipped on thousands of sites in 2024 and
+   anyone in this industry reads it as a template in about a second.
+
+   This replaces it with three decisions:
+
+   1. A LIGHT, HIGH-CONTRAST ground. Competitors are all dark SaaS or flat
+      blue. Paper reads as a tool people work in rather than a page they land
+      on, and it photographs better in a YouTube thumbnail.
+
+   2. ONE saturated accent, used sparingly. Not a gradient. A gradient is a
+      decision nobody made; a single colour used with discipline is one
+      somebody did. Ink is for text, accent is for action, and nothing else
+      competes.
+
+   3. MONOSPACE FOR DATA. Rates, counts, IDs, timestamps. It is the cheapest
+      possible signal that a system is behind the page, and it is the detail
+      that separates "considered" from "styled".
+   ───────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Paper, not white. Pure #fff is a blank canvas; this is a surface. */
+  --paper:      #fbfaf8;
+  --surface:    #ffffff;
+  --sunken:     #f4f2ee;
+
+  /* Ink, not black. Near-black at full strength reads harsh on paper. */
+  --ink:        #16150f;
+  --ink-2:      #4a4740;
+  --ink-3:      #85817a;
+
+  --rule:       #e3e0d9;
+  --rule-2:     #cfcbc2;
+
+  /* The one saturated colour. Deep signal green: confident, unusual in this
+     category (everyone else is blue), and it holds up small — on a badge, a
+     button, a favicon, a thumbnail. */
+  --accent:     #0f6b45;
+  --accent-hi:  #14855a;
+  --accent-ink: #ffffff;
+  --accent-wash:#e8f2ed;
+
+  /* States. Muted on purpose: on a marketplace these appear next to real
+     people's names, and a shouting red next to someone's profile is a
+     judgement the design should not be making. */
+  --warn:       #8a5a12;
+  --warn-wash:  #fbf1de;
+  --bad:        #8f2f2a;
+  --bad-wash:   #fbeceb;
+
+  --focus:      #0f6b45;
+
+  /* Depth by rule and inset, never by glow. Glow was the tell. */
+  --lift:       0 1px 2px rgba(22,21,15,.05), 0 1px 1px rgba(22,21,15,.04);
+  --lift-2:     0 2px 8px rgba(22,21,15,.06), 0 1px 2px rgba(22,21,15,.04);
+
+  --r-sm: 4px;
+  --r:    6px;
+  --r-lg: 10px;
+
+  /* One typeface for prose, one for data. Not five weights of Inter. */
+  --sans: ui-sans-serif, -apple-system, "Segoe UI", Inter, system-ui, sans-serif;
+  --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
+}
+
+/* Direction C's contribution: a dark band, used for one section only.
+   Confident rather than decorative — it exists to make the accent sing and
+   to break a long light page, not to be a theme. */
+.band-dark {
+  --paper:   #16150f;
+  --surface: #1e1c15;
+  --sunken:  #24221a;
+  --ink:     #faf8f4;
+  --ink-2:   #b8b3a8;
+  --ink-3:   #85817a;
+  --rule:    #33302a;
+  --rule-2:  #45413a;
+  --accent:  #35c58a;
+  --accent-hi: #4ad79c;
+  --accent-ink: #0d1a13;
+  --accent-wash: #1b2b23;
+}
