@@ -148,7 +148,7 @@ export default function AdminSkillsPage() {
               onClick={() => setFilterCategory(cat)}
               className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
                 filterCategory === cat
-                  ? 'bg-gradient-to-r from-brand-purple to-brand-orange text-white'
+                  ? 'bg-brand-purple text-white'
                   : 'bg-brand-card border border-brand-border text-brand-muted hover:border-brand-purple'
               }`}
             >

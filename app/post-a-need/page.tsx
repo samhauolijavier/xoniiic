@@ -263,7 +263,7 @@ export default function PostANeedPage() {
                   onClick={() => setFormData({ ...formData, availability: avail.value })}
                   className={`flex-1 py-2.5 text-sm font-medium transition-all ${
                     formData.availability === avail.value
-                      ? 'bg-gradient-to-r from-brand-purple to-brand-orange text-white'
+                      ? 'bg-brand-purple text-white'
                       : 'bg-transparent text-brand-muted hover:text-brand-text'
                   }`}
                 >

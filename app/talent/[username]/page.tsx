@@ -250,12 +250,12 @@ export default async function TalentProfilePage({ params }: { params: { username
                   />
                 </div>
               ) : (
-                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-brand-purple to-brand-orange flex items-center justify-center text-white font-black text-2xl mx-auto">
+                <div className="w-24 h-24 rounded-full bg-brand-purple flex items-center justify-center text-white font-black text-2xl mx-auto">
                   {initials}
                 </div>
               )}
               {profile.featured && (
-                <div className="absolute -top-1 -right-1 bg-gradient-to-r from-brand-purple to-brand-orange text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                <div className="absolute -top-1 -right-1 bg-brand-purple text-white text-xs font-bold px-2 py-0.5 rounded-full">
                   ★
                 </div>
               )}
@@ -617,7 +617,7 @@ export default async function TalentProfilePage({ params }: { params: { username
                       </div>
                     )}
                     {!cert.imageUrl && (
-                      <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-brand-purple/30 to-brand-orange/30 border border-brand-border flex items-center justify-center flex-shrink-0">
+                      <div className="w-12 h-12 rounded-lg bg-brand-purple/25 border border-brand-border flex items-center justify-center flex-shrink-0">
                         <svg className="w-6 h-6 text-brand-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
                         </svg>

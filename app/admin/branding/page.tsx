@@ -27,7 +27,7 @@ function SectionHeader({ title, description, icon, open, onToggle }: SectionHead
       onClick={onToggle}
       className="w-full flex items-center gap-4 text-left group"
     >
-      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-purple to-brand-orange flex items-center justify-center text-lg flex-shrink-0">
+      <div className="w-10 h-10 rounded-xl bg-brand-purple flex items-center justify-center text-lg flex-shrink-0">
         {icon}
       </div>
       <div className="flex-1 min-w-0">
@@ -376,7 +376,7 @@ export default function BrandingPage() {
         {bannerEnabled && bannerText && (
           <div className={`mt-3 rounded-lg px-4 py-2 text-sm text-center font-medium ${
             bannerStyle === 'gradient'
-              ? 'bg-gradient-to-r from-brand-purple to-brand-orange text-white'
+              ? 'bg-brand-purple text-white'
               : bannerStyle === 'info'
               ? 'bg-blue-900/40 text-blue-300 border border-blue-700/40'
               : bannerStyle === 'warning'
@@ -518,7 +518,7 @@ export default function BrandingPage() {
                     onClick={() => setFontSize(s.value)}
                     className={`px-4 py-2 rounded-xl text-sm font-semibold border transition-all ${
                       fontSize === s.value
-                        ? 'bg-gradient-to-r from-brand-purple to-brand-orange text-white border-transparent'
+                        ? 'bg-brand-purple text-white border-transparent'
                         : 'bg-brand-card border-brand-border text-brand-muted hover:border-brand-purple hover:text-brand-text'
                     }`}
                   >
@@ -695,7 +695,7 @@ export default function BrandingPage() {
                 <label className="text-sm font-medium text-brand-text block mb-2">Style</label>
                 <div className="flex flex-wrap gap-2">
                   {[
-                    { value: 'gradient', label: 'Gradient', preview: 'bg-gradient-to-r from-brand-purple to-brand-orange text-white' },
+                    { value: 'gradient', label: 'Gradient', preview: 'bg-brand-purple text-white' },
                     { value: 'info', label: 'Info', preview: 'bg-blue-900/40 text-blue-300 border border-blue-700/40' },
                     { value: 'warning', label: 'Warning', preview: 'bg-amber-900/40 text-amber-300 border border-amber-700/40' },
                     { value: 'success', label: 'Success', preview: 'bg-emerald-900/40 text-emerald-300 border border-emerald-700/40' },

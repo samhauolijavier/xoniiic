@@ -68,7 +68,7 @@ function ResetPasswordForm() {
         {/* Logo */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-4">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-purple to-brand-orange flex items-center justify-center text-white font-black">
+            <div className="w-10 h-10 rounded-xl bg-brand-purple flex items-center justify-center text-white font-black">
               VF
             </div>
             <span className="font-black text-2xl gradient-text">Virtual Freaks</span>

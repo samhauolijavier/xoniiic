@@ -28,7 +28,7 @@ export function AnnouncementBanner() {
 
   const styleClasses =
     style === 'gradient'
-      ? 'bg-gradient-to-r from-brand-purple to-brand-orange text-white'
+      ? 'bg-brand-purple text-white'
       : style === 'info'
       ? 'bg-blue-900/60 text-blue-200 border-b border-blue-700/40'
       : style === 'warning'

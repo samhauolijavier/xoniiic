@@ -45,3 +45,51 @@ export async function deleteFile(bucket: string, path: string) {
   if (!supabase) return
   await supabase.storage.from(bucket).remove([path])
 }
+
+/**
+ * For files that are nobody else's business.
+ *
+ * uploadFile above returns a permanent public URL, which is right for an avatar
+ * and wrong for a payment receipt — a GCash screenshot carries a real name, an
+ * amount, and part of a phone number. These go in a private bucket and are read
+ * back only through short-lived signed links, so a URL that leaks out of an
+ * admin screen stops working within the hour.
+ *
+ * Returns the storage PATH, not a URL. Nothing is readable without signing.
+ */
+export async function uploadPrivateFile(
+  bucket: string,
+  path: string,
+  file: Buffer,
+  contentType: string
+): Promise<string | null> {
+  const supabase = getSupabase()
+  if (!supabase) return null
+
+  const { error } = await supabase.storage
+    .from(bucket)
+    .upload(path, file, { contentType, upsert: false })
+
+  if (error) {
+    console.error('Private upload error:', error)
+    return null
+  }
+  return path
+}
+
+const SIGNED_URL_SECONDS = 60 * 60
+
+export async function signedUrlFor(bucket: string, path: string): Promise<string | null> {
+  const supabase = getSupabase()
+  if (!supabase) return null
+
+  const { data, error } = await supabase.storage
+    .from(bucket)
+    .createSignedUrl(path, SIGNED_URL_SECONDS)
+
+  if (error) {
+    console.error('Signed URL error:', error)
+    return null
+  }
+  return data?.signedUrl ?? null
+}

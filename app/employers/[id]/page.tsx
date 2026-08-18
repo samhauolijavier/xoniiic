@@ -71,7 +71,7 @@ export default async function EmployerPublicProfilePage({ params }: { params: { 
         <div className="lg:col-span-1 space-y-5">
           <div className="card p-6 text-center">
             {/* Avatar / Logo */}
-            <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-brand-purple to-brand-orange flex items-center justify-center text-white font-black text-2xl mx-auto mb-4">
+            <div className="w-20 h-20 rounded-2xl bg-brand-purple flex items-center justify-center text-white font-black text-2xl mx-auto mb-4">
               {(employerProfile.companyName || userData.name || 'E')[0].toUpperCase()}
             </div>
 

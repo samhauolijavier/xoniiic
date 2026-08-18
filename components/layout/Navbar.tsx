@@ -384,7 +384,7 @@ export function Navbar() {
                     onClick={() => { setDropdownOpen(!dropdownOpen); setNotifDropdownOpen(false) }}
                     className="flex items-center gap-2 p-1.5 rounded-xl bg-brand-card border border-brand-border hover:border-brand-purple transition-all"
                   >
-                    <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-brand-purple to-brand-orange flex items-center justify-center text-white font-bold text-xs">
+                    <div className="w-7 h-7 rounded-lg bg-brand-purple flex items-center justify-center text-white font-bold text-xs">
                       {user?.name?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase() || 'U'}
                     </div>
                     <svg

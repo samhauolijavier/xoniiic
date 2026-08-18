@@ -9,27 +9,31 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Mirrors the CSS variables in globals.css — see the note there on why
+        // the names still say purple and pink while holding greens.
         brand: {
-          bg: '#0a0a0f',
-          card: '#12121a',
-          border: '#1e1e2e',
-          purple: '#8b2fc9',
-          pink: '#c026d3',
-          orange: '#f97316',
-          text: '#f1f5f9',
-          muted: '#94a3b8',
+          bg: '#fbfaf8',
+          card: '#ffffff',
+          border: '#e3e0d9',
+          purple: '#0f6b45',
+          pink: '#0d5c3b',
+          orange: '#a86a12',
+          text: '#16150f',
+          muted: '#85817a',
         },
       },
       backgroundImage: {
-        'gradient-brand': 'linear-gradient(135deg, #8b2fc9, #c026d3, #f97316)',
-        'gradient-brand-h': 'linear-gradient(to right, #8b2fc9, #f97316)',
-        'gradient-card': 'linear-gradient(135deg, #12121a, #1a1a2e)',
+        'gradient-brand': 'linear-gradient(135deg, #0f6b45, #0d5c3b)',
+        'gradient-brand-h': 'linear-gradient(to right, #0f6b45, #0d5c3b)',
+        'gradient-card': 'linear-gradient(135deg, #ffffff, #fbfaf8)',
       },
+      // Glow belonged to the dark ground. On paper it reads as blur rather
+      // than light, so these become the quiet lifts a light UI actually uses.
       boxShadow: {
-        'glow-purple': '0 0 20px rgba(139, 47, 201, 0.3)',
-        'glow-pink': '0 0 20px rgba(192, 38, 211, 0.3)',
-        'glow-orange': '0 0 20px rgba(249, 115, 22, 0.3)',
-        'card': '0 4px 24px rgba(0, 0, 0, 0.4)',
+        'glow-purple': '0 2px 10px rgba(15, 107, 69, 0.14)',
+        'glow-pink': '0 2px 10px rgba(13, 92, 59, 0.14)',
+        'glow-orange': '0 2px 10px rgba(168, 106, 18, 0.14)',
+        'card': '0 1px 2px rgba(22, 21, 15, 0.04), 0 4px 14px rgba(22, 21, 15, 0.05)',
       },
       animation: {
         'gradient-shift': 'gradientShift 6s ease infinite',
@@ -46,8 +50,8 @@ const config: Config = {
           '50%': { transform: 'translateY(-10px)' },
         },
         pulseGlow: {
-          '0%, 100%': { boxShadow: '0 0 20px rgba(139, 47, 201, 0.3)' },
-          '50%': { boxShadow: '0 0 40px rgba(192, 38, 211, 0.6)' },
+          '0%, 100%': { boxShadow: '0 2px 10px rgba(15, 107, 69, 0.12)' },
+          '50%': { boxShadow: '0 4px 18px rgba(15, 107, 69, 0.24)' },
         },
       },
     },

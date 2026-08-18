@@ -338,7 +338,7 @@ export default function VerifiedPartnerPage() {
             <button
               onClick={handleUpgrade}
               disabled={loading}
-              className="px-10 py-4 rounded-2xl text-lg font-bold bg-gradient-to-r from-brand-purple to-brand-orange text-white hover:opacity-90 transition-all shadow-lg disabled:opacity-60"
+              className="px-10 py-4 rounded-2xl text-lg font-bold bg-brand-purple text-white hover:opacity-90 transition-all shadow-lg disabled:opacity-60"
             >
               {loading ? 'Redirecting to checkout...' : 'Become a Verified Partner — $12.99/mo'}
             </button>
@@ -354,7 +354,7 @@ export default function VerifiedPartnerPage() {
             <div className="flex flex-col items-center gap-3">
               <Link
                 href="/register?role=employer"
-                className="px-10 py-4 rounded-2xl text-lg font-bold bg-gradient-to-r from-brand-purple to-brand-orange text-white hover:opacity-90 transition-all shadow-lg"
+                className="px-10 py-4 rounded-2xl text-lg font-bold bg-brand-purple text-white hover:opacity-90 transition-all shadow-lg"
               >
                 Create Employer Account to Get Started
               </Link>
@@ -451,7 +451,7 @@ export default function VerifiedPartnerPage() {
           <button
             onClick={handleUpgrade}
             disabled={loading}
-            className="px-10 py-4 rounded-2xl text-lg font-bold bg-gradient-to-r from-brand-purple to-brand-orange text-white hover:opacity-90 transition-all shadow-lg disabled:opacity-60"
+            className="px-10 py-4 rounded-2xl text-lg font-bold bg-brand-purple text-white hover:opacity-90 transition-all shadow-lg disabled:opacity-60"
           >
             {loading ? 'Redirecting...' : 'Become a Verified Partner — $12.99/mo'}
           </button>

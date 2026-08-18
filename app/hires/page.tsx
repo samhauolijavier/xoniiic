@@ -109,7 +109,7 @@ export default async function HiresPage() {
               <div key={hire.id} className="card p-5">
                 <div className="flex items-start gap-4">
                   {/* Avatar */}
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-purple to-brand-orange flex items-center justify-center text-white font-bold text-lg flex-shrink-0 overflow-hidden">
+                  <div className="w-12 h-12 rounded-xl bg-brand-purple flex items-center justify-center text-white font-bold text-lg flex-shrink-0 overflow-hidden">
                     {otherAvatar ? (
                       <img src={otherAvatar} alt="" className="w-full h-full object-cover" />
                     ) : (

@@ -2,15 +2,42 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ─────────────────────────────────────────────────────────────────────────
+   Operator palette.
+
+   What was here — purple to pink to orange on near-black, with glow shadows —
+   shipped on thousands of sites in 2024. Anyone in this industry reads that
+   combination as a template in about a second, which is the one thing a
+   launch page cannot afford.
+
+   Three decisions replace it:
+
+   1. A light, high-contrast ground. Every competitor is dark SaaS or flat
+      blue. Paper reads as a tool people work in rather than a page they land
+      on, and it survives a YouTube thumbnail.
+
+   2. ONE saturated colour, used sparingly, never as a gradient. A gradient is
+      a decision nobody made; a single colour used with discipline is one
+      somebody did.
+
+   3. Ink and paper rather than black and white. Pure #000 on #fff is harsh
+      and reads cheap at body sizes.
+
+   The variable NAMES are deliberately unchanged. --brand-purple now holds a
+   green, which is odd to read but touches nothing: renaming it would mean
+   editing several hundred call sites for zero visual difference, and every
+   one of those edits is a chance to break a page. The names are slots, not
+   descriptions.
+   ───────────────────────────────────────────────────────────────────────── */
 :root {
-  --brand-bg: #0a0a0f;
-  --brand-card: #12121a;
-  --brand-border: #1e1e2e;
-  --brand-purple: #8b2fc9;
-  --brand-pink: #c026d3;
-  --brand-orange: #f97316;
-  --brand-text: #f1f5f9;
-  --brand-muted: #94a3b8;
+  --brand-bg: #fbfaf8;      /* paper, not white — a surface rather than a blank canvas */
+  --brand-card: #ffffff;
+  --brand-border: #e3e0d9;
+  --brand-purple: #0f6b45;  /* the one accent: deep signal green */
+  --brand-pink: #0d5c3b;    /* the same green, deeper — for the rare two-stop */
+  --brand-orange: #a86a12;  /* ochre, kept for warnings only */
+  --brand-text: #16150f;    /* ink, not black */
+  --brand-muted: #85817a;
 }
 
 * {
@@ -35,14 +62,14 @@ body {
 
 /* Gradient text utility */
 .gradient-text {
-  background: linear-gradient(135deg, #8b2fc9, #c026d3, #f97316);
+  background: linear-gradient(135deg, var(--brand-purple), var(--brand-pink));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .gradient-text-h {
-  background: linear-gradient(to right, #8b2fc9, #f97316);
+  background: linear-gradient(to right, var(--brand-purple), var(--brand-pink));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -59,7 +86,7 @@ body {
   inset: 0;
   padding: 1px;
   border-radius: inherit;
-  background: linear-gradient(135deg, #8b2fc9, #c026d3, #f97316);
+  background: linear-gradient(135deg, var(--brand-purple), var(--brand-pink));
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
@@ -68,7 +95,7 @@ body {
 
 /* Button styles */
 .btn-primary {
-  background: linear-gradient(135deg, #8b2fc9, #c026d3, #f97316);
+  background: linear-gradient(135deg, var(--brand-purple), var(--brand-pink));
   color: white;
   padding: 0.625rem 1.5rem;
   border-radius: 0.75rem;
@@ -84,7 +111,7 @@ body {
 .btn-primary:hover {
   opacity: 0.9;
   transform: translateY(-1px);
-  box-shadow: 0 8px 30px rgba(139, 47, 201, 0.4);
+  box-shadow: 0 4px 14px rgba(15, 107, 69, 0.18);
 }
 
 .btn-secondary {
@@ -103,7 +130,7 @@ body {
 
 .btn-secondary:hover {
   border-color: var(--brand-purple);
-  background: rgba(139, 47, 201, 0.1);
+  background: rgba(15, 107, 69, 0.07);
 }
 
 /* Card styles */
@@ -192,7 +219,7 @@ select.input-field option {
   position: absolute;
   inset: -2px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #8b2fc9, #f97316);
+  background: linear-gradient(135deg, var(--brand-purple), var(--brand-pink));
   z-index: -1;
 }
 

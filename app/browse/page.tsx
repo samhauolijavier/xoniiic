@@ -210,7 +210,7 @@ export default async function BrowsePage({
                 <Link href="/browse" className="btn-primary">Clear Filters</Link>
               </div>
             ) : (
-              <div className="card p-16 text-center border-brand-purple/30 bg-gradient-to-br from-brand-purple/5 to-brand-orange/5">
+              <div className="card p-16 text-center border-brand-purple/30 bg-brand-purple/[0.04]">
                 <div className="text-5xl mb-4">🚀</div>
                 <h3 className="text-xl font-semibold mb-2">
                   <span className="gradient-text">We&apos;re Just Getting Started!</span>
@@ -250,7 +250,7 @@ export default async function BrowsePage({
                           href={`/browse?${new URLSearchParams({ ...searchParams, page: String(p) })}`}
                           className={`w-10 h-10 sm:w-9 sm:h-9 rounded-lg text-sm font-medium flex items-center justify-center transition-all ${
                             p === page
-                              ? 'bg-gradient-to-r from-brand-purple to-brand-orange text-white'
+                              ? 'bg-brand-purple text-white'
                               : 'bg-brand-card border border-brand-border text-brand-muted hover:border-brand-purple'
                           }`}
                         >

@@ -199,7 +199,7 @@ export default async function Home() {
                           />
                         </div>
                       ) : (
-                        <div className="w-14 h-14 rounded-full bg-gradient-to-br from-brand-purple to-brand-orange flex items-center justify-center text-white font-bold text-lg mx-auto mb-2">
+                        <div className="w-14 h-14 rounded-full bg-brand-purple flex items-center justify-center text-white font-bold text-lg mx-auto mb-2">
                           {initials}
                         </div>
                       )}
@@ -246,7 +246,7 @@ export default async function Home() {
         </section>
       ) : (
         <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="card p-10 text-center border-brand-purple/30 bg-gradient-to-br from-brand-purple/5 to-brand-orange/5">
+          <div className="card p-10 text-center border-brand-purple/30 bg-brand-purple/[0.04]">
             <div className="text-5xl mb-4">🌍</div>
             <h2 className="text-2xl sm:text-3xl font-black text-brand-text mb-3">
               Join <span className="gradient-text">Virtual Freaks</span>
@@ -280,7 +280,7 @@ export default async function Home() {
                 {i < howItWorks.length - 1 && (
                   <div className="hidden md:block absolute top-8 left-3/4 w-1/2 h-px bg-gradient-to-r from-brand-purple/50 to-transparent" />
                 )}
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-purple to-brand-orange flex items-center justify-center text-2xl mx-auto mb-4 shadow-glow-purple">
+                <div className="w-16 h-16 rounded-2xl bg-brand-purple flex items-center justify-center text-2xl mx-auto mb-4 shadow-glow-purple">
                   {step.icon}
                 </div>
                 <div className="text-xs font-bold text-brand-purple mb-2 tracking-widest uppercase">
@@ -317,7 +317,7 @@ export default async function Home() {
         </section>
       ) : (
         <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="card p-10 text-center border-brand-purple/30 bg-gradient-to-br from-brand-purple/5 to-brand-orange/5">
+          <div className="card p-10 text-center border-brand-purple/30 bg-brand-purple/[0.04]">
             <h2 className="text-2xl sm:text-3xl font-black text-brand-text mb-3">
               <span className="gradient-text">Be One of the First!</span>
             </h2>
@@ -333,7 +333,7 @@ export default async function Home() {
 
       {/* CTA Section */}
       <section className="py-20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-brand-purple/10 via-brand-pink/10 to-brand-orange/10" />
+        <div className="absolute inset-0 bg-brand-purple/[0.06]" />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl sm:text-4xl font-black text-brand-text mb-4">
             Ready to hire{' '}
