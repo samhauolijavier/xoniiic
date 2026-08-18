@@ -115,3 +115,11 @@
   .compare-row { grid-template-columns: 1fr; gap: 4px; }
   .arrow { display: none; }
 }
+
+/* Links out. An employer should be able to go and check rather than trust a
+   number we made up — and a beginner with no hires still has somewhere to
+   point. This replaced a "median reply" stat that nobody could honour. */
+.links { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 14px; }
+.lnk { font-size: 12px; color: var(--ink-2); text-decoration: none;
+  border-bottom: 1px solid var(--rule-2); padding-bottom: 1px; }
+.lnk:hover { color: var(--accent); border-color: var(--accent); }

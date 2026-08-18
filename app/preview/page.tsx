@@ -11,17 +11,23 @@ import './preview.css'
 
 const PEOPLE = [
   { name: 'Maricel Bautista', role: 'CRM & Automation', years: 6, rate: 12,
-    place: 'Cebu, PH', tags: ['GoHighLevel', 'Zapier', 'Workflows'], jobs: 41, reply: '2h', verified: true },
+    place: 'Cebu, PH', tags: ['GoHighLevel', 'Zapier', 'Workflows'], jobs: 41,
+    badges: 3, links: ['in', 'f'], verified: true },
   { name: 'Ana Sofía Reyes', role: 'Media Buying', years: 8, rate: 22,
-    place: 'Bogotá, CO', tags: ['Meta Ads', 'Google Ads', 'Reporting'], jobs: 63, reply: '4h', verified: true },
+    place: 'Bogotá, CO', tags: ['Meta Ads', 'Google Ads', 'Reporting'], jobs: 63,
+    badges: 5, links: ['in'], verified: true },
   { name: 'Tomás Herrera', role: 'Full-Stack Development', years: 7, rate: 28,
-    place: 'Buenos Aires, AR', tags: ['React', 'Node', 'Postgres'], jobs: 52, reply: '3h', verified: true },
+    place: 'Buenos Aires, AR', tags: ['React', 'Node', 'Postgres'], jobs: 52,
+    badges: 4, links: ['in', 'gh'], verified: true },
   { name: 'Priya Raghavan', role: 'Bookkeeping', years: 9, rate: 15,
-    place: 'Kochi, IN', tags: ['Xero', 'QuickBooks', 'Month-end'], jobs: 74, reply: '5h', verified: false },
-  { name: 'Jeremy Ocampo', role: 'Support & Inbox Ops', years: 4, rate: 9,
-    place: 'Davao, PH', tags: ['Freshdesk', 'Zendesk', 'Escalations'], jobs: 28, reply: '1h', verified: true },
+    place: 'Kochi, IN', tags: ['Xero', 'QuickBooks', 'Month-end'], jobs: 74,
+    badges: 2, links: ['in'], verified: false },
+  { name: 'Jeremy Ocampo', role: 'Support & Inbox Ops', years: 0, rate: 6,
+    place: 'Davao, PH', tags: ['Freshdesk', 'Zendesk', 'Escalations'], jobs: 0,
+    badges: 4, links: ['f'], verified: true },
   { name: 'Lena Fischer', role: 'Brand & Product Design', years: 5, rate: 24,
-    place: 'Lisbon, PT', tags: ['Figma', 'Design systems', 'Web'], jobs: 39, reply: '2h', verified: true },
+    place: 'Lisbon, PT', tags: ['Figma', 'Design systems', 'Web'], jobs: 39,
+    badges: 3, links: ['in', 'be'], verified: true },
 ]
 
 export default function Preview() {
@@ -52,25 +58,25 @@ export default function Preview() {
           working rather than a promise about it. */}
       <section className="wrap hero">
         <div className="hero-copy">
-          <p className="eyebrow">Operators, not gig workers</p>
+          <p className="eyebrow">Free to join · free to hire · no cut of your rate</p>
           <h1>
-            Hire someone who has
-            <span className="mark-accent"> actually run it before.</span>
+            Nobody hires you without experience.
+            <span className="mark-accent"> Start here.</span>
           </h1>
           <p className="lede">
-            Development, design, media buying, bookkeeping, support, CRM and automation —
-            every profile is someone doing the work now, not looking for their first
-            job. No proposals to sift. No bidding war. You see the history and the
-            rate before you say hello.
+            Anywhere else, no reviews means no work and no work means no reviews.
+            Here you prove what you can do — free scenarios, marked, with a badge that
+            lands on your profile. Ten years in or none. Employers message you
+            directly and take no cut.
           </p>
           <div className="hero-actions">
             <a className="btn lg" href="#">Browse talent</a>
             <a className="btn ghost lg" href="#">Post what you need</a>
           </div>
           <dl className="stats">
-            <div><dt>Operators listed</dt><dd>1,284</dd></div>
-            <div><dt>Median reply</dt><dd>2h</dd></div>
-            <div><dt>Placement fee</dt><dd>0%</dd></div>
+            <div><dt>Cost to hire</dt><dd>Free</dd></div>
+            <div><dt>Our cut of your rate</dt><dd>0%</dd></div>
+            <div><dt>Skill categories</dt><dd>50+</dd></div>
           </dl>
         </div>
 
@@ -106,10 +112,14 @@ export default function Preview() {
           <h2>What Upwork makes you do, and we don’t</h2>
           <div className="compare">
             {[
-              ['Sift 40 proposals', 'See 4 people who fit, with reasons'],
-              ['Pay 10% forever', 'Pay nothing per hire'],
-              ['Guess at real skill', 'Verified work history on the profile'],
-              ['Wait days for replies', 'Median reply under two hours'],
+              // Every row has to be true. "Median reply under two hours" was a
+              // promise made on behalf of people who have not agreed to it and
+              // cannot be held to it — the fastest way to lose the credibility
+              // the channel is being built to earn.
+              ['Pay 10% of everything, forever', 'We take nothing from your rate'],
+              ['No reviews means no work', 'Prove it with a scenario instead'],
+              ['Buy connects to apply', 'Employers message you directly'],
+              ['A profile they own', 'Your links, your socials, your work'],
             ].map(([a, b]) => (
               <div className="compare-row" key={a}>
                 <span className="was">{a}</span>
@@ -156,10 +166,21 @@ export default function Preview() {
 
               <dl className="facts">
                 <div><dt>Rate</dt><dd>${p.rate}<span className="per">/hr</span></dd></div>
-                <div><dt>Experience</dt><dd>{p.years}<span className="per">yrs</span></dd></div>
+                <div><dt>Experience</dt>
+                  <dd>{p.years === 0 ? 'New' : <>{p.years}<span className="per">yrs</span></>}</dd></div>
                 <div><dt>Hires</dt><dd>{p.jobs}</dd></div>
-                <div><dt>Replies in</dt><dd>{p.reply}</dd></div>
+                <div><dt>Badges earned</dt><dd>{p.badges}</dd></div>
               </dl>
+
+              {/* Their own links, shown plainly. Transparency is the product:
+                  an employer should be able to go and look, not take our word. */}
+              <div className="links">
+                {p.links.map((l) => (
+                  <a key={l} className="lnk" href="#">
+                    {{ in: 'LinkedIn', f: 'Facebook', gh: 'GitHub', be: 'Behance' }[l]} ↗
+                  </a>
+                ))}
+              </div>
 
               <div className="card-foot">
                 <a className="btn sm" href="#">View profile</a>
