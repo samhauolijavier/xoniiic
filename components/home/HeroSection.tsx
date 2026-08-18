@@ -51,7 +51,11 @@ export function HeroSection() {
         if (data.heroStat3Value) {
           next.push({ value: data.heroStat3Value, label: data.heroStat3Label || 'Skill Categories' })
         } else if (skills >= 5) {
-          next.push({ value: `${skills}`, label: 'Skill Categories' })
+          // Skills, not categories. There are six categories and fifty-five
+          // skills inside them; the old copy called the larger number
+          // "Skill Categories", which was wrong in a way anyone counting the
+          // six tiles below it would notice.
+          next.push({ value: `${skills}`, label: 'Skills Listed' })
         } else {
           next.push({ value: '0%', label: 'Commission Taken' })
         }
