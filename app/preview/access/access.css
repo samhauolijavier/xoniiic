@@ -52,3 +52,5 @@
   .two-up { grid-template-columns: 1fr; }
   .desk-head { flex-direction: column; align-items: flex-start; gap: 18px; }
 }
+/* Already handled. Present so a VA can see it working, not so they act on it. */
+.claim.done { background: var(--paper); box-shadow: none; }

@@ -50,6 +50,8 @@ model User {
   gcashPayments            GcashPayment[]
   sponsorshipsGiven        Sponsorship[]             @relation("SponsorshipsGiven")
   referralsMade            Referral[]                @relation("ReferralsMade")
+  scenarioAttempts         ScenarioAttempt[]
+  referralCode             String?                   @unique
 }
 
 model SeekerProfile {
@@ -440,11 +442,17 @@ model ActivityEvent {
 //   paid       — 100 pesos by GCash, buys 30 days. One-time, not a
 //                subscription: most people here have no card, and a
 //                subscription mandate is a barrier before it is a payment.
-//   earned     — three scenarios completed, 30 days granted. Costs a slot and
-//                nothing else, and selects for exactly the people worth having.
-//   sponsored  — an employer funds seats. A better reason to upgrade than a
-//                badge, and it points motivated learners at the person paying.
-//   referred   — bring two, get a month.
+//   earned     — three scenarios finished and their quizzes passed, which buys
+//                another 30 days. NOT free entry: everyone pays to start, and
+//                the extension is earned by doing the work we want them doing
+//                anyway. It is also the only route that verifies itself.
+//   sponsored  — somebody funds a seat for somebody else. An employer, or a
+//                friend, or anyone with the means. Not gated to employers:
+//                Spencer's point was that the person paying and the person
+//                learning need not know each other.
+//   referred   — two people join on your link, you get a month. The link only
+//                exists once you have paid for a seat yourself, so it cannot
+//                be farmed by people who never turned up.
 //
 // Every grant is a fixed window with an end date. Nothing renews by itself,
 // so nobody is ever charged for a month they forgot about — which matters
@@ -520,14 +528,38 @@ model Sponsorship {
   @@index([sponsorId])
 }
 
-// Bring two, get a month. Counted on the referrer, spent when it reaches two.
+// Bring two, get a month.
+//
+// The code lives on the user and is only issued once they have paid for a
+// seat, so a link cannot be handed out by someone who never joined. A referral
+// only counts when the invited person's own seat is granted — an account that
+// signs up and never pays is not a referral, it is a name.
 model Referral {
   id         String   @id @default(cuid())
   referrerId String
   invitedId  String   @unique
-  rewarded   Boolean  @default(false)
+  qualified  Boolean  @default(false) // the invited person got a seat
+  rewarded   Boolean  @default(false) // the referrer has been paid out
   createdAt  DateTime @default(now())
   referrer   User     @relation("ReferralsMade", fields: [referrerId], references: [id], onDelete: Cascade)
 
-  @@index([referrerId, rewarded])
+  @@index([referrerId, qualified, rewarded])
+}
+
+// Three scenarios, marked, buying the next thirty days.
+//
+// Auto-graded, which is the point: it is the only one of the four routes that
+// needs nobody to check anything, and it scales past the volume a VA could.
+model ScenarioAttempt {
+  id          String   @id @default(cuid())
+  userId      String
+  scenarioKey String // which scenario, e.g. "media-buying-01"
+  score       Int // percent
+  passed      Boolean
+  answers     Json? // kept so a disputed mark can be looked at
+  submittedAt DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, scenarioKey])
+  @@index([userId, passed])
 }

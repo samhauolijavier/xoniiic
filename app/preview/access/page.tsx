@@ -23,9 +23,11 @@ const CLAIMS = [
     proof: false, email: 'kvillanueva@gmail.com', track: 'Support & Inbox', repeat: false },
 ]
 
-const EARNED = [
-  { name: 'Alvin Mercado', done: 3, track: 'Media Buying', when: 'today' },
-  { name: 'Grace Bonifacio', done: 3, track: 'Bookkeeping', when: 'yesterday' },
+// Auto-marked, so these are already granted by the time anyone opens this
+// screen. Shown so a VA can see it happening, not so they can approve it.
+const EXTENDED = [
+  { name: 'Alvin Mercado', scores: [92, 88, 100], track: 'Media Buying', when: '12m ago' },
+  { name: 'Grace Bonifacio', scores: [76, 84, 90], track: 'Bookkeeping', when: 'yesterday' },
 ]
 
 const LAPSING = [
@@ -53,6 +55,7 @@ export default function AccessDesk() {
         <dl className="stats">
           <div><dt>Seats in use</dt><dd>38<span className="per">/50</span></dd></div>
           <div><dt>Waiting on you</dt><dd>3</dd></div>
+          <div><dt>Referral links live</dt><dd>112</dd></div>
           <div><dt>Lapsing this week</dt><dd>3</dd></div>
         </dl>
       </section>
@@ -95,22 +98,30 @@ export default function AccessDesk() {
         ))}
       </section>
 
-      {/* Earned — no money involved, so it should be the easiest thing here. */}
+      {/* Extensions — already granted. The quizzes mark themselves, which is
+          the whole reason this route can scale past what a VA could check. */}
       <section className="wrap block">
         <div className="block-head">
-          <h2>Earned a seat</h2>
-          <span className="hint">Three scenarios marked and passed. Nothing to verify — just let them in.</span>
+          <h2>Earned another 30 days</h2>
+          <span className="hint">Three scenarios passed. Marked automatically and already granted — nothing to do.</span>
         </div>
-        {EARNED.map((e) => (
-          <article key={e.name} className="claim slim">
+        {EXTENDED.map((e) => (
+          <article key={e.name} className="claim slim done">
             <div className="claim-who">
               <div className="avatar" aria-hidden>{e.name.split(' ').map((w) => w[0]).join('')}</div>
               <div>
-                <div className="row-top"><strong>{e.name}</strong><span className="chip good">{e.done}/3 passed</span></div>
-                <div className="row-sub">{e.track} · finished {e.when}</div>
+                <div className="row-top">
+                  <strong>{e.name}</strong>
+                  <span className="chip good">+30 days</span>
+                </div>
+                <div className="row-sub">
+                  {e.track} · scored {e.scores.join(', ')} · {e.when}
+                </div>
               </div>
             </div>
-            <div className="claim-acts"><a className="btn sm" href="#">Grant · 30 days</a></div>
+            <div className="claim-acts">
+              <a className="btn ghost sm" href="#">See answers</a>
+            </div>
           </article>
         ))}
       </section>
@@ -134,27 +145,32 @@ export default function AccessDesk() {
         </div>
 
         <div className="block">
-          <div className="block-head"><h2>Sponsored seats</h2></div>
+          <div className="block-head"><h2>Seats someone else paid for</h2></div>
           <div className="sponsor">
-            <div className="row-top"><strong>Northwind Agency</strong><span className="chip">Pro employer</span></div>
+            <div className="row-top"><strong>Northwind Agency</strong><span className="chip">Agency</span></div>
             <div className="bar"><i style={{ width: '60%' }} /></div>
-            <div className="row-sub">6 of 10 seats used · “anyone on the bookkeeping track”</div>
+            <div className="row-sub">6 of 10 used · “anyone on the bookkeeping track”</div>
           </div>
           <div className="sponsor">
-            <div className="row-top"><strong>Kalayaan Digital</strong><span className="chip">Pro employer</span></div>
+            <div className="row-top"><strong>Ramon Cruz</strong><span className="chip">Individual</span></div>
+            <div className="bar"><i style={{ width: '50%' }} /></div>
+            <div className="row-sub">1 of 2 used · for a named friend</div>
+          </div>
+          <div className="sponsor">
+            <div className="row-top"><strong>Anonymous</strong><span className="chip">Individual</span></div>
             <div className="bar"><i style={{ width: '100%' }} /></div>
-            <div className="row-sub">5 of 5 used · ask if they want to renew</div>
+            <div className="row-sub">3 of 3 used · “whoever needs it”</div>
           </div>
           <p className="hint pad">
-            An employer funding seats gets first sight of motivated people. That is a better
-            reason to upgrade than a verified badge.
+            Anyone can fund a seat — an agency buying ten, or one person covering a friend.
+            The sponsor never has to know who ends up in it, and can stay unnamed.
           </p>
         </div>
       </section>
 
       <footer className="wrap foot">
         <span>Seat desk</span>
-        <span className="muted">Four ways in — paid, earned, sponsored, referred. Paying is one of them, not the one.</span>
+        <span className="muted">Everyone pays to start. Extra time is earned, referred, or given by someone else.</span>
       </footer>
     </div>
   )
