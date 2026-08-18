@@ -14,11 +14,11 @@ export function HeroSection() {
   const [heroSubtitle, setHeroSubtitle] = useState('Browse skilled freelancers in development, design, marketing, and more. Connect directly. No fees. No middlemen. Just talent.')
   const [heroCta1, setHeroCta1] = useState('Browse Talent Free')
   const [heroCta2, setHeroCta2] = useState('Post Your Profile')
-  const [stats, setStats] = useState([
-    { value: '500+', label: 'Skilled Freelancers' },
-    { value: 'Free', label: 'For Employers' },
-    { value: '50+', label: 'Skill Categories' },
-  ])
+  // Starts blank rather than with a claim. The old defaults said 500+
+  // freelancers and 50+ categories no matter what was actually in the
+  // database, and a launch page aimed at people who will go and look
+  // immediately cannot afford a number that fails the first check.
+  const [stats, setStats] = useState<{ value: string; label: string }[]>([])
 
   useEffect(() => {
     fetch('/api/site-settings')
@@ -29,13 +29,34 @@ export function HeroSection() {
         if (data.heroSubtitle) setHeroSubtitle(data.heroSubtitle)
         if (data.heroCta1) setHeroCta1(data.heroCta1)
         if (data.heroCta2) setHeroCta2(data.heroCta2)
-        if (data.heroStat1Value || data.heroStat1Label || data.heroStat2Value || data.heroStat2Label || data.heroStat3Value || data.heroStat3Label) {
-          setStats([
-            { value: data.heroStat1Value || '500+', label: data.heroStat1Label || 'Skilled Freelancers' },
-            { value: data.heroStat2Value || 'Free', label: data.heroStat2Label || 'For Employers' },
-            { value: data.heroStat3Value || '50+', label: data.heroStat3Label || 'Skill Categories' },
-          ])
+        // Real counts unless an admin has set a value by hand. A count is
+        // only worth showing once it is worth showing — under ten people on
+        // the site, the honest move is to say nothing and let the two claims
+        // that are always true carry the row.
+        const seekers = Number(data._seekerCount ?? 0)
+        const skills = Number(data._skillCount ?? 0)
+        const next: { value: string; label: string }[] = []
+
+        if (data.heroStat1Value) {
+          next.push({ value: data.heroStat1Value, label: data.heroStat1Label || 'Skilled Freelancers' })
+        } else if (seekers >= 10) {
+          next.push({ value: `${seekers}`, label: seekers === 1 ? 'Profile' : 'Profiles' })
         }
+
+        next.push({
+          value: data.heroStat2Value || 'Free',
+          label: data.heroStat2Label || 'For Employers',
+        })
+
+        if (data.heroStat3Value) {
+          next.push({ value: data.heroStat3Value, label: data.heroStat3Label || 'Skill Categories' })
+        } else if (skills >= 5) {
+          next.push({ value: `${skills}`, label: 'Skill Categories' })
+        } else {
+          next.push({ value: '0%', label: 'Commission Taken' })
+        }
+
+        setStats(next)
       })
       .catch(() => {})
   }, [])

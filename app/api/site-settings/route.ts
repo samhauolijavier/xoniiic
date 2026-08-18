@@ -22,6 +22,19 @@ export async function GET() {
       if (s.key.startsWith(PRIVATE_PREFIX)) return
       map[s.key] = s.value
     })
+
+    // Real counts, so the homepage does not have to invent any. An admin
+    // override still wins — this only replaces the hardcoded defaults, which
+    // claimed 500 freelancers and 50 categories regardless of the truth. On a
+    // launch page aimed at people who will immediately go and look, a number
+    // that cannot survive being checked costs more than no number at all.
+    const [seekers, skills] = await Promise.all([
+      db.seekerProfile.count(),
+      db.skill.count(),
+    ])
+    map._seekerCount = String(seekers)
+    map._skillCount = String(skills)
+
     return NextResponse.json(map)
   } catch {
     return NextResponse.json({})
