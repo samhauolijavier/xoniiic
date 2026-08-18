@@ -10,42 +10,46 @@ datasource db {
 }
 
 model User {
-  id                   String           @id @default(cuid())
-  name                 String?
-  email                String           @unique
-  password             String?
-  role                 String           @default("seeker")
-  active               Boolean          @default(true)
-  emailVerified        Boolean          @default(false)
-  verificationToken    String?          @unique
-  verificationTokenExpiry DateTime?
-  premium              Boolean          @default(false)
-  premiumSince         DateTime?
-  premiumUntil         DateTime?
-  stripeCustomerId     String?
+  id                       String                    @id @default(cuid())
+  name                     String?
+  email                    String                    @unique
+  password                 String?
+  role                     String                    @default("seeker")
+  active                   Boolean                   @default(true)
+  emailVerified            Boolean                   @default(false)
+  verificationToken        String?                   @unique
+  verificationTokenExpiry  DateTime?
+  premium                  Boolean                   @default(false)
+  premiumSince             DateTime?
+  premiumUntil             DateTime?
+  stripeCustomerId         String?
   stripeSubscriptionId     String?
-  notificationPreferences  String?          // JSON string for notification preferences
-  createdAt                DateTime         @default(now())
-  updatedAt            DateTime         @updatedAt
-  seekerProfile        SeekerProfile?
-  employerProfile      EmployerProfile?
-  savedProfiles        SavedProfile[]
-  contactsSent         ContactRequest[]
-  jobNeeds             JobNeed[]
-  needInterests        NeedInterest[]
-  reviewsGiven         Review[]         @relation("GivenReviews")
-  reportsGiven         Report[]         @relation("GivenReports")
-  notifications        Notification[]
-  reportResponses      ReportResponse[]
-  profileViewsMade     ProfileView[]    @relation("ProfileViewer")
-  savedSearches        SavedSearch[]
+  notificationPreferences  String? // JSON string for notification preferences
+  createdAt                DateTime                  @default(now())
+  updatedAt                DateTime                  @updatedAt
+  seekerProfile            SeekerProfile?
+  employerProfile          EmployerProfile?
+  savedProfiles            SavedProfile[]
+  contactsSent             ContactRequest[]
+  jobNeeds                 JobNeed[]
+  needInterests            NeedInterest[]
+  reviewsGiven             Review[]                  @relation("GivenReviews")
+  reportsGiven             Report[]                  @relation("GivenReports")
+  notifications            Notification[]
+  reportResponses          ReportResponse[]
+  profileViewsMade         ProfileView[]             @relation("ProfileViewer")
+  savedSearches            SavedSearch[]
   conversationParticipants ConversationParticipant[]
   sentMessages             Message[]
-  foundingMemberNumber     Int?             @unique  // null = not a founding member, 1-250 = their number
-  activityEvents           ActivityEvent[] @relation("activityActor")
-  hiresAsEmployer          Hire[]          @relation("EmployerHires")
-  hiresAsSeeker            Hire[]          @relation("SeekerHires")
+  foundingMemberNumber     Int?                      @unique // null = not a founding member, 1-250 = their number
+  activityEvents           ActivityEvent[]           @relation("activityActor")
+  hiresAsEmployer          Hire[]                    @relation("EmployerHires")
+  hiresAsSeeker            Hire[]                    @relation("SeekerHires")
   hireReviews              HireReview[]
+  sandboxAccess            SandboxAccess[]
+  gcashPayments            GcashPayment[]
+  sponsorshipsGiven        Sponsorship[]             @relation("SponsorshipsGiven")
+  referralsMade            Referral[]                @relation("ReferralsMade")
 }
 
 model SeekerProfile {
@@ -115,6 +119,7 @@ model SeekerSkill {
   yearsExp  Float?
   profile   SeekerProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
   skill     Skill         @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
   @@unique([profileId, skillId])
 }
 
@@ -125,6 +130,7 @@ model SavedProfile {
   createdAt  DateTime      @default(now())
   employer   User          @relation(fields: [employerId], references: [id], onDelete: Cascade)
   profile    SeekerProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
   @@unique([employerId, profileId])
 }
 
@@ -222,6 +228,7 @@ model NeedInterest {
   createdAt DateTime @default(now())
   need      JobNeed  @relation(fields: [needId], references: [id], onDelete: Cascade)
   seeker    User     @relation(fields: [seekerId], references: [id], onDelete: Cascade)
+
   @@unique([needId, seekerId])
 }
 
@@ -242,32 +249,32 @@ model PasswordResetToken {
 }
 
 model EmployerProfile {
-  id              String    @id @default(cuid())
-  userId          String    @unique
-  companyName     String?
-  website         String?
-  linkedIn        String?
-  description     String?
-  logoUrl         String?
-  verified        Boolean   @default(false)
-  verifiedAt      DateTime?
-  newEmployer     Boolean   @default(true)
+  id               String    @id @default(cuid())
+  userId           String    @unique
+  companyName      String?
+  website          String?
+  linkedIn         String?
+  description      String?
+  logoUrl          String?
+  verified         Boolean   @default(false)
+  verifiedAt       DateTime?
+  newEmployer      Boolean   @default(true)
   // Verification tier: "partner" = self-serve $12.99, "vf_verified" = admin-awarded after consultation
   verificationTier String?
   // Partner-only fields
-  industry        String?
-  companySize     String?
-  location        String?
-  foundedYear     Int?
-  techStack       String?
-  benefits        String?
+  industry         String?
+  companySize      String?
+  location         String?
+  foundedYear      Int?
+  techStack        String?
+  benefits         String?
   cultureStatement String?
-  videoIntroUrl   String?
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
-  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  reviewsReceived Review[]  @relation("EmployerReviews")
-  reports         Report[]  @relation("ReportedEmployer")
+  videoIntroUrl    String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reviewsReceived  Review[]  @relation("EmployerReviews")
+  reports          Report[]  @relation("ReportedEmployer")
 }
 
 model Review {
@@ -282,6 +289,7 @@ model Review {
   reviewerUser      User             @relation("GivenReviews", fields: [reviewerUserId], references: [id], onDelete: Cascade)
   seekerProfile     SeekerProfile?   @relation(fields: [seekerProfileId], references: [id], onDelete: Cascade)
   employerProfile   EmployerProfile? @relation("EmployerReviews", fields: [employerProfileId], references: [id], onDelete: Cascade)
+
   @@unique([reviewerUserId, seekerProfileId])
   @@unique([reviewerUserId, employerProfileId])
 }
@@ -380,35 +388,35 @@ model Message {
 }
 
 model Hire {
-  id              String          @id @default(cuid())
-  employerId      String
-  seekerId        String
-  jobNeedId       String?
-  status          String          @default("active") // active, completed, cancelled
-  title           String
-  startDate       DateTime        @default(now())
-  endDate         DateTime?
-  rateAgreed      Float?
-  rateType        String?         // hourly, monthly, fixed
-  notes           String?
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
-  employer        User            @relation("EmployerHires", fields: [employerId], references: [id], onDelete: Cascade)
-  seeker          User            @relation("SeekerHires", fields: [seekerId], references: [id], onDelete: Cascade)
-  jobNeed         JobNeed?        @relation(fields: [jobNeedId], references: [id], onDelete: SetNull)
-  reviews         HireReview[]
+  id         String       @id @default(cuid())
+  employerId String
+  seekerId   String
+  jobNeedId  String?
+  status     String       @default("active") // active, completed, cancelled
+  title      String
+  startDate  DateTime     @default(now())
+  endDate    DateTime?
+  rateAgreed Float?
+  rateType   String? // hourly, monthly, fixed
+  notes      String?
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  employer   User         @relation("EmployerHires", fields: [employerId], references: [id], onDelete: Cascade)
+  seeker     User         @relation("SeekerHires", fields: [seekerId], references: [id], onDelete: Cascade)
+  jobNeed    JobNeed?     @relation(fields: [jobNeedId], references: [id], onDelete: SetNull)
+  reviews    HireReview[]
 }
 
 model HireReview {
-  id          String   @id @default(cuid())
-  hireId      String
-  reviewerId  String
-  rating      Int      // 1-5
-  comment     String?
-  type        String   // "employer_to_seeker" or "seeker_to_employer"
-  createdAt   DateTime @default(now())
-  hire        Hire     @relation(fields: [hireId], references: [id], onDelete: Cascade)
-  reviewer    User     @relation(fields: [reviewerId], references: [id], onDelete: Cascade)
+  id         String   @id @default(cuid())
+  hireId     String
+  reviewerId String
+  rating     Int // 1-5
+  comment    String?
+  type       String // "employer_to_seeker" or "seeker_to_employer"
+  createdAt  DateTime @default(now())
+  hire       Hire     @relation(fields: [hireId], references: [id], onDelete: Cascade)
+  reviewer   User     @relation(fields: [reviewerId], references: [id], onDelete: Cascade)
 
   @@unique([hireId, reviewerId])
 }
@@ -421,4 +429,105 @@ model ActivityEvent {
   metadata  String?
   isPublic  Boolean  @default(true)
   createdAt DateTime @default(now())
+}
+
+// ── Sandbox access ─────────────────────────────────────────────────────────
+//
+// Four ways in, deliberately. Spencer: "I don't want to be the gatekeeper."
+// Someone earning 8,000 pesos a month should not be locked out of the thing
+// that gets them hired, so paying is one route of four rather than the route.
+//
+//   paid       — 100 pesos by GCash, buys 30 days. One-time, not a
+//                subscription: most people here have no card, and a
+//                subscription mandate is a barrier before it is a payment.
+//   earned     — three scenarios completed, 30 days granted. Costs a slot and
+//                nothing else, and selects for exactly the people worth having.
+//   sponsored  — an employer funds seats. A better reason to upgrade than a
+//                badge, and it points motivated learners at the person paying.
+//   referred   — bring two, get a month.
+//
+// Every grant is a fixed window with an end date. Nothing renews by itself,
+// so nobody is ever charged for a month they forgot about — which matters
+// more at this price point than it would at any other.
+
+enum AccessSource {
+  paid
+  earned
+  sponsored
+  referred
+  comped
+}
+
+enum PaymentState {
+  awaiting_proof
+  awaiting_check
+  verified
+  rejected
+}
+
+model SandboxAccess {
+  id         String        @id @default(cuid())
+  userId     String
+  source     AccessSource
+  startsAt   DateTime      @default(now())
+  expiresAt  DateTime
+  subAccount String? // which GHL sub-account they were put in
+  note       String?
+  grantedBy  String? // the VA or admin who approved it
+  createdAt  DateTime      @default(now())
+  user       User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  payment    GcashPayment?
+
+  @@index([userId, expiresAt])
+  @@index([expiresAt])
+}
+
+// A claimed GCash transfer, waiting for a human to confirm it arrived.
+//
+// Deliberately manual. Automating reconciliation against GCash needs a
+// business account Spencer does not have yet, and a VA checking a reference
+// number against the app takes about fifteen seconds. The queue is the
+// product until volume says otherwise.
+model GcashPayment {
+  id           String         @id @default(cuid())
+  userId       String
+  reference    String // the GCash reference number they typed in
+  amount       Int            @default(100)
+  proofUrl     String? // screenshot, in Supabase storage
+  state        PaymentState   @default(awaiting_proof)
+  checkedBy    String?
+  checkedAt    DateTime?
+  rejectReason String?
+  createdAt    DateTime       @default(now())
+  accessId     String?        @unique
+  access       SandboxAccess? @relation(fields: [accessId], references: [id])
+  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([reference])
+  @@index([state, createdAt])
+}
+
+// An employer buying seats for people they have never met.
+model Sponsorship {
+  id        String   @id @default(cuid())
+  sponsorId String // the employer's User id
+  seats     Int
+  seatsUsed Int      @default(0)
+  note      String? // "for anyone doing the bookkeeping track"
+  createdAt DateTime @default(now())
+  sponsor   User     @relation("SponsorshipsGiven", fields: [sponsorId], references: [id], onDelete: Cascade)
+
+  @@index([sponsorId])
+}
+
+// Bring two, get a month. Counted on the referrer, spent when it reaches two.
+model Referral {
+  id         String   @id @default(cuid())
+  referrerId String
+  invitedId  String   @unique
+  rewarded   Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  referrer   User     @relation("ReferralsMade", fields: [referrerId], references: [id], onDelete: Cascade)
+
+  @@index([referrerId, rewarded])
 }
