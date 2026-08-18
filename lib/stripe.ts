@@ -1,7 +1,28 @@
 import Stripe from 'stripe'
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2026-02-25.clover' as const,
+let client: Stripe | null = null
+
+function stripeClient(): Stripe {
+  if (!client) {
+    const key = process.env.STRIPE_SECRET_KEY
+    if (!key) {
+      throw new Error('STRIPE_SECRET_KEY is not set — this route needs Stripe configured.')
+    }
+    client = new Stripe(key, { apiVersion: '2026-02-25.clover' as const })
+  }
+  return client
+}
+
+/**
+ * Built on first use, not on import. Constructing at module scope meant a
+ * missing or rotated key took down the build for the entire site — including
+ * every page that has nothing to do with payments. Now only a route that
+ * actually reaches for Stripe can fail, and it fails with a readable message.
+ */
+export const stripe = new Proxy({} as Stripe, {
+  get(_target, prop, receiver) {
+    return Reflect.get(stripeClient(), prop, receiver)
+  },
 })
 
 // Seeker Premium

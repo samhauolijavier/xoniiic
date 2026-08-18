@@ -48,7 +48,7 @@ export default function OnboardingPage() {
         {/* Logo */}
         <div className="text-center mb-10">
           <Link href="/" className="inline-flex items-center gap-2 mb-4">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-purple to-brand-orange flex items-center justify-center text-white font-black">
+            <div className="w-10 h-10 rounded-xl bg-brand-purple flex items-center justify-center text-white font-black">
               VF
             </div>
             <span className="font-black text-2xl gradient-text">Virtual Freaks</span>
@@ -72,7 +72,7 @@ export default function OnboardingPage() {
             disabled={loading !== null}
             className="card p-8 text-left hover:border-brand-purple transition-all group cursor-pointer disabled:opacity-50"
           >
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-purple to-purple-700 flex items-center justify-center text-3xl mb-5 group-hover:scale-110 transition-transform">
+            <div className="w-16 h-16 rounded-2xl bg-brand-purple flex items-center justify-center text-3xl mb-5 group-hover:scale-110 transition-transform">
               👤
             </div>
             <h2 className="text-xl font-bold text-brand-text mb-2">
@@ -96,7 +96,7 @@ export default function OnboardingPage() {
             disabled={loading !== null}
             className="card p-8 text-left hover:border-brand-orange transition-all group cursor-pointer disabled:opacity-50"
           >
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-orange to-orange-700 flex items-center justify-center text-3xl mb-5 group-hover:scale-110 transition-transform">
+            <div className="w-16 h-16 rounded-2xl bg-brand-orange flex items-center justify-center text-3xl mb-5 group-hover:scale-110 transition-transform">
               🏢
             </div>
             <h2 className="text-xl font-bold text-brand-text mb-2">

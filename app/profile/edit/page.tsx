@@ -558,7 +558,7 @@ export default function ProfileEditPage() {
             onClick={() => { setActiveTab(tab.key); setMessage(null) }}
             className={`flex-1 py-2.5 text-sm font-semibold transition-all min-w-[80px] ${
               activeTab === tab.key
-                ? 'bg-gradient-to-r from-brand-purple to-brand-orange text-white'
+                ? 'bg-brand-purple text-white'
                 : 'bg-transparent text-brand-muted hover:text-brand-text'
             }`}
           >
@@ -580,7 +580,7 @@ export default function ProfileEditPage() {
                     <Image src={profileData.avatarUrl} alt="Avatar" width={80} height={80} className="w-full h-full object-cover" />
                   </div>
                 ) : (
-                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-brand-purple to-brand-orange flex items-center justify-center text-white font-black text-xl">
+                  <div className="w-20 h-20 rounded-full bg-brand-purple flex items-center justify-center text-white font-black text-xl">
                     {profileData.name?.[0]?.toUpperCase() || 'U'}
                   </div>
                 )}

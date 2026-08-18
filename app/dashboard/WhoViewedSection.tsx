@@ -104,7 +104,7 @@ export function WhoViewedSection({ isPremium, hideMonetization }: { isPremium: b
                   className="flex items-center justify-between gap-3 p-4 rounded-xl bg-brand-border/30 border border-brand-border"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-brand-purple to-brand-orange flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                    <div className="w-9 h-9 rounded-full bg-brand-purple flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
                       {(v.companyName || v.name || '?')[0].toUpperCase()}
                     </div>
                     <div>

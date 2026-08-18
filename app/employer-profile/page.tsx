@@ -417,7 +417,7 @@ export default function EmployerProfilePage() {
                 </div>
                 <Link
                   href="/verified-partner"
-                  className="inline-flex items-center gap-2 px-5 py-2 rounded-xl text-sm font-bold bg-gradient-to-r from-brand-purple to-brand-orange text-white hover:opacity-90 transition-all"
+                  className="inline-flex items-center gap-2 px-5 py-2 rounded-xl text-sm font-bold bg-brand-purple text-white hover:opacity-90 transition-all"
                 >
                   Upgrade to Verified Partner — $12.99/mo
                 </Link>

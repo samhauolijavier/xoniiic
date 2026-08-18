@@ -1,0 +1,68 @@
+/* Learner dashboard. Quiet by default; the seat card is the only thing that
+   raises its voice, and only when the clock is genuinely short. */
+
+.who { font-size: 12px; color: var(--ink-3); }
+.dash { display: grid; grid-template-columns: 1.55fr .85fr; gap: 20px; padding: 28px 24px; align-items: start; }
+.dash-main { display: grid; gap: 16px; }
+.dash-side { display: grid; gap: 16px; }
+
+.card-block, .seat { background: var(--surface); border: 1px solid var(--rule);
+  border-radius: var(--r-lg); padding: 18px; box-shadow: var(--lift); }
+.block-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+.block-head h2 { font-size: 14px; font-weight: 640; letter-spacing: .01em; margin: 0; }
+.hint { font-size: 12px; color: var(--ink-3); }
+.hint.pad { display: block; line-height: 1.5; margin: 0 0 12px; }
+
+/* Calm is the default. The border only warms as the clock actually runs down —
+   a card that always shouts is a card nobody reads. */
+.seat.calm  { border-color: var(--rule); }
+.seat.soon  { border-color: var(--warn); }
+.seat.now   { border-color: var(--bad); }
+
+.seat-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+.seat h2 { font-size: 17px; font-weight: 620; letter-spacing: -.02em; margin: 0; }
+.seat-sub { font-size: 13px; color: var(--ink-2); margin: 3px 0 0; }
+.seat-days { text-align: right; font-family: var(--mono); }
+.seat-days .n { font-size: 30px; font-weight: 650; letter-spacing: -.03em; }
+.seat-days .u { display: block; font-size: 11px; color: var(--ink-3); }
+.seat.soon .seat-days .n { color: var(--warn); }
+.seat.now  .seat-days .n { color: var(--bad); }
+
+.meter { height: 4px; background: var(--sunken); border-radius: 100px; overflow: hidden; margin: 14px 0 12px; }
+.meter i { display: block; height: 100%; background: var(--accent); }
+.seat.soon .meter i { background: var(--warn); }
+.seat.now  .meter i { background: var(--bad); }
+
+/* The sentence that stops anyone fearing for the wrong thing. */
+.seat-scope { font-size: 13px; color: var(--ink-2); line-height: 1.55; margin: 0 0 16px;
+  padding: 11px 13px; background: var(--sunken); border: 1px solid var(--rule); border-radius: var(--r); }
+.seat-scope strong { color: var(--ink); }
+
+.ways { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.way { border: 1px solid var(--rule); border-radius: var(--r); padding: 13px; background: var(--paper); }
+.way.quiet { opacity: .82; }
+.way-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 6px; }
+.way-top strong { font-size: 13px; font-weight: 590; }
+.plus { font-family: var(--mono); font-size: 11px; color: var(--accent); }
+.way p { font-size: 12px; color: var(--ink-2); line-height: 1.5; margin: 0 0 10px; }
+.ref-row { display: flex; gap: 6px; align-items: center; }
+.ref-row code { font-family: var(--mono); font-size: 11px; background: var(--sunken);
+  border: 1px solid var(--rule); border-radius: var(--r-sm); padding: 4px 7px; flex: 1; overflow: hidden; }
+
+.scen-row { display: grid; grid-template-columns: 32px 1fr auto; gap: 12px; align-items: center;
+  padding: 11px 0; border-bottom: 1px solid var(--rule); font-size: 14px; }
+.scen-row:last-child { border-bottom: 0; }
+.scen-num { font-family: var(--mono); color: var(--ink-3); font-size: 13px; }
+.scen-row.locked { opacity: .5; }
+.scen-title { font-weight: 520; }
+
+.badge-row { display: flex; gap: 9px; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--rule); }
+.badge-row:last-of-type { border-bottom: 0; }
+.badge-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); flex: none; }
+.badge-row strong { display: block; font-size: 13px; }
+.badge-row span:last-child { font-size: 11px; color: var(--ink-3); }
+
+@media (max-width: 900px) {
+  .dash { grid-template-columns: 1fr; }
+  .ways { grid-template-columns: 1fr; }
+}

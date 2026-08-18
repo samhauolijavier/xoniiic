@@ -13,6 +13,8 @@ export default function RegisterPage() {
   const searchParams = useSearchParams()
   const initialRole = (searchParams.get('role') as Role) || 'seeker'
   const redirectUrl = searchParams.get('redirect') || null
+  // Carried from a member's invite link: virtualfreaks.co/register?ref=CODE
+  const referralCode = searchParams.get('ref')
 
   const [formData, setFormData] = useState({
     name: '',
@@ -50,6 +52,7 @@ export default function RegisterPage() {
           email: formData.email,
           password: formData.password,
           role: formData.role,
+          ref: referralCode,
         }),
       })
 
@@ -96,7 +99,7 @@ export default function RegisterPage() {
         {/* Logo */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-4">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-purple to-brand-orange flex items-center justify-center text-white font-black">
+            <div className="w-10 h-10 rounded-xl bg-brand-purple flex items-center justify-center text-white font-black">
               VF
             </div>
             <span className="font-black text-2xl gradient-text">Virtual Freaks</span>
@@ -143,7 +146,7 @@ export default function RegisterPage() {
                 onClick={() => setFormData({ ...formData, role })}
                 className={`flex-1 py-2.5 text-sm font-semibold transition-all ${
                   formData.role === role
-                    ? 'bg-gradient-to-r from-brand-purple to-brand-orange text-white'
+                    ? 'bg-brand-purple text-white'
                     : 'bg-transparent text-brand-muted hover:text-brand-text'
                 }`}
               >

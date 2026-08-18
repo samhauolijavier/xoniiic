@@ -168,7 +168,7 @@ export function ChatBubble() {
       {/* Floating button */}
       <button
         onClick={() => { setOpen(!open); if (!open) setActiveConvo(null) }}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-gradient-to-r from-brand-purple to-brand-orange text-white shadow-lg hover:scale-105 transition-all flex items-center justify-center"
+        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-brand-purple text-white shadow-lg hover:scale-105 transition-all flex items-center justify-center"
       >
         {open ? (
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -231,7 +231,7 @@ export function ChatBubble() {
                       className="w-full text-left px-4 py-3 hover:bg-brand-border/50 transition-colors border-b border-brand-border/50 last:border-b-0"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-full bg-gradient-to-br from-brand-purple to-brand-orange flex items-center justify-center text-white font-bold text-xs flex-shrink-0">
+                        <div className="w-9 h-9 rounded-full bg-brand-purple flex items-center justify-center text-white font-bold text-xs flex-shrink-0">
                           {other?.name?.[0]?.toUpperCase() || '?'}
                         </div>
                         <div className="flex-1 min-w-0">
@@ -259,7 +259,7 @@ export function ChatBubble() {
                       <div
                         className={`max-w-[75%] px-3 py-2 rounded-2xl text-sm ${
                           isMe
-                            ? 'bg-gradient-to-r from-brand-purple to-brand-orange text-white rounded-br-md'
+                            ? 'bg-brand-purple text-white rounded-br-md'
                             : 'bg-brand-border/50 text-brand-text rounded-bl-md'
                         }`}
                       >
@@ -288,7 +288,7 @@ export function ChatBubble() {
                   <button
                     onClick={handleSend}
                     disabled={!newMsg.trim() || sending}
-                    className="px-3 py-2 rounded-xl bg-gradient-to-r from-brand-purple to-brand-orange text-white text-sm font-medium disabled:opacity-50 hover:opacity-90 transition-all"
+                    className="px-3 py-2 rounded-xl bg-brand-purple text-white text-sm font-medium disabled:opacity-50 hover:opacity-90 transition-all"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />

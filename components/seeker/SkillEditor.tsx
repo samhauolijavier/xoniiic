@@ -109,7 +109,7 @@ export function SkillEditor({ initialSkills = [], onChange }: SkillEditorProps) 
               onClick={() => setActiveCategory(cat)}
               className={`px-3 py-1 rounded-full text-sm font-medium transition-all ${
                 activeCategory === cat
-                  ? 'bg-gradient-to-r from-brand-purple to-brand-orange text-white'
+                  ? 'bg-brand-purple text-white'
                   : 'bg-brand-card border border-brand-border text-brand-muted hover:border-brand-purple hover:text-brand-text'
               }`}
             >

@@ -1,0 +1,74 @@
+'use client'
+
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+
+export function ClaimForm({ price, gcashNumber }: { price: number; gcashNumber: string | null }) {
+  const router = useRouter()
+  const [reference, setReference] = useState('')
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [done, setDone] = useState<string | null>(null)
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault()
+    setBusy(true)
+    setError(null)
+    try {
+      const res = await fetch('/api/sandbox/claim', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reference }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        setError(data.error ?? 'Something went wrong. Try again in a moment.')
+        return
+      }
+      setDone(data.message)
+      setReference('')
+      router.refresh()
+    } catch {
+      setError('Could not reach the server. Check your connection and try again.')
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  return (
+    <div className="claim">
+      <h2>Get a practice account — ₱{price} for 30 days</h2>
+      <ol className="steps">
+        <li>
+          Send <strong>₱{price}</strong> by GCash to{' '}
+          {gcashNumber
+            ? <code>{gcashNumber}</code>
+            : <em>the number shown on the Virtual Freaks channel</em>}
+        </li>
+        <li>Open the receipt and find the <strong>reference number</strong></li>
+        <li>Type it below. Your seat opens once we match it — usually the same day.</li>
+      </ol>
+
+      <form className="claim-row" onSubmit={submit}>
+        <input
+          value={reference}
+          onChange={e => setReference(e.target.value)}
+          placeholder="GCash reference number"
+          aria-label="GCash reference number"
+          autoComplete="off"
+          required
+        />
+        <button className="sbtn" type="submit" disabled={busy || !reference.trim()}>
+          {busy ? 'Sending…' : 'Submit reference'}
+        </button>
+      </form>
+
+      {error && <p className="note bad">{error}</p>}
+      {done && <p className="note good">{done}</p>}
+      <p className="note quiet">
+        One payment, 30 days. Nothing renews by itself and no card is stored — when the 30 days
+        are up, it simply stops unless you top up again.
+      </p>
+    </div>
+  )
+}

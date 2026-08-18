@@ -83,7 +83,7 @@ export function ContactRequestCard({ contact }: ContactRequestCardProps) {
           <button
             onClick={() => handleAction('accept')}
             disabled={loading !== null}
-            className="flex-1 text-sm font-medium py-2 px-4 rounded-lg bg-gradient-to-r from-brand-purple to-brand-orange text-white hover:opacity-90 transition-all disabled:opacity-50"
+            className="flex-1 text-sm font-medium py-2 px-4 rounded-lg bg-brand-purple text-white hover:opacity-90 transition-all disabled:opacity-50"
           >
             {loading === 'accept' ? 'Accepting...' : 'Accept & Chat'}
           </button>

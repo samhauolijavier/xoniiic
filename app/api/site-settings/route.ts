@@ -5,11 +5,36 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export const dynamic = 'force-dynamic'
 
+/**
+ * This endpoint is public and unauthenticated — it feeds branding and copy to
+ * every visitor. So it is not a general settings store: anything named
+ * `private.*` is withheld here and must be read server-side by whatever needs
+ * it. The GCash number lives behind that prefix, because a personal mobile
+ * number on an open endpoint is a number that gets scraped.
+ */
+const PRIVATE_PREFIX = 'private.'
+
 export async function GET() {
   try {
     const settings = await db.siteSetting.findMany()
     const map: Record<string, string> = {}
-    settings.forEach((s) => { map[s.key] = s.value })
+    settings.forEach((s) => {
+      if (s.key.startsWith(PRIVATE_PREFIX)) return
+      map[s.key] = s.value
+    })
+
+    // Real counts, so the homepage does not have to invent any. An admin
+    // override still wins — this only replaces the hardcoded defaults, which
+    // claimed 500 freelancers and 50 categories regardless of the truth. On a
+    // launch page aimed at people who will immediately go and look, a number
+    // that cannot survive being checked costs more than no number at all.
+    const [seekers, skills] = await Promise.all([
+      db.seekerProfile.count(),
+      db.skill.count(),
+    ])
+    map._seekerCount = String(seekers)
+    map._skillCount = String(skills)
+
     return NextResponse.json(map)
   } catch {
     return NextResponse.json({})

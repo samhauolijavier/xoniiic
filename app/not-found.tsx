@@ -23,7 +23,7 @@ export default function NotFound() {
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link
             href="/"
-            className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-brand-purple to-brand-orange text-white font-medium hover:opacity-90 transition-all"
+            className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-brand-purple text-white font-medium hover:opacity-90 transition-all"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
@@ -39,7 +39,7 @@ export default function NotFound() {
         </div>
 
         {/* Decorative gradient bar */}
-        <div className="mt-12 mx-auto w-32 h-1 rounded-full bg-gradient-to-r from-brand-purple to-brand-orange opacity-30" />
+        <div className="mt-12 mx-auto w-32 h-1 rounded-full bg-brand-purple opacity-30" />
       </div>
     </div>
   )

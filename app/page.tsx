@@ -3,9 +3,12 @@ import type { Metadata } from 'next'
 export const dynamic = "force-dynamic"
 
 export const metadata: Metadata = {
-  title: 'Virtual Freaks — Hire Remote Talent & Virtual Assistants',
-  description: 'Find and hire top remote professionals, virtual assistants, developers, designers, and more. Virtual Freaks is the modern marketplace for remote talent.',
-  keywords: ['hire remote talent', 'virtual assistant', 'freelancer marketplace', 'remote workers', 'hire developers', 'virtual professionals', 'remote jobs', 'hire VA'],
+  // The page speaks to remote workers now, so the title has to as well —
+  // otherwise search sends employers to the page written for someone else,
+  // and /hire, which was written for them, never gets found.
+  title: 'Virtual Freaks — Get hired as a VA or remote professional',
+  description: 'Build a free profile that shows real work, practise on live systems, and get found by people hiring directly. No commission, ever. Hiring instead? See virtualfreaks.co/hire.',
+  keywords: ['virtual assistant jobs', 'remote work philippines', 'VA portfolio', 'get hired as a VA', 'remote jobs', 'GoHighLevel practice', 'freelancer profile', 'hire remote talent'],
   alternates: {
     canonical: 'https://virtualfreaks.co',
   },
@@ -109,21 +112,18 @@ async function getTopTalent() {
 const howItWorks = [
   {
     step: '01',
-    title: 'Browse Talent',
-    description: 'Search through hundreds of skilled freelancers. Filter by category, skill, rate, and availability.',
-    icon: '🔍',
+    title: 'Make a profile',
+    description: 'Free, and it stays free. Skills, rate, availability, and how to reach you — no commission is ever taken from what you earn.',
   },
   {
     step: '02',
-    title: 'Review Profiles',
-    description: 'See detailed skill ratings, years of experience, English proficiency, and read their bio.',
-    icon: '📋',
+    title: 'Do the work',
+    description: 'Scenario briefs you can download and complete, on live systems rather than slides. What you finish goes on your profile as work you have actually done.',
   },
   {
     step: '03',
-    title: 'Contact Directly',
-    description: 'Send a message directly to the talent. No platform fees — connect via email and start working.',
-    icon: '💬',
+    title: 'Get contacted directly',
+    description: 'Businesses message you themselves. Nobody stands in the middle, and you agree your own rate with them.',
   },
 ]
 
@@ -172,7 +172,7 @@ export default async function Home() {
                 <h2 className="text-2xl sm:text-3xl font-black text-brand-text">
                   <span className="gradient-text">Top Talent</span> This Week
                 </h2>
-                <p className="text-brand-muted mt-1 text-sm sm:text-base">Most viewed freelancers in the last 7 days</p>
+                <p className="text-brand-muted mt-1 text-sm sm:text-base">Most viewed profiles in the last seven days.</p>
               </div>
               <Link href="/leaderboard" className="btn-secondary text-sm">
                 Full Leaderboard →
@@ -183,11 +183,16 @@ export default async function Home() {
                 const initials = entry.name
                   ? entry.name.split(' ').map((n) => n[0]).join('').toUpperCase()
                   : entry.username[0].toUpperCase()
-                const medalMap: Record<number, string> = { 1: '🥇', 2: '🥈', 3: '🥉' }
+                // Was medals for the top three and #4, #5 for the rest — two
+                // notations for one ranked list, in the same row. One notation,
+                // in monospace, and the top three carry the accent instead.
+                const isPodium = entry.rank <= 3
                 return (
                   <Link key={entry.id} href={`/talent/${entry.username}`}>
                     <div className="card p-4 text-center group hover-glow cursor-pointer">
-                      <div className="text-lg mb-2">{medalMap[entry.rank] || `#${entry.rank}`}</div>
+                      <div className={`font-mono text-sm mb-2 tabular-nums ${isPodium ? 'text-brand-purple font-semibold' : 'text-brand-muted'}`}>
+                        #{entry.rank}
+                      </div>
                       {entry.avatarUrl ? (
                         <div className="w-14 h-14 rounded-full overflow-hidden mx-auto mb-2 ring-2 ring-brand-purple/30">
                           <Image
@@ -199,7 +204,7 @@ export default async function Home() {
                           />
                         </div>
                       ) : (
-                        <div className="w-14 h-14 rounded-full bg-gradient-to-br from-brand-purple to-brand-orange flex items-center justify-center text-white font-bold text-lg mx-auto mb-2">
+                        <div className="w-14 h-14 rounded-full bg-brand-purple flex items-center justify-center text-white font-bold text-lg mx-auto mb-2">
                           {initials}
                         </div>
                       )}
@@ -246,8 +251,7 @@ export default async function Home() {
         </section>
       ) : (
         <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="card p-10 text-center border-brand-purple/30 bg-gradient-to-br from-brand-purple/5 to-brand-orange/5">
-            <div className="text-5xl mb-4">🌍</div>
+          <div className="card p-10 text-center border-brand-purple/30 bg-brand-purple/[0.04]">
             <h2 className="text-2xl sm:text-3xl font-black text-brand-text mb-3">
               Join <span className="gradient-text">Virtual Freaks</span>
             </h2>
@@ -280,11 +284,8 @@ export default async function Home() {
                 {i < howItWorks.length - 1 && (
                   <div className="hidden md:block absolute top-8 left-3/4 w-1/2 h-px bg-gradient-to-r from-brand-purple/50 to-transparent" />
                 )}
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-purple to-brand-orange flex items-center justify-center text-2xl mx-auto mb-4 shadow-glow-purple">
-                  {step.icon}
-                </div>
-                <div className="text-xs font-bold text-brand-purple mb-2 tracking-widest uppercase">
-                  Step {step.step}
+                <div className="font-mono text-3xl text-brand-purple mb-3 tabular-nums">
+                  {step.step}
                 </div>
                 <h3 className="text-xl font-bold text-brand-text mb-3">{step.title}</h3>
                 <p className="text-brand-muted text-sm leading-relaxed">{step.description}</p>
@@ -303,7 +304,7 @@ export default async function Home() {
                 Recently{' '}
                 <span className="gradient-text">Joined</span>
               </h2>
-              <p className="text-brand-muted mt-1 text-sm sm:text-base">Fresh talent on the platform</p>
+              <p className="text-brand-muted mt-1 text-sm sm:text-base">The newest profiles on the platform.</p>
             </div>
             <Link href="/browse" className="btn-secondary text-sm">
               View All
@@ -317,12 +318,12 @@ export default async function Home() {
         </section>
       ) : (
         <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="card p-10 text-center border-brand-purple/30 bg-gradient-to-br from-brand-purple/5 to-brand-orange/5">
+          <div className="card p-10 text-center border-brand-purple/30 bg-brand-purple/[0.04]">
             <h2 className="text-2xl sm:text-3xl font-black text-brand-text mb-3">
-              <span className="gradient-text">Be One of the First!</span>
+              <span className="gradient-text">Be one of the first</span>
             </h2>
             <p className="text-brand-muted max-w-lg mx-auto mb-6">
-              Be one of the first to join! Early members earn exclusive Founding Member badges 👑
+              The first members here are numbered, and the badge stays on the profile permanently.
             </p>
             <Link href="/register" className="inline-block btn-primary px-8 py-3 text-lg font-bold">
               Register Now
@@ -333,7 +334,7 @@ export default async function Home() {
 
       {/* CTA Section */}
       <section className="py-20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-brand-purple/10 via-brand-pink/10 to-brand-orange/10" />
+        <div className="absolute inset-0 bg-brand-purple/[0.06]" />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl sm:text-4xl font-black text-brand-text mb-4">
             Ready to hire{' '}

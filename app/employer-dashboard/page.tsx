@@ -118,7 +118,7 @@ export default async function EmployerDashboardPage() {
           {!isPartner && monetizationOn && (
             <Link
               href="/verified-partner"
-              className="px-4 py-2 rounded-xl text-sm font-bold bg-gradient-to-r from-brand-purple to-brand-orange text-white hover:opacity-90 transition-all"
+              className="px-4 py-2 rounded-xl text-sm font-bold bg-brand-purple text-white hover:opacity-90 transition-all"
             >
               🛡️ Become a Verified Partner
             </Link>
@@ -331,7 +331,7 @@ export default async function EmployerDashboardPage() {
             </div>
             <Link
               href="/verified-partner"
-              className="px-6 py-2.5 rounded-xl text-sm font-bold bg-gradient-to-r from-brand-purple to-brand-orange text-white hover:opacity-90 transition-all"
+              className="px-6 py-2.5 rounded-xl text-sm font-bold bg-brand-purple text-white hover:opacity-90 transition-all"
             >
               Learn More
             </Link>

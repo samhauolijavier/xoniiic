@@ -90,7 +90,7 @@ export function ReviewList({ reviews, averageRating, totalCount }: ReviewListPro
         <div key={review.id} className="card p-5">
           <div className="flex items-start justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-brand-purple to-brand-orange flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+              <div className="w-9 h-9 rounded-lg bg-brand-purple flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
                 {review.reviewerUser.name?.[0]?.toUpperCase() || 'U'}
               </div>
               <div>

@@ -98,7 +98,7 @@ function Avatar({ user, size = 'md' }: { user: UserInfo; size?: 'sm' | 'md' }) {
   }
 
   return (
-    <div className={`${sizeClass} rounded-full bg-gradient-to-br from-brand-purple to-brand-orange flex items-center justify-center text-white font-bold flex-shrink-0`}>
+    <div className={`${sizeClass} rounded-full bg-brand-purple flex items-center justify-center text-white font-bold flex-shrink-0`}>
       {name[0]?.toUpperCase() || 'U'}
     </div>
   )

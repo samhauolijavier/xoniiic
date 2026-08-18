@@ -384,7 +384,7 @@ export function Navbar() {
                     onClick={() => { setDropdownOpen(!dropdownOpen); setNotifDropdownOpen(false) }}
                     className="flex items-center gap-2 p-1.5 rounded-xl bg-brand-card border border-brand-border hover:border-brand-purple transition-all"
                   >
-                    <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-brand-purple to-brand-orange flex items-center justify-center text-white font-bold text-xs">
+                    <div className="w-7 h-7 rounded-lg bg-brand-purple flex items-center justify-center text-white font-bold text-xs">
                       {user?.name?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase() || 'U'}
                     </div>
                     <svg
@@ -493,6 +493,15 @@ export function Navbar() {
                         >
                           Settings
                         </Link>
+                        {user?.role === 'seeker' && (
+                          <Link
+                            href="/sandbox"
+                            onClick={() => setDropdownOpen(false)}
+                            className="block px-4 py-2 text-sm text-brand-muted hover:text-brand-text hover:bg-brand-border transition-all"
+                          >
+                            Practice Account
+                          </Link>
+                        )}
                         {user?.role === 'seeker' && user?.username && (
                           <Link
                             href={`/talent/${user.username}`}
@@ -515,6 +524,9 @@ export function Navbar() {
               </>
             ) : (
               <div className="flex items-center gap-2">
+                <Link href="/hire" className="hidden md:block text-sm text-brand-muted hover:text-brand-text transition-colors px-3 py-1.5">
+                  For businesses
+                </Link>
                 <Link href="/jobs" className="hidden md:block text-sm text-brand-muted hover:text-brand-text transition-colors px-3 py-1.5">
                   Jobs
                 </Link>
@@ -549,6 +561,9 @@ export function Navbar() {
         {/* Mobile Menu */}
         {mobileOpen && (
           <div className="md:hidden border-t border-brand-border py-4 space-y-1">
+            <Link href="/hire" className="block px-4 py-3 text-sm text-brand-muted" onClick={() => setMobileOpen(false)}>
+              For businesses
+            </Link>
             <Link href="/browse" className="block px-4 py-3 text-sm text-brand-muted" onClick={() => setMobileOpen(false)}>
               Browse Talent
             </Link>

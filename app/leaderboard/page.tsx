@@ -116,7 +116,7 @@ export default async function LeaderboardPage({
             href={cat === 'All' ? '/leaderboard' : `/leaderboard?category=${encodeURIComponent(cat)}`}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
               activeCategory === cat
-                ? 'bg-gradient-to-r from-brand-purple to-brand-orange text-white shadow-glow-purple'
+                ? 'bg-brand-purple text-white shadow-glow-purple'
                 : 'bg-brand-card border border-brand-border text-brand-muted hover:border-brand-purple hover:text-brand-text'
             }`}
           >
@@ -126,7 +126,7 @@ export default async function LeaderboardPage({
       </div>
 
       {leaderboard.length < 3 ? (
-        <div className="card p-16 text-center border-brand-purple/30 bg-gradient-to-br from-brand-purple/5 to-brand-orange/5">
+        <div className="card p-16 text-center border-brand-purple/30 bg-brand-purple/[0.04]">
           <div className="text-5xl mb-4">🏆</div>
           <h3 className="text-xl font-semibold mb-2">
             <span className="gradient-text">Leaderboard Coming Soon</span>
@@ -244,7 +244,7 @@ export default async function LeaderboardPage({
                           />
                         </div>
                       ) : (
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-brand-purple to-brand-orange flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                        <div className="w-10 h-10 rounded-full bg-brand-purple flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
                           {initials}
                         </div>
                       )}

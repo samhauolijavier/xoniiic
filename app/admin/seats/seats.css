@@ -1,0 +1,60 @@
+/* Seat desk. A work surface, not a landing page — dense rows, monospace for
+   anything you compare by eye, and no decoration competing with the queue. */
+
+.desk {
+  --paper: #fbf9f8; --surface: #fff; --sunken: #f4f2ee;
+  --ink: #1a1418; --ink-2: #4d4549; --ink-3: #837b80;
+  --rule: #e6e0e2;
+  --accent: #a21caf; --warn: #b45309; --bad: #b91c1c;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+
+  max-width: 1080px; margin: 0 auto; padding: 32px 20px 64px; color: var(--ink);
+}
+.desk h1 { font-size: 24px; font-weight: 640; letter-spacing: -.02em; margin: 0 0 4px; color: var(--ink); }
+.desk .lede { font-size: 14px; color: var(--ink-2); margin: 0 0 20px; }
+.desk .quiet { color: var(--ink-3); font-size: 13px; }
+.desk .pad { padding: 4px 2px 2px; }
+
+.banner { font-size: 13px; padding: 10px 13px; border-radius: 8px; margin: 0 0 16px; }
+.banner.bad  { background: #fbf0ee; border: 1px solid #e6c9c2; color: var(--bad); }
+.banner.good { background: #fdf2fd; border: 1px solid #eccdf0; color: var(--accent); }
+
+.panel { background: var(--surface); border: 1px solid var(--rule); border-radius: 12px;
+  padding: 16px 18px; margin-bottom: 16px; }
+.panel-head { display: flex; align-items: baseline; gap: 9px; margin-bottom: 10px; }
+.panel-head h2 { font-size: 14px; font-weight: 640; margin: 0; color: var(--ink); }
+.count { font-family: var(--mono); font-size: 12px; color: var(--ink-3); }
+
+.grid { width: 100%; border-collapse: collapse; font-size: 13px; }
+.grid th { text-align: left; font-weight: 560; font-size: 11px; letter-spacing: .05em;
+  text-transform: uppercase; color: var(--ink-3); padding: 0 10px 7px 0;
+  border-bottom: 1px solid var(--rule); }
+.grid td { padding: 10px 10px 10px 0; border-bottom: 1px solid var(--rule); vertical-align: middle; }
+.grid tr:last-child td { border-bottom: 0; }
+.grid strong { display: block; font-weight: 570; }
+.grid .sub { font-size: 11px; color: var(--ink-3); }
+.grid .mono { font-family: var(--mono); }
+
+/* A day is the promise. Past it, the row says so without anyone counting. */
+.grid tr.stale td { background: #fdf7ee; }
+.grid tr.stale .mono { color: var(--warn); font-weight: 600; }
+
+.row-actions { display: flex; gap: 6px; justify-content: flex-end; flex-wrap: wrap; }
+.dbtn { font: inherit; font-size: 12px; font-weight: 550; cursor: pointer; white-space: nowrap;
+  border-radius: 7px; padding: 6px 11px; border: 1px solid var(--accent);
+  background: var(--accent); color: #fff; text-decoration: none; }
+.dbtn:disabled { opacity: .5; cursor: not-allowed; }
+.dbtn.ghost { background: transparent; color: var(--ink); border-color: var(--rule); }
+
+.chip { display: inline-block; font-size: 11px; font-weight: 560; padding: 2px 7px;
+  border-radius: 100px; border: 1px solid var(--rule); }
+.chip.good { color: var(--accent); border-color: #eccdf0; background: #fdf2fd; }
+.chip.bad  { color: var(--bad); border-color: #e6c9c2; background: #fbf0ee; }
+
+@media (max-width: 720px) {
+  .grid, .grid tbody, .grid tr, .grid td { display: block; width: 100%; }
+  .grid thead { display: none; }
+  .grid tr { border-bottom: 1px solid var(--rule); padding: 10px 0; }
+  .grid td { border: 0; padding: 3px 0; }
+  .row-actions { justify-content: flex-start; margin-top: 7px; }
+}

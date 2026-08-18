@@ -80,19 +80,39 @@ async function main() {
   }
   console.log(`Created ${skills.length} skills`)
 
-  // Create admin user
-  const adminPassword = await bcrypt.hash('admin123', 12)
-  const admin = await prisma.user.upsert({
-    where: { email: 'admin@virtualfreaks.com' },
-    update: {},
-    create: {
-      name: 'Admin',
-      email: 'admin@virtualfreaks.com',
-      password: adminPassword,
-      role: 'admin',
-    },
-  })
-  console.log('Created admin user:', admin.email)
+  // Create admin user.
+  //
+  // This used to hardcode admin123, which meant the full-admin login for every
+  // database this seed ever touched was sitting in source control — readable by
+  // anyone with the repo, and one of the most-guessed passwords in existence.
+  // The account it opened owns the seat desk and every user record.
+  //
+  // Now the seed refuses to invent a credential. Set SEED_ADMIN_EMAIL and
+  // SEED_ADMIN_PASSWORD to create one; leave them unset and no admin is made,
+  // which is the right default for any database that already has one.
+  const adminEmail = process.env.SEED_ADMIN_EMAIL
+  const adminPlain = process.env.SEED_ADMIN_PASSWORD
+
+  if (!adminEmail || !adminPlain) {
+    console.log('Skipping admin user — set SEED_ADMIN_EMAIL and SEED_ADMIN_PASSWORD to create one.')
+  } else if (adminPlain.length < 12) {
+    throw new Error('SEED_ADMIN_PASSWORD must be at least 12 characters.')
+  } else {
+    const adminPassword = await bcrypt.hash(adminPlain, 12)
+    const admin = await prisma.user.upsert({
+      where: { email: adminEmail },
+      // Deliberately empty: re-running the seed must never reset the password
+      // of an admin account that is already in use.
+      update: {},
+      create: {
+        name: 'Admin',
+        email: adminEmail,
+        password: adminPassword,
+        role: 'admin',
+      },
+    })
+    console.log('Created admin user:', admin.email)
+  }
 
   const now = new Date()
   const oneYearFromNow = new Date(now.getTime() + 365 * 24 * 60 * 60 * 1000)

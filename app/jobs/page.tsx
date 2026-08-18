@@ -38,7 +38,6 @@ async function getJobs(params: SearchParams) {
   const limit = 12
   const skip = (page - 1) * limit
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const where: any = {
     status: 'active',
     employer: { ...excludeDemoAccounts() },
@@ -403,7 +402,7 @@ export default async function JobBoardPage({
                         } as Record<string, string>)}`}
                         className={`w-10 h-10 sm:w-9 sm:h-9 rounded-lg text-sm font-medium flex items-center justify-center transition-all ${
                           p === page
-                            ? 'bg-gradient-to-r from-brand-purple to-brand-orange text-white'
+                            ? 'bg-brand-purple text-white'
                             : 'bg-brand-card border border-brand-border text-brand-muted hover:border-brand-purple'
                         }`}
                       >

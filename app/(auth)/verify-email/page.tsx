@@ -149,7 +149,7 @@ export default function VerifyEmailPage() {
             <div className="text-6xl mb-4">&#10003;</div>
             <h2 className="text-2xl font-black gradient-text mb-2">Email Verified!</h2>
             <p className="text-brand-muted">Redirecting you to sign in...</p>
-            <div className="mt-4 w-12 h-1 mx-auto rounded-full bg-gradient-to-r from-brand-purple to-brand-orange animate-pulse" />
+            <div className="mt-4 w-12 h-1 mx-auto rounded-full bg-brand-purple animate-pulse" />
           </div>
         </div>
       </div>
@@ -162,7 +162,7 @@ export default function VerifyEmailPage() {
         {/* Logo */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-4">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-purple to-brand-orange flex items-center justify-center text-white font-black">
+            <div className="w-10 h-10 rounded-xl bg-brand-purple flex items-center justify-center text-white font-black">
               VF
             </div>
             <span className="font-black text-2xl gradient-text">Virtual Freaks</span>

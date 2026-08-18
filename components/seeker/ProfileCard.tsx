@@ -59,7 +59,7 @@ export function ProfileCard({ profile, hideMonetization, hideRate }: ProfileCard
       <div className="card p-5 h-full flex flex-col group cursor-pointer hover-glow relative overflow-hidden">
         {profile.featured && (
           <div className="absolute top-0 right-0">
-            <div className="bg-gradient-to-r from-brand-purple to-brand-orange text-white text-xs font-bold px-3 py-1 rounded-bl-xl">
+            <div className="bg-brand-purple text-white text-xs font-bold px-3 py-1 rounded-bl-xl">
               Featured
             </div>
           </div>
@@ -79,7 +79,7 @@ export function ProfileCard({ profile, hideMonetization, hideRate }: ProfileCard
                 />
               </div>
             ) : (
-              <div className="w-14 h-14 rounded-full bg-gradient-to-br from-brand-purple to-brand-orange flex items-center justify-center text-white font-bold text-lg">
+              <div className="w-14 h-14 rounded-full bg-brand-purple flex items-center justify-center text-white font-bold text-lg">
                 {initials}
               </div>
             )}

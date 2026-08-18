@@ -95,7 +95,7 @@ export default async function DashboardPage() {
 
       {/* Profile Completion Nudge Banner */}
       {completion.score < 70 && (
-        <div className="mb-4 px-5 py-4 rounded-xl bg-gradient-to-r from-brand-purple/10 to-brand-orange/10 border border-brand-purple/30">
+        <div className="mb-4 px-5 py-4 rounded-xl bg-brand-purple/[0.06] border border-brand-purple/30">
           <div className="flex items-center justify-between flex-wrap gap-3">
             <div className="flex items-center gap-3">
               <span className="text-2xl">{completion.score < 40 ? '🚨' : '💪'}</span>
@@ -112,7 +112,7 @@ export default async function DashboardPage() {
             </div>
             <Link
               href="/profile/edit"
-              className="text-sm font-medium px-4 py-2 rounded-lg bg-gradient-to-r from-brand-purple to-brand-orange text-white hover:opacity-90 transition-all flex-shrink-0"
+              className="text-sm font-medium px-4 py-2 rounded-lg bg-brand-purple text-white hover:opacity-90 transition-all flex-shrink-0"
             >
               Complete Profile
             </Link>
@@ -253,7 +253,7 @@ export default async function DashboardPage() {
                   <span className="text-sm text-brand-text w-20 sm:w-28 flex-shrink-0 truncate">{s.skill.name}</span>
                   <div className="flex-1 bg-brand-border rounded-full h-1.5 overflow-hidden">
                     <div
-                      className="h-full bg-gradient-to-r from-brand-purple to-brand-orange rounded-full"
+                      className="h-full bg-brand-purple rounded-full"
                       style={{ width: `${(s.rating / 10) * 100}%` }}
                     />
                   </div>
