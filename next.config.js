@@ -7,11 +7,19 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
+    // Scoped deliberately. This was hostname: '**', which let anyone pass any
+    // URL on the internet through the image optimiser — an abuse vector that
+    // bills to this account, and the one line most likely to produce a
+    // surprise invoice once ads are running.
+    //
+    // Supabase serves user uploads through its own CDN; YouTube serves video
+    // thumbnails for the resource section. Nothing else needs to be here, and
+    // anything added later should be added on purpose.
     remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '**',
-      },
+      { protocol: 'https', hostname: '*.supabase.co' },
+      { protocol: 'https', hostname: 'img.youtube.com' },
+      { protocol: 'https', hostname: 'i.ytimg.com' },
+      { protocol: 'https', hostname: 'lh3.googleusercontent.com' },
     ],
   },
   experimental: {
