@@ -10,14 +10,18 @@ import './tokens.css'
 import './preview.css'
 
 const PEOPLE = [
-  { name: 'Maricel Bautista', role: 'GoHighLevel Buildout', years: 6, rate: 12,
-    place: 'Cebu, PH', tags: ['GHL', 'Workflows', 'A2P'], jobs: 41, reply: '2h', verified: true },
+  { name: 'Maricel Bautista', role: 'CRM & Automation', years: 6, rate: 12,
+    place: 'Cebu, PH', tags: ['GoHighLevel', 'Zapier', 'Workflows'], jobs: 41, reply: '2h', verified: true },
+  { name: 'Ana Sofía Reyes', role: 'Media Buying', years: 8, rate: 22,
+    place: 'Bogotá, CO', tags: ['Meta Ads', 'Google Ads', 'Reporting'], jobs: 63, reply: '4h', verified: true },
+  { name: 'Tomás Herrera', role: 'Full-Stack Development', years: 7, rate: 28,
+    place: 'Buenos Aires, AR', tags: ['React', 'Node', 'Postgres'], jobs: 52, reply: '3h', verified: true },
+  { name: 'Priya Raghavan', role: 'Bookkeeping', years: 9, rate: 15,
+    place: 'Kochi, IN', tags: ['Xero', 'QuickBooks', 'Month-end'], jobs: 74, reply: '5h', verified: false },
   { name: 'Jeremy Ocampo', role: 'Support & Inbox Ops', years: 4, rate: 9,
     place: 'Davao, PH', tags: ['Freshdesk', 'Zendesk', 'Escalations'], jobs: 28, reply: '1h', verified: true },
-  { name: 'Ana Sofía Reyes', role: 'Media Buying', years: 8, rate: 22,
-    place: 'Bogotá, CO', tags: ['Meta', 'Google', 'Reporting'], jobs: 63, reply: '4h', verified: false },
-  { name: 'Dwight Fernandez', role: 'Funnel & Site Build', years: 3, rate: 11,
-    place: 'Manila, PH', tags: ['Funnels', 'Figma', 'Copy'], jobs: 17, reply: '3h', verified: true },
+  { name: 'Lena Fischer', role: 'Brand & Product Design', years: 5, rate: 24,
+    place: 'Lisbon, PT', tags: ['Figma', 'Design systems', 'Web'], jobs: 39, reply: '2h', verified: true },
 ]
 
 export default function Preview() {
@@ -50,13 +54,14 @@ export default function Preview() {
         <div className="hero-copy">
           <p className="eyebrow">Operators, not gig workers</p>
           <h1>
-            Hire the person who already runs
-            <span className="mark-accent"> the system you use.</span>
+            Hire someone who has
+            <span className="mark-accent"> actually run it before.</span>
           </h1>
           <p className="lede">
-            Every profile here is a working operator — GoHighLevel, media buying,
-            support desks, funnels. No proposals to sift. No bidding war. You see
-            the work history and the rate before you say hello.
+            Development, design, media buying, bookkeeping, support, CRM and automation —
+            every profile is someone doing the work now, not looking for their first
+            job. No proposals to sift. No bidding war. You see the history and the
+            rate before you say hello.
           </p>
           <div className="hero-actions">
             <a className="btn lg" href="#">Browse talent</a>
@@ -71,9 +76,9 @@ export default function Preview() {
 
         <aside className="hero-panel">
           <div className="panel-head">
-            <span className="dot" /> Live · matching on <em>“GHL buildout”</em>
+            <span className="dot" /> Live · matching on <em>“month-end close, Xero”</em>
           </div>
-          {PEOPLE.slice(0, 3).map((p) => (
+          {[PEOPLE[3], PEOPLE[1], PEOPLE[0]].map((p) => (
             <article key={p.name} className="row">
               <div className="avatar" aria-hidden>{p.name.split(' ').map((w) => w[0]).join('')}</div>
               <div className="row-main">

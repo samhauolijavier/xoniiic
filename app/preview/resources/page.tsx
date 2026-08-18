@@ -14,37 +14,38 @@ import '../preview.css'
 import './resources.css'
 
 const TRACKS = [
-  { name: 'GoHighLevel', count: 12, live: true },
-  { name: 'Media Buying', count: 7, live: true },
-  { name: 'Support & Inbox', count: 5, live: true },
-  { name: 'Bookkeeping', count: 4, live: false },
-  { name: 'Cold Email', count: 3, live: false },
+  { name: 'Media Buying', count: 9, live: true },
+  { name: 'CRM & Automation', count: 12, live: true },
+  { name: 'Support & Inbox', count: 7, live: true },
+  { name: 'Bookkeeping', count: 6, live: true },
+  { name: 'Design', count: 5, live: false },
+  { name: 'Development', count: 4, live: false },
 ]
 
 const SCENARIOS = [
   {
-    n: '01', title: 'Build a lead capture workflow that does not double-fire',
-    track: 'GoHighLevel', level: 'Foundation', mins: 45, video: '18:22',
-    brief: 'A form submits twice from the same person. Build the workflow, then make re-entry behave.',
-    files: ['Workbook.pdf', 'Snapshot.json'], done: 214, badge: 'GHL Workflows',
-  },
-  {
-    n: '02', title: 'Smart list: submitted the form, never booked',
-    track: 'GoHighLevel', level: 'Foundation', mins: 30, video: '11:04',
-    brief: 'Two filter conditions, one list. The one every agency asks for in week one.',
-    files: ['Workbook.pdf'], done: 186, badge: 'GHL Contacts',
-  },
-  {
-    n: '03', title: 'Diagnose a calendar showing zero availability',
-    track: 'GoHighLevel', level: 'Applied', mins: 60, video: '24:51',
-    brief: 'Nothing is broken and nothing is bookable. Find both causes.',
-    files: ['Workbook.pdf', 'Broken-calendar.json'], done: 97, badge: 'GHL Calendars',
-  },
-  {
-    n: '04', title: 'Rescue a campaign that spent £400 and booked nothing',
+    n: '01', title: 'Rescue a campaign that spent £400 and booked nothing',
     track: 'Media Buying', level: 'Applied', mins: 90, video: '31:18',
-    brief: 'Real account export. Find where the money went before you touch a budget.',
-    files: ['Workbook.pdf', 'Account-export.csv'], done: 63, badge: 'Paid Traffic',
+    brief: 'A real account export. Find where the money went before you touch a budget.',
+    files: ['Workbook.pdf', 'Account-export.csv'], done: 163, badge: 'Meta — Campaign Audit',
+  },
+  {
+    n: '02', title: 'Close a month that does not balance',
+    track: 'Bookkeeping', level: 'Applied', mins: 75, video: '22:40',
+    brief: 'Two accounts, one missing reconciliation, and a client who needs it by Friday.',
+    files: ['Workbook.pdf', 'Ledger.xlsx'], done: 88, badge: 'Xero — Month-End Close',
+  },
+  {
+    n: '03', title: 'Build a lead capture flow that does not double-fire',
+    track: 'CRM & Automation', level: 'Foundation', mins: 45, video: '18:22',
+    brief: 'The same person submits twice. Build it, then make re-entry behave.',
+    files: ['Workbook.pdf', 'Snapshot.json'], done: 214, badge: 'CRM — Workflow Builder',
+  },
+  {
+    n: '04', title: 'Take over an inbox with 400 unread and no system',
+    track: 'Support & Inbox', level: 'Foundation', mins: 40, video: '15:07',
+    brief: 'Triage, macro, escalate. What you do in the first hour of a new client.',
+    files: ['Workbook.pdf'], done: 141, badge: 'Support — Inbox Triage',
   },
 ]
 
@@ -81,7 +82,7 @@ export default function Resources() {
           {[
             ['Watch', 'A real build, start to finish'],
             ['Download', 'Workbook, snapshot, the account export'],
-            ['Practise', 'Shared sandbox — ₱100/mo'],
+            ['Practise', 'In a real account you can break'],
             ['Submit', 'We mark it by hand'],
             ['Wear it', 'Badge on your profile, filterable'],
           ].map(([t, s], i) => (
@@ -136,13 +137,12 @@ export default function Resources() {
           <div>
             <h2>Practise in a real account</h2>
             <p>
-              A shared GoHighLevel sub-account, reset weekly. Build the workflows, break the
-              calendar, fix it again. Most people learning this have never seen the inside of a
-              paid account — that is the actual barrier, not the tutorials.
+              A real working account for your track, reset weekly. Build it, break it, fix it. Most people learning this have never seen the inside of a
+              paid account — that is the actual barrier, and it is not the tutorials.
             </p>
             <ul className="sandbox-list">
-              <li>Your own sub-account, wiped every Sunday</li>
-              <li>Every scenario snapshot preloaded</li>
+              <li>Your own workspace, wiped every Sunday</li>
+              <li>Every scenario preloaded for your track</li>
               <li>Cancel any month</li>
             </ul>
           </div>
@@ -157,7 +157,7 @@ export default function Resources() {
 
       <footer className="wrap foot">
         <span>Virtual Freaks · Practice</span>
-        <span className="muted">Scenarios are niche-agnostic — GoHighLevel is the first track, not the shape.</span>
+        <span className="muted">Six tracks and counting. A track is a set of scenarios — the shape works for any craft.</span>
       </footer>
     </div>
   )
