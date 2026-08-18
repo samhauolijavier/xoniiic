@@ -9,11 +9,11 @@ export function HeroSection() {
   const { data: session } = useSession()
   const router = useRouter()
 
-  const [heroTag, setHeroTag] = useState('100% Free for Employers \u2022 No Subscriptions')
-  const [heroHeadline, setHeroHeadline] = useState('Find World-Class Remote Talent')
-  const [heroSubtitle, setHeroSubtitle] = useState('Browse skilled freelancers in development, design, marketing, and more. Connect directly. No fees. No middlemen. Just talent.')
-  const [heroCta1, setHeroCta1] = useState('Browse Talent Free')
-  const [heroCta2, setHeroCta2] = useState('Post Your Profile')
+  const [heroTag, setHeroTag] = useState('Free profile \u2022 No commission, ever')
+  const [heroHeadline, setHeroHeadline] = useState('Nobody hires you without experience. Start here.')
+  const [heroSubtitle, setHeroSubtitle] = useState('Build a profile that shows real work, practise on live systems, and get found by people hiring directly. Free, and it stays free.')
+  const [heroCta1, setHeroCta1] = useState('Make a free profile')
+  const [heroCta2, setHeroCta2] = useState('See the practice account')
   // Starts blank rather than with a claim. The old defaults said 500+
   // freelancers and 50+ categories no matter what was actually in the
   // database, and a launch page aimed at people who will go and look
@@ -112,15 +112,15 @@ export function HeroSection() {
 
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <button onClick={handleBrowseClick} className="btn-primary text-base px-8 py-3">
+            <button onClick={handlePostProfileClick} className="btn-primary text-base px-8 py-3">
               {heroCta1}
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
             </button>
-            <button onClick={handlePostProfileClick} className="btn-secondary text-base px-8 py-3">
+            <Link href="/sandbox" className="btn-secondary text-base px-8 py-3">
               {heroCta2}
-            </button>
+            </Link>
           </div>
 
           {/* Already have an account nudge — only shown to logged-out visitors */}

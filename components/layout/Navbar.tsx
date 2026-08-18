@@ -524,6 +524,9 @@ export function Navbar() {
               </>
             ) : (
               <div className="flex items-center gap-2">
+                <Link href="/hire" className="hidden md:block text-sm text-brand-muted hover:text-brand-text transition-colors px-3 py-1.5">
+                  For businesses
+                </Link>
                 <Link href="/jobs" className="hidden md:block text-sm text-brand-muted hover:text-brand-text transition-colors px-3 py-1.5">
                   Jobs
                 </Link>
@@ -558,6 +561,9 @@ export function Navbar() {
         {/* Mobile Menu */}
         {mobileOpen && (
           <div className="md:hidden border-t border-brand-border py-4 space-y-1">
+            <Link href="/hire" className="block px-4 py-3 text-sm text-brand-muted" onClick={() => setMobileOpen(false)}>
+              For businesses
+            </Link>
             <Link href="/browse" className="block px-4 py-3 text-sm text-brand-muted" onClick={() => setMobileOpen(false)}>
               Browse Talent
             </Link>
