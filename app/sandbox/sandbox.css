@@ -5,11 +5,11 @@
    marketplace. */
 
 .seatpage {
-  --paper: #fbfaf8; --surface: #fff; --sunken: #f4f2ee;
-  --ink: #16150f; --ink-2: #4a4740; --ink-3: #85817a;
-  --rule: #e3e0d9;
-  --accent: #0f6b45;
-  --warn: #a86a12; --bad: #a3341f;
+  --paper: #fbf9f8; --surface: #fff; --sunken: #f4f2ee;
+  --ink: #1a1418; --ink-2: #4d4549; --ink-3: #837b80;
+  --rule: #e6e0e2;
+  --accent: #a21caf;
+  --warn: #b45309; --bad: #b91c1c;
   --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
   --r: 8px; --r-lg: 12px;
 

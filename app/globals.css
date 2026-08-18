@@ -30,14 +30,16 @@
    descriptions.
    ───────────────────────────────────────────────────────────────────────── */
 :root {
-  --brand-bg: #fbfaf8;      /* paper, not white — a surface rather than a blank canvas */
+  --brand-bg: #fbf9f8;      /* paper, not white — a surface rather than a blank canvas */
   --brand-card: #ffffff;
-  --brand-border: #e3e0d9;
-  --brand-purple: #0f6b45;  /* the one accent: deep signal green */
-  --brand-pink: #0d5c3b;    /* the same green, deeper — for the rare two-stop */
-  --brand-orange: #a86a12;  /* ochre, kept for warnings only */
-  --brand-text: #16150f;    /* ink, not black */
-  --brand-muted: #85817a;
+  --brand-border: #e6e0e2;
+  /* Taken from the logo's own gradient stops, not invented. The mark runs
+     #a21caf -> #e879f9 and #f472b6 -> #f97316 -> #facc15. */
+  --brand-purple: #a21caf;  /* the one accent, and the deepest stop in the mark */
+  --brand-pink: #e879f9;
+  --brand-orange: #f97316;
+  --brand-text: #1a1418;    /* ink, warmed slightly toward the brand */
+  --brand-muted: #837b80;
 }
 
 * {
@@ -111,7 +113,7 @@ body {
 .btn-primary:hover {
   opacity: 0.9;
   transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(15, 107, 69, 0.18);
+  box-shadow: 0 4px 14px rgba(162, 28, 175, 0.20);
 }
 
 .btn-secondary {
@@ -130,7 +132,7 @@ body {
 
 .btn-secondary:hover {
   border-color: var(--brand-purple);
-  background: rgba(15, 107, 69, 0.07);
+  background: rgba(162, 28, 175, 0.07);
 }
 
 /* Card styles */
