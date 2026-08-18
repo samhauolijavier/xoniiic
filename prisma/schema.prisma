@@ -563,3 +563,36 @@ model ScenarioAttempt {
   @@unique([userId, scenarioKey])
   @@index([userId, passed])
 }
+
+// A resource is anything that hangs off a video: the scenario brief people
+// practise against, the spreadsheet they fill in, the recording itself. Videos
+// and documents share one table because the resources page shows them together
+// and sorting them apart in the UI is easier than joining two tables that
+// always appear side by side.
+enum ResourceKind {
+  video
+  document
+  scenario
+}
+
+model Resource {
+  id          String       @id @default(cuid())
+  title       String
+  slug        String       @unique
+  summary     String?
+  track       String // "GoHighLevel", "Media Buying", "Bookkeeping" — free text so a new track needs no migration
+  kind        ResourceKind
+  videoUrl    String? // YouTube watch URL, for kind = video
+  filePath    String? // Supabase storage path, for kind = document or scenario
+  fileName    String?
+  fileSize    Int?
+  // Drafts are the default. A resource going live the moment it uploads means a
+  // half-written scenario is public while it is being written.
+  published   Boolean      @default(false)
+  position    Int          @default(0)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([track, published, position])
+  @@index([published, createdAt])
+}

@@ -52,6 +52,7 @@ export default async function AdminPage() {
         </div>
         <div className="flex gap-3 flex-wrap">
           <Link href="/admin/seats" className="btn-secondary text-sm">Seat Desk</Link>
+          <Link href="/admin/resources" className="btn-secondary text-sm">Resources</Link>
           <Link href="/admin/ads" className="btn-secondary text-sm">Manage Ads</Link>
           <Link href="/admin/skills" className="btn-primary text-sm">Manage Skills</Link>
         </div>
