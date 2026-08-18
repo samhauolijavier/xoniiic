@@ -107,7 +107,7 @@ export function HeroSection() {
           {/* Heading */}
           <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black leading-tight mb-6">
             {normalWords}{' '}
-            <span className="gradient-text">{gradientWords}</span>
+            <span className="brand-text-gradient">{gradientWords}</span>
           </h1>
 
           <p className="text-lg sm:text-xl text-brand-muted max-w-2xl mx-auto mb-10 leading-relaxed">

@@ -172,7 +172,7 @@ export default async function Home() {
                 <h2 className="text-2xl sm:text-3xl font-black text-brand-text">
                   <span className="gradient-text">Top Talent</span> This Week
                 </h2>
-                <p className="text-brand-muted mt-1 text-sm sm:text-base">Most viewed freelancers in the last 7 days</p>
+                <p className="text-brand-muted mt-1 text-sm sm:text-base">Most viewed profiles in the last seven days.</p>
               </div>
               <Link href="/leaderboard" className="btn-secondary text-sm">
                 Full Leaderboard →
@@ -183,11 +183,16 @@ export default async function Home() {
                 const initials = entry.name
                   ? entry.name.split(' ').map((n) => n[0]).join('').toUpperCase()
                   : entry.username[0].toUpperCase()
-                const medalMap: Record<number, string> = { 1: '🥇', 2: '🥈', 3: '🥉' }
+                // Was medals for the top three and #4, #5 for the rest — two
+                // notations for one ranked list, in the same row. One notation,
+                // in monospace, and the top three carry the accent instead.
+                const isPodium = entry.rank <= 3
                 return (
                   <Link key={entry.id} href={`/talent/${entry.username}`}>
                     <div className="card p-4 text-center group hover-glow cursor-pointer">
-                      <div className="text-lg mb-2">{medalMap[entry.rank] || `#${entry.rank}`}</div>
+                      <div className={`font-mono text-sm mb-2 tabular-nums ${isPodium ? 'text-brand-purple font-semibold' : 'text-brand-muted'}`}>
+                        #{entry.rank}
+                      </div>
                       {entry.avatarUrl ? (
                         <div className="w-14 h-14 rounded-full overflow-hidden mx-auto mb-2 ring-2 ring-brand-purple/30">
                           <Image
@@ -299,7 +304,7 @@ export default async function Home() {
                 Recently{' '}
                 <span className="gradient-text">Joined</span>
               </h2>
-              <p className="text-brand-muted mt-1 text-sm sm:text-base">Fresh talent on the platform</p>
+              <p className="text-brand-muted mt-1 text-sm sm:text-base">The newest profiles on the platform.</p>
             </div>
             <Link href="/browse" className="btn-secondary text-sm">
               View All

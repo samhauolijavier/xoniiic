@@ -63,7 +63,23 @@ body {
 }
 
 /* Gradient text utility */
+/* Ninety-three headings used this, every one colouring its last word or two:
+   "Saved Profiles", "Company Profile", "Something went wrong", "Page Not
+   Found". One heading built that way is a flourish. Ninety-three is a pattern,
+   and it is the pattern people recognise as machine-written — the sentence
+   split in half and the second half painted.
+
+   Headings are ink now. Colour is for things you can act on and numbers you
+   can read, which is what makes it mean anything when it does appear. Changed
+   here rather than across ninety-three files: every one of those edits is a
+   chance to break a heading, and none of them would look different afterwards. */
 .gradient-text {
+  color: inherit;
+}
+
+/* The exception, used once. The hero headline is where the brand should
+   actually sing, and it echoes the mark sitting directly above it. */
+.brand-text-gradient {
   background: linear-gradient(135deg, var(--brand-purple), var(--brand-pink));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
