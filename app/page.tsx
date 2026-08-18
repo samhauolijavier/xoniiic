@@ -112,21 +112,18 @@ async function getTopTalent() {
 const howItWorks = [
   {
     step: '01',
-    title: 'Browse Talent',
-    description: 'Search through hundreds of skilled freelancers. Filter by category, skill, rate, and availability.',
-    icon: '🔍',
+    title: 'Make a profile',
+    description: 'Free, and it stays free. Skills, rate, availability, and how to reach you — no commission is ever taken from what you earn.',
   },
   {
     step: '02',
-    title: 'Review Profiles',
-    description: 'See detailed skill ratings, years of experience, English proficiency, and read their bio.',
-    icon: '📋',
+    title: 'Do the work',
+    description: 'Scenario briefs you can download and complete, on live systems rather than slides. What you finish goes on your profile as work you have actually done.',
   },
   {
     step: '03',
-    title: 'Contact Directly',
-    description: 'Send a message directly to the talent. No platform fees — connect via email and start working.',
-    icon: '💬',
+    title: 'Get contacted directly',
+    description: 'Businesses message you themselves. Nobody stands in the middle, and you agree your own rate with them.',
   },
 ]
 
@@ -250,7 +247,6 @@ export default async function Home() {
       ) : (
         <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="card p-10 text-center border-brand-purple/30 bg-brand-purple/[0.04]">
-            <div className="text-5xl mb-4">🌍</div>
             <h2 className="text-2xl sm:text-3xl font-black text-brand-text mb-3">
               Join <span className="gradient-text">Virtual Freaks</span>
             </h2>
@@ -283,11 +279,8 @@ export default async function Home() {
                 {i < howItWorks.length - 1 && (
                   <div className="hidden md:block absolute top-8 left-3/4 w-1/2 h-px bg-gradient-to-r from-brand-purple/50 to-transparent" />
                 )}
-                <div className="w-16 h-16 rounded-2xl bg-brand-purple flex items-center justify-center text-2xl mx-auto mb-4 shadow-glow-purple">
-                  {step.icon}
-                </div>
-                <div className="text-xs font-bold text-brand-purple mb-2 tracking-widest uppercase">
-                  Step {step.step}
+                <div className="font-mono text-3xl text-brand-purple mb-3 tabular-nums">
+                  {step.step}
                 </div>
                 <h3 className="text-xl font-bold text-brand-text mb-3">{step.title}</h3>
                 <p className="text-brand-muted text-sm leading-relaxed">{step.description}</p>
@@ -322,10 +315,10 @@ export default async function Home() {
         <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="card p-10 text-center border-brand-purple/30 bg-brand-purple/[0.04]">
             <h2 className="text-2xl sm:text-3xl font-black text-brand-text mb-3">
-              <span className="gradient-text">Be One of the First!</span>
+              <span className="gradient-text">Be one of the first</span>
             </h2>
             <p className="text-brand-muted max-w-lg mx-auto mb-6">
-              Be one of the first to join! Early members earn exclusive Founding Member badges 👑
+              The first members here are numbered, and the badge stays on the profile permanently.
             </p>
             <Link href="/register" className="inline-block btn-primary px-8 py-3 text-lg font-bold">
               Register Now
