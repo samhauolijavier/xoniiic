@@ -19,7 +19,6 @@ export async function GET(req: NextRequest) {
     const limit = 12
     const skip = (page - 1) * limit
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const where: any = {
       status: 'active',
       employer: { ...excludeDemoAccounts() },

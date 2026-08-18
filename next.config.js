@@ -1,10 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   eslint: {
-    ignoreDuringBuilds: true,
+    // Zero errors. Warnings still build, so this catches real mistakes without
+    // blocking a deploy over style.
+    ignoreDuringBuilds: false,
   },
   typescript: {
-    ignoreBuildErrors: true,
+    // The project typechecks clean. Leaving this off means a broken deploy
+    // fails here, in seconds, instead of in front of whoever just signed up.
+    ignoreBuildErrors: false,
   },
   images: {
     // Scoped deliberately. This was hostname: '**', which let anyone pass any

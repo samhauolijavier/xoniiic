@@ -1,0 +1,66 @@
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
+import { NextRequest, NextResponse } from 'next/server'
+import { db, withRetry } from '@/lib/db'
+import { normalizeReference, referenceLooksValid, SEAT_PRICE_PESOS } from '@/lib/sandbox'
+
+export const dynamic = 'force-dynamic'
+
+export async function POST(req: NextRequest) {
+  const session = await getServerSession(authOptions)
+  if (!session?.user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+  const me = session.user as { id: string }
+
+  const body = await req.json().catch(() => ({}))
+  const reference = normalizeReference(String(body.reference ?? ''))
+  const proofUrl = typeof body.proofUrl === 'string' && body.proofUrl ? body.proofUrl : null
+
+  if (!referenceLooksValid(reference)) {
+    return NextResponse.json({
+      error: 'That does not look like a GCash reference number. Check your receipt and type the reference exactly.',
+    }, { status: 400 })
+  }
+
+  try {
+    const alreadyOpen = await withRetry(() => db.gcashPayment.findFirst({
+      where: { userId: me.id, state: { in: ['awaiting_proof', 'awaiting_check'] } },
+      select: { reference: true, createdAt: true },
+    }))
+    if (alreadyOpen) {
+      return NextResponse.json({
+        error: `You already have a payment waiting to be checked (${alreadyOpen.reference}). We will get to it — no need to send again.`,
+      }, { status: 409 })
+    }
+
+    const payment = await withRetry(() => db.gcashPayment.create({
+      data: {
+        userId: me.id,
+        reference,
+        amount: SEAT_PRICE_PESOS,
+        proofUrl,
+        // A reference typed in means the money has moved; what is missing is a
+        // human confirming it landed. Only a claim with no reference at all
+        // sits at awaiting_proof.
+        state: proofUrl || reference ? 'awaiting_check' : 'awaiting_proof',
+      },
+      select: { id: true, reference: true, state: true, createdAt: true },
+    }))
+
+    return NextResponse.json({
+      message: 'Got it. Your seat opens as soon as we match the payment — usually the same day.',
+      payment,
+    })
+  } catch (error: unknown) {
+    // The reference is unique across every user on purpose: one payment cannot
+    // buy two seats, and a copied reference is caught here rather than by us.
+    if (error && typeof error === 'object' && 'code' in error && (error as { code: string }).code === 'P2002') {
+      return NextResponse.json({
+        error: 'That reference number has already been used. If you think this is a mistake, message us and we will sort it out.',
+      }, { status: 409 })
+    }
+    console.error('Sandbox claim error:', error)
+    return NextResponse.json({ error: 'Database connection failed. Please try again.' }, { status: 500 })
+  }
+}

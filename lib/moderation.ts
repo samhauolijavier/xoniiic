@@ -22,7 +22,9 @@ export async function moderateImage(buffer: Buffer, contentType: string): Promis
 
   try {
     const formData = new FormData()
-    const blob = new Blob([buffer], { type: contentType })
+    // Node's Buffer no longer satisfies BlobPart under current lib types.
+    // The view is a reference to the same memory, not a copy.
+    const blob = new Blob([new Uint8Array(buffer)], { type: contentType })
     formData.append('media', blob, 'image.jpg')
     formData.append('models', 'nudity-2.1,offensive2')
     formData.append('api_user', apiUser)
