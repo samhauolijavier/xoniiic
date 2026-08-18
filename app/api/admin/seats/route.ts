@@ -4,6 +4,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { db, withRetry } from '@/lib/db'
 import { grantSeat, daysBetween, SEAT_DAYS } from '@/lib/sandbox'
 import type { AccessSource } from '@prisma/client'
+import { notifyDiscord } from '@/lib/discord'
+import { sendSeatOpenEmail } from '@/lib/email'
 
 export const dynamic = 'force-dynamic'
 
@@ -127,6 +129,7 @@ export async function POST(req: NextRequest) {
       }))
 
       await qualifyReferral(payment.userId)
+      await announceSeat(payment.userId, access.expiresAt, 'paid')
 
       return NextResponse.json({ message: 'Seat opened.', expiresAt: access.expiresAt })
     }
@@ -171,6 +174,8 @@ export async function POST(req: NextRequest) {
         note: body.note ? String(body.note) : null,
         grantedBy: admin.id,
       })
+      await announceSeat(userId, access.expiresAt, source)
+
       return NextResponse.json({
         message: `${days} days added for ${person.name ?? 'them'}.`,
         expiresAt: access.expiresAt,
@@ -197,5 +202,50 @@ async function qualifyReferral(invitedId: string) {
     }))
   } catch (error) {
     console.error('Referral qualify error (seat still granted):', error)
+  }
+}
+
+/**
+ * Tells the two people who need to know: the learner, and whoever has to put
+ * them in the sandbox.
+ *
+ * Provisioning in GoHighLevel is still done by hand, so the Discord notice is
+ * the task itself rather than a heads-up — it carries the exact email address
+ * to add, because a VA who has to go looking for it is a VA who does it later.
+ *
+ * Neither send is allowed to undo a seat that was correctly granted, so both
+ * failures are logged and swallowed.
+ */
+async function announceSeat(userId: string, expiresAt: Date, source: AccessSource) {
+  try {
+    const person = await withRetry(() => db.user.findUnique({
+      where: { id: userId },
+      select: { name: true, email: true },
+    }))
+    if (!person) return
+
+    await sendSeatOpenEmail({
+      email: person.email,
+      name: person.name,
+      expiresAt,
+      // Flips to true once the GHL user is created automatically. Until then
+      // the email must not promise an invite nobody has sent yet.
+      provisioned: false,
+    })
+
+    await notifyDiscord({
+      title: 'Add to the sandbox',
+      description: 'Their seat is open. They need a GoHighLevel user in the shared sandbox sub-account.',
+      url: `${process.env.NEXT_PUBLIC_APP_URL ?? 'https://virtualfreaks.co'}/admin/seats`,
+      tone: 'good',
+      fields: [
+        { name: 'Who', value: person.name || 'No name yet', inline: true },
+        { name: 'Email to add', value: person.email, inline: true },
+        { name: 'Seat', value: source, inline: true },
+        { name: 'Runs until', value: expiresAt.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }), inline: true },
+      ],
+    })
+  } catch (error) {
+    console.error('Seat announcement failed (seat still granted):', error)
   }
 }

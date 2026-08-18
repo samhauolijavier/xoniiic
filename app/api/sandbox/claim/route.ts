@@ -3,6 +3,7 @@ import { authOptions } from '@/lib/auth'
 import { NextRequest, NextResponse } from 'next/server'
 import { db, withRetry } from '@/lib/db'
 import { normalizeReference, referenceLooksValid, SEAT_PRICE_PESOS } from '@/lib/sandbox'
+import { notifyDiscord } from '@/lib/discord'
 
 export const dynamic = 'force-dynamic'
 
@@ -47,6 +48,27 @@ export async function POST(req: NextRequest) {
       },
       select: { id: true, reference: true, state: true, createdAt: true },
     }))
+
+    // Awaited, not fired and forgotten: on serverless the function can be torn
+    // down the moment the response goes out, which kills a floating promise and
+    // loses the notice silently. It times out at four seconds and cannot throw,
+    // so the worst case is a claim that lands without a ping.
+    const claimant = await withRetry(() => db.user.findUnique({
+      where: { id: me.id },
+      select: { name: true, email: true },
+    }))
+    await notifyDiscord({
+      title: 'Payment to check',
+      description: 'Someone has paid for a practice account and is waiting on us.',
+      url: `${process.env.NEXT_PUBLIC_APP_URL ?? 'https://virtualfreaks.co'}/admin/seats`,
+      tone: 'action',
+      fields: [
+        { name: 'Who', value: claimant?.name || 'No name yet', inline: true },
+        { name: 'Email', value: claimant?.email || 'unknown', inline: true },
+        { name: 'GCash reference', value: reference, inline: true },
+        { name: 'Amount', value: `PHP ${SEAT_PRICE_PESOS}`, inline: true },
+      ],
+    })
 
     return NextResponse.json({
       message: 'Got it. Your seat opens as soon as we match the payment — usually the same day.',
