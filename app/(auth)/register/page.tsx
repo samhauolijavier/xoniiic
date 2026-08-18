@@ -13,6 +13,8 @@ export default function RegisterPage() {
   const searchParams = useSearchParams()
   const initialRole = (searchParams.get('role') as Role) || 'seeker'
   const redirectUrl = searchParams.get('redirect') || null
+  // Carried from a member's invite link: virtualfreaks.co/register?ref=CODE
+  const referralCode = searchParams.get('ref')
 
   const [formData, setFormData] = useState({
     name: '',
@@ -50,6 +52,7 @@ export default function RegisterPage() {
           email: formData.email,
           password: formData.password,
           role: formData.role,
+          ref: referralCode,
         }),
       })
 

@@ -51,6 +51,7 @@ export default async function AdminPage() {
           <p className="text-brand-muted mt-1">Platform overview and management</p>
         </div>
         <div className="flex gap-3 flex-wrap">
+          <Link href="/admin/seats" className="btn-secondary text-sm">Seat Desk</Link>
           <Link href="/admin/ads" className="btn-secondary text-sm">Manage Ads</Link>
           <Link href="/admin/skills" className="btn-primary text-sm">Manage Skills</Link>
         </div>

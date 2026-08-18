@@ -17,7 +17,7 @@ export async function GET() {
     const [status, referralCode, gcashNumber, referrals] = await Promise.all([
       seatStatus(me.id),
       referralCodeFor(me.id),
-      withRetry(() => db.siteSetting.findUnique({ where: { key: 'gcashNumber' }, select: { value: true } })),
+      withRetry(() => db.siteSetting.findUnique({ where: { key: 'private.gcashNumber' }, select: { value: true } })),
       withRetry(() => db.referral.count({ where: { referrerId: me.id, qualified: true } })),
     ])
 

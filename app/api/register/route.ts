@@ -31,7 +31,7 @@ async function generateUniqueUsername(baseName: string): Promise<string> {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
-    const { name, email, password, role } = body
+    const { name, email, password, role, ref } = body
 
     if (!name || !email || !password || !role) {
       return NextResponse.json({ error: 'All fields are required' }, { status: 400 })
@@ -80,6 +80,26 @@ export async function POST(req: NextRequest) {
           newEmployer: true,
         },
       })
+    }
+
+    // Credit whoever brought them. Wrapped because a referral is a bonus, not a
+    // precondition — a bad or stale code must never cost someone their account.
+    if (typeof ref === 'string' && ref.trim()) {
+      try {
+        const referrer = await db.user.findUnique({
+          where: { referralCode: ref.trim().toUpperCase() },
+          select: { id: true },
+        })
+        // Self-referral is the obvious way to farm free months, so it is the one
+        // case checked here rather than left to whoever reads the desk.
+        if (referrer && referrer.id !== user.id) {
+          await db.referral.create({
+            data: { referrerId: referrer.id, invitedId: user.id },
+          })
+        }
+      } catch (error) {
+        console.error('Referral capture failed (account still created):', error)
+      }
     }
 
     // Auto-assign founding member number (11-250, skip 1-10 reserved for admin)

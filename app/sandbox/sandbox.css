@@ -1,0 +1,86 @@
+/* Scoped to .seatpage on purpose.
+   The Operator palette is not yet the site's palette — rolling it across every
+   page is a bigger job than launch week allows. Scoping it here means this page
+   can look finished today without fighting globals.css or half-restyling the
+   marketplace. */
+
+.seatpage {
+  --paper: #fbfaf8; --surface: #fff; --sunken: #f4f2ee;
+  --ink: #16150f; --ink-2: #4a4740; --ink-3: #85817a;
+  --rule: #e3e0d9;
+  --accent: #0f6b45;
+  --warn: #a86a12; --bad: #a3341f;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+  --r: 8px; --r-lg: 12px;
+
+  max-width: 940px; margin: 0 auto; padding: 32px 20px 64px;
+  color: var(--ink);
+}
+.seatpage h1 { font-size: 24px; font-weight: 640; letter-spacing: -.02em; margin: 0 0 4px; color: var(--ink); }
+.seatpage .lede { font-size: 14px; color: var(--ink-2); margin: 0 0 24px; }
+
+.seat { background: var(--surface); border: 1px solid var(--rule); border-radius: var(--r-lg); padding: 20px; }
+.seat.soon { border-color: var(--warn); }
+.seat.now  { border-color: var(--bad); }
+.seat.none { border-style: dashed; }
+
+.seat-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+.seat-head h2 { font-size: 17px; font-weight: 620; letter-spacing: -.02em; margin: 0; color: var(--ink); }
+.seat-sub { font-size: 13px; color: var(--ink-2); margin: 3px 0 0; }
+.seat-days { text-align: right; font-family: var(--mono); flex: none; }
+.seat-days .n { font-size: 30px; font-weight: 650; letter-spacing: -.03em; line-height: 1; }
+.seat-days .u { display: block; font-size: 11px; color: var(--ink-3); margin-top: 3px; }
+.seat.soon .seat-days .n { color: var(--warn); }
+.seat.now  .seat-days .n { color: var(--bad); }
+
+.meter { height: 4px; background: var(--sunken); border-radius: 100px; overflow: hidden; margin: 14px 0 12px; }
+.meter i { display: block; height: 100%; background: var(--accent); }
+.seat.soon .meter i { background: var(--warn); }
+.seat.now  .meter i { background: var(--bad); }
+
+/* The sentence that stops anyone fearing for the wrong thing. */
+.seat-scope { font-size: 13px; color: var(--ink-2); line-height: 1.55; margin: 0 0 18px;
+  padding: 11px 13px; background: var(--sunken); border: 1px solid var(--rule); border-radius: var(--r); }
+.seat-scope strong { color: var(--ink); }
+
+.ways { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.way { border: 1px solid var(--rule); border-radius: var(--r); padding: 13px; background: var(--paper); }
+.way-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 6px; }
+.way-top strong { font-size: 13px; font-weight: 590; }
+.plus { font-family: var(--mono); font-size: 11px; color: var(--accent); white-space: nowrap; }
+.way p { font-size: 12px; color: var(--ink-2); line-height: 1.5; margin: 0 0 10px; }
+
+.sbtn { display: inline-block; font: inherit; font-size: 13px; font-weight: 560; cursor: pointer;
+  border-radius: var(--r); padding: 8px 14px; border: 1px solid var(--accent);
+  background: var(--accent); color: #fff; text-decoration: none; }
+.sbtn:disabled { opacity: .55; cursor: not-allowed; }
+.sbtn.ghost { background: transparent; color: var(--ink); border-color: var(--rule); }
+
+.ref-row { display: flex; gap: 6px; align-items: center; }
+.ref-row code { font-family: var(--mono); font-size: 11px; background: var(--sunken);
+  border: 1px solid var(--rule); border-radius: 6px; padding: 6px 8px; flex: 1;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.claim { margin-top: 18px; border: 1px solid var(--rule); border-radius: var(--r-lg);
+  background: var(--surface); padding: 20px; }
+.claim h2 { font-size: 15px; font-weight: 620; margin: 0 0 10px; color: var(--ink); }
+.steps { margin: 0 0 16px; padding-left: 18px; font-size: 13px; color: var(--ink-2); line-height: 1.7; }
+.steps code { font-family: var(--mono); font-size: 13px; color: var(--ink); background: var(--sunken);
+  padding: 1px 5px; border-radius: 4px; }
+.claim-row { display: flex; gap: 8px; align-items: flex-start; flex-wrap: wrap; }
+.claim input { font: inherit; font-family: var(--mono); font-size: 14px; padding: 9px 11px;
+  border: 1px solid var(--rule); border-radius: var(--r); background: var(--paper);
+  color: var(--ink); flex: 1; min-width: 200px; }
+.claim input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+.note { font-size: 12px; line-height: 1.55; margin: 10px 0 0; }
+.note.bad { color: var(--bad); }
+.note.good { color: var(--accent); }
+.note.quiet { color: var(--ink-3); }
+
+.pending { display: flex; gap: 10px; align-items: baseline; font-size: 13px; color: var(--ink-2);
+  background: var(--sunken); border: 1px solid var(--rule); border-radius: var(--r); padding: 12px 14px; }
+.pending code { font-family: var(--mono); color: var(--ink); }
+
+@media (max-width: 760px) {
+  .ways { grid-template-columns: 1fr; }
+}
