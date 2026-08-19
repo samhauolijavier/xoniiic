@@ -103,7 +103,7 @@ export default async function HirePage() {
           <HireSearch />
 
           <p className="text-sm text-brand-muted mt-4">
-            Results open after a free account — a minute, no card. Or{' '}
+            Results open with a free account — a minute, no card, nothing to pay. Or{' '}
             <Link href="/post-a-need" className="text-brand-purple underline underline-offset-2">post what you need</Link>{' '}
             and let people come to you.
           </p>
@@ -165,10 +165,14 @@ export default async function HirePage() {
       <Testimonials />
 
       <section className="max-w-4xl mx-auto px-5 py-16 text-center">
-        <h2 className="text-2xl font-bold tracking-tight mb-3">Have a look</h2>
+        <h2 className="text-2xl font-bold tracking-tight mb-3">Make a free account</h2>
         <p className="text-brand-muted leading-relaxed max-w-lg mx-auto mb-7">
-          A free account takes a minute and lets you browse everyone here. No subscription, no
-          card, and no commission on anything you agree.
+          {/* The number is read from the database and only appears once it helps.
+              Below that it says "every profile", which is true at any size and
+              never has to be revised. */}
+          It takes a minute and opens {seekerCount >= 100 ? `all ${seekerCount} profiles` : 'every profile'}.
+          Nothing here costs money — no card, no subscription, and no commission on whatever you
+          agree with the person you hire.
         </p>
         <div className="flex flex-wrap gap-3 justify-center">
           <Link href="/browse" className="btn-primary">Browse talent</Link>

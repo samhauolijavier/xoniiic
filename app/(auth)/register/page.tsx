@@ -107,7 +107,7 @@ export default function RegisterPage() {
           <h1 className="text-2xl font-bold text-brand-text">Create your account</h1>
           <p className="text-brand-muted mt-1">
             {redirectUrl === '/browse'
-              ? 'Create a free account to browse talent'
+              ? 'Free to join, free to browse, free to hire. No card, no commission.'
               : 'Join the remote talent marketplace'}
           </p>
         </div>
