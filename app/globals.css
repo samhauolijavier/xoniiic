@@ -112,12 +112,17 @@ body {
 }
 
 /* Button styles */
+/* Solid, not gradient.
+   A gradient-filled pill is the most-copied button on the web right now, and
+   leaving it here undid half of what stripping the gradients elsewhere
+   achieved. Flat accent, a tighter corner than a pill, and slightly less
+   padding — buttons that look like controls rather than badges. */
 .btn-primary {
-  background: linear-gradient(135deg, var(--brand-purple), var(--brand-pink));
+  background: var(--brand-purple);
   color: white;
-  padding: 0.625rem 1.5rem;
-  border-radius: 0.75rem;
-  font-weight: 600;
+  padding: 0.575rem 1.25rem;
+  border-radius: 0.5rem;
+  font-weight: 590;
   transition: all 0.2s ease;
   border: none;
   cursor: pointer;
@@ -127,17 +132,16 @@ body {
 }
 
 .btn-primary:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(162, 28, 175, 0.20);
+  background: #8b1799;
+  box-shadow: 0 2px 8px rgba(162, 28, 175, 0.22);
 }
 
 .btn-secondary {
-  background: transparent;
+  background: var(--brand-card);
   color: var(--brand-text);
-  padding: 0.625rem 1.5rem;
-  border-radius: 0.75rem;
-  font-weight: 600;
+  padding: 0.575rem 1.25rem;
+  border-radius: 0.5rem;
+  font-weight: 590;
   transition: all 0.2s ease;
   border: 1px solid var(--brand-border);
   cursor: pointer;

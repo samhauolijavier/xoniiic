@@ -16,6 +16,8 @@ export const dynamic = 'force-dynamic'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { db, withRetry } from '@/lib/db'
+import { HireSearch } from '@/components/home/HireSearch'
+import { Testimonials } from '@/components/home/Testimonials'
 
 export const metadata: Metadata = {
   title: 'Hire remote talent — free, no commission',
@@ -97,10 +99,13 @@ export default async function HirePage() {
             Browse skilled virtual assistants and remote professionals, message them directly, and
             agree your own rate. No commission, no subscription, no one standing in the middle.
           </p>
-          <div className="flex flex-wrap gap-3">
-            <Link href="/browse" className="btn-primary">Browse talent</Link>
-            <Link href="/post-a-need" className="btn-secondary">Post what you need</Link>
-          </div>
+          {/* One action, not two. Somebody here already knows what they need. */}
+          <HireSearch />
+
+          <p className="text-sm text-brand-muted mt-5">
+            Or <Link href="/post-a-need" className="text-brand-purple underline underline-offset-2">post what you need</Link>{' '}
+            and let people come to you.
+          </p>
           {seekerCount >= 10 && (
             <p className="text-sm text-brand-muted mt-5">
               {seekerCount} profiles on the platform today.
@@ -155,6 +160,8 @@ export default async function HirePage() {
           </p>
         </div>
       </section>
+
+      <Testimonials />
 
       <section className="max-w-4xl mx-auto px-5 py-16 text-center">
         <h2 className="text-2xl font-bold tracking-tight mb-3">Have a look before you commit</h2>

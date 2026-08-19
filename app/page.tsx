@@ -19,6 +19,7 @@ import { authOptions } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import { HeroSection } from '@/components/home/HeroSection'
 import { CategoryGrid } from '@/components/home/CategoryGrid'
+import { Testimonials } from '@/components/home/Testimonials'
 import { ProfileCard } from '@/components/seeker/ProfileCard'
 import { TrendingSkills } from '@/components/ui/TrendingSkills'
 import { db } from '@/lib/db'
@@ -162,6 +163,9 @@ export default async function Home() {
       </section>
 
       <CategoryGrid />
+
+      {/* Renders nothing until somebody has actually vouched. */}
+      <Testimonials />
 
       {/* Top Talent This Week — only show with 3+ entries so it doesn't look sparse */}
       {topTalent.length >= 3 && (

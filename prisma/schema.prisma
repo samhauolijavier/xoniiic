@@ -51,6 +51,10 @@ model User {
   sponsorshipsGiven        Sponsorship[]             @relation("SponsorshipsGiven")
   referralsMade            Referral[]                @relation("ReferralsMade")
   scenarioAttempts         ScenarioAttempt[]
+  testimonials             Testimonial[]
+  // Earned by having a testimonial approved. Employers filter on it,
+  // which is what makes it worth having rather than decorative.
+  placedBadgeAt            DateTime?
   referralCode             String?                   @unique
 }
 
@@ -595,4 +599,41 @@ model Resource {
 
   @@index([track, published, position])
   @@index([published, createdAt])
+}
+
+// A testimonial from somebody Spencer actually placed. This is the platform's
+// answer to the one question a business owner asks first — is this real — and
+// it is the reason the reward for writing one is generous rather than symbolic.
+enum TestimonialState {
+  pending
+  approved
+  rejected
+}
+
+model Testimonial {
+  id           String           @id @default(cuid())
+  userId       String
+  body         String
+  // What they do and who for. Both optional: some placements are under NDA and
+  // a testimonial with no company still beats no testimonial at all.
+  roleTitle    String?
+  company      String?
+  // Shown as "worked with us since March 2026" rather than a star rating —
+  // duration is harder to fake and means more to somebody deciding to hire.
+  placedSince  DateTime?
+  consentPublic Boolean         @default(true)
+  state        TestimonialState @default(pending)
+  featured     Boolean          @default(false)
+  reviewNote   String?
+  reviewedBy   String?
+  reviewedAt   DateTime?
+  // The reward is granted exactly once, on first approval. Re-approving an
+  // edited testimonial must not pay out a second month.
+  rewardedAt   DateTime?
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  user         User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([state, createdAt])
+  @@index([userId])
 }

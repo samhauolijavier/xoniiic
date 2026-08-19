@@ -14,6 +14,7 @@ import { AnalyticsSection } from './AnalyticsSection'
 import { ActivityFeedWidget } from '@/components/ui/ActivityFeedWidget'
 import { isMonetizationEnabled } from '@/lib/monetization'
 import { ContactRequestCard } from './ContactRequestCard'
+import { TestimonialCard } from './TestimonialCard'
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions)
@@ -60,6 +61,8 @@ export default async function DashboardPage() {
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       {/* Email Verification Banner — hibernated, enable when SES is ready */}
+
+      <TestimonialCard />
 
       {/* Header */}
       <div className="flex items-start justify-between mb-8 flex-wrap gap-4">
