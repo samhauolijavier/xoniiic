@@ -102,8 +102,9 @@ export default async function HirePage() {
           {/* One action, not two. Somebody here already knows what they need. */}
           <HireSearch />
 
-          <p className="text-sm text-brand-muted mt-5">
-            Or <Link href="/post-a-need" className="text-brand-purple underline underline-offset-2">post what you need</Link>{' '}
+          <p className="text-sm text-brand-muted mt-4">
+            Results open after a free account — a minute, no card. Or{' '}
+            <Link href="/post-a-need" className="text-brand-purple underline underline-offset-2">post what you need</Link>{' '}
             and let people come to you.
           </p>
           {seekerCount >= 10 && (
@@ -164,10 +165,10 @@ export default async function HirePage() {
       <Testimonials />
 
       <section className="max-w-4xl mx-auto px-5 py-16 text-center">
-        <h2 className="text-2xl font-bold tracking-tight mb-3">Have a look before you commit</h2>
+        <h2 className="text-2xl font-bold tracking-tight mb-3">Have a look</h2>
         <p className="text-brand-muted leading-relaxed max-w-lg mx-auto mb-7">
-          Browsing needs no account. Make one when you want to message somebody — it is free, and
-          it stays free.
+          A free account takes a minute and lets you browse everyone here. No subscription, no
+          card, and no commission on anything you agree.
         </p>
         <div className="flex flex-wrap gap-3 justify-center">
           <Link href="/browse" className="btn-primary">Browse talent</Link>
