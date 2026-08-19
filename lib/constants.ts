@@ -23,3 +23,20 @@ export function excludeDemoAccounts() {
     ]
   }
 }
+
+/**
+ * Who may appear in a public listing: browse, the homepage, the leaderboard.
+ *
+ * Active, not a demo account, and email confirmed. The last one is what makes
+ * the promise on the dashboard banner true — an unconfirmed address means the
+ * profile is not shown to employers yet. Six queries used to spell this out
+ * separately, which is six chances for one of them to quietly disagree with the
+ * other five about what "public" means.
+ */
+export function publiclyListable() {
+  return {
+    active: true,
+    emailVerified: true,
+    ...excludeDemoAccounts(),
+  }
+}

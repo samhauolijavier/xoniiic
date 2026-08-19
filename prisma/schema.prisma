@@ -19,6 +19,14 @@ model User {
   emailVerified            Boolean                   @default(false)
   verificationToken        String?                   @unique
   verificationTokenExpiry  DateTime?
+  // A six-digit code is a million guesses, and a day to make them. Counting
+  // failures is what turns it from theatre into a lock.
+  verificationAttempts     Int                       @default(0)
+  // Consent to marketing, kept separate from the terms checkbox on purpose:
+  // bundled consent is not consent under GDPR, PECR, or CASL, and users here
+  // will not all be in one country. The timestamp is the evidence it was given.
+  marketingOptIn           Boolean                   @default(false)
+  marketingOptInAt         DateTime?
   premium                  Boolean                   @default(false)
   premiumSince             DateTime?
   premiumUntil             DateTime?

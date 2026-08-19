@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 }
 
 import { db } from '@/lib/db'
-import { excludeDemoAccounts } from '@/lib/constants'
+import { excludeDemoAccounts, publiclyListable } from '@/lib/constants'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Badge } from '@/components/ui/Badge'
@@ -36,7 +36,7 @@ async function getLeaderboard(category?: string) {
   const useSparseData = profileViewCounts.length < 3
 
   const whereClause: Record<string, unknown> = {
-    user: { active: true, ...excludeDemoAccounts() },
+    user: publiclyListable(),
   }
   if (category && category !== 'All') {
     whereClause.skills = { some: { skill: { category } } }

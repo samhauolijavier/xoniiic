@@ -23,6 +23,11 @@ export default function RegisterPage() {
     confirmPassword: '',
     role: initialRole as Role,
   })
+  // Its own piece of state, unticked, and never bundled into the terms
+  // checkbox. Consent that arrives as a side effect of agreeing to something
+  // else is not consent under GDPR, PECR, or CASL — and users here will not all
+  // be in one country.
+  const [marketingOptIn, setMarketingOptIn] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -53,6 +58,7 @@ export default function RegisterPage() {
           password: formData.password,
           role: formData.role,
           ref: referralCode,
+          marketingOptIn,
         }),
       })
 
@@ -223,6 +229,20 @@ export default function RegisterPage() {
                 className="input-field"
               />
             </div>
+
+            <label className="flex items-start gap-2.5 text-sm text-brand-muted leading-relaxed mt-1">
+              <input
+                type="checkbox"
+                className="mt-1 flex-none"
+                checked={marketingOptIn}
+                onChange={e => setMarketingOptIn(e.target.checked)}
+              />
+              <span>
+                Email me occasionally about new scenarios, tools worth knowing about, and
+                openings that fit. <span className="text-brand-text">Optional</span> &mdash; you can
+                stop it any time, and it changes nothing about your account.
+              </span>
+            </label>
 
             <button
               type="submit"

@@ -23,7 +23,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import { isMonetizationEnabled } from '@/lib/monetization'
-import { excludeDemoAccounts } from '@/lib/constants'
+import { excludeDemoAccounts, publiclyListable } from '@/lib/constants'
 
 interface SearchParams {
   page?: string
@@ -43,7 +43,7 @@ async function getSeekers(params: SearchParams) {
   const skip = (page - 1) * limit
 
   const where: Prisma.SeekerProfileWhereInput = {
-    user: { active: true, ...excludeDemoAccounts() },
+    user: publiclyListable(),
     openToWork: true,
   }
 

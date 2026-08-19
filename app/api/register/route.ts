@@ -31,7 +31,7 @@ async function generateUniqueUsername(baseName: string): Promise<string> {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
-    const { name, email, password, role, ref } = body
+    const { name, email, password, role, ref, marketingOptIn } = body
 
     if (!name || !email || !password || !role) {
       return NextResponse.json({ error: 'All fields are required' }, { status: 400 })
@@ -58,6 +58,11 @@ export async function POST(req: NextRequest) {
         email,
         password: hashedPassword,
         role,
+        // Opt-in only, and only if the box was actually ticked. The timestamp
+        // is the evidence that it was, which is the thing that matters if
+        // anybody ever asks.
+        marketingOptIn: marketingOptIn === true,
+        marketingOptInAt: marketingOptIn === true ? new Date() : null,
       },
     })
 
@@ -129,16 +134,26 @@ export async function POST(req: NextRequest) {
       console.error('Founding member assignment error:', e)
     }
 
-    // Email verification hibernated — uncomment when SES is ready
-    // const verificationCode = Math.floor(100000 + Math.random() * 900000).toString()
-    // await db.user.update({
-    //   where: { id: user.id },
-    //   data: {
-    //     verificationToken: verificationCode,
-    //     verificationTokenExpiry: new Date(Date.now() + 24 * 60 * 60 * 1000),
-    //   },
-    // })
-    // await sendVerificationEmail(email, verificationCode, name)
+    // Live now that Resend is verified. This was hibernated waiting on SES,
+    // which never happened — meaning every address collected so far was taken
+    // on trust. Wrapped because a mail failure must not cost somebody the
+    // account they just made; they can ask for a new code from the dashboard.
+    try {
+      const verificationCode = Math.floor(100000 + Math.random() * 900000).toString()
+      await db.user.update({
+        where: { id: user.id },
+        data: {
+          verificationToken: verificationCode,
+          // One hour, not twenty-four. A six-digit code is a million guesses,
+          // and the shorter the window the less use a guessing run is.
+          verificationTokenExpiry: new Date(Date.now() + 60 * 60 * 1000),
+          verificationAttempts: 0,
+        },
+      })
+      await sendVerificationEmail(email, verificationCode, name)
+    } catch (e) {
+      console.error('Verification send failed (account still created):', e)
+    }
 
     // Log activity event
     const activityType = role === 'seeker' ? 'new_seeker' : 'new_employer'
@@ -146,7 +161,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       message: 'Account created successfully',
-      requiresVerification: false,
+      requiresVerification: true,
       user: { id: user.id, email: user.email, role: user.role, username, foundingMemberNumber },
     }, { status: 201 })
   } catch (error) {

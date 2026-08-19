@@ -23,13 +23,13 @@ import { Testimonials } from '@/components/home/Testimonials'
 import { ProfileCard } from '@/components/seeker/ProfileCard'
 import { TrendingSkills } from '@/components/ui/TrendingSkills'
 import { db } from '@/lib/db'
-import { excludeDemoAccounts } from '@/lib/constants'
+import { excludeDemoAccounts, publiclyListable } from '@/lib/constants'
 import Link from 'next/link'
 import Image from 'next/image'
 
 async function getFeaturedSeekers() {
   return db.seekerProfile.findMany({
-    where: { featured: true, openToWork: true, user: { active: true, ...excludeDemoAccounts() } },
+    where: { featured: true, openToWork: true, user: publiclyListable() },
     take: 6,
     orderBy: { profileViews: 'desc' },
     include: {
@@ -41,7 +41,7 @@ async function getFeaturedSeekers() {
 
 async function getRecentSeekers() {
   return db.seekerProfile.findMany({
-    where: { openToWork: true, user: { active: true, ...excludeDemoAccounts() } },
+    where: { openToWork: true, user: publiclyListable() },
     take: 4,
     orderBy: { createdAt: 'desc' },
     include: {
@@ -65,7 +65,7 @@ async function getTopTalent() {
 
   if (useSparseData) {
     return db.seekerProfile.findMany({
-      where: { openToWork: true, user: { active: true, ...excludeDemoAccounts() } },
+      where: { openToWork: true, user: publiclyListable() },
       orderBy: { profileViews: 'desc' },
       take: 5,
       include: {
@@ -90,7 +90,7 @@ async function getTopTalent() {
   const ids = profileViewCounts.slice(0, 5).map((v) => v.seekerProfileId)
   const viewCountMap = new Map(profileViewCounts.map((v) => [v.seekerProfileId, v._count.id]))
   const profiles = await db.seekerProfile.findMany({
-    where: { id: { in: ids }, openToWork: true, user: { active: true, ...excludeDemoAccounts() } },
+    where: { id: { in: ids }, openToWork: true, user: publiclyListable() },
     include: {
       user: { select: { id: true, name: true, premium: true } },
       skills: { include: { skill: true }, orderBy: { rating: 'desc' }, take: 1 },
