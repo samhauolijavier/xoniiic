@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useState, useEffect, useRef, useCallback, Suspense } from 'react'
@@ -246,15 +247,36 @@ function MessagesContent() {
 
           <div className="flex-1 overflow-y-auto">
             {conversations.length === 0 ? (
-              <div className="p-6 text-center">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-brand-border/50 flex items-center justify-center">
-                  <svg className="w-8 h-8 text-brand-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25z" />
-                  </svg>
-                </div>
-                <p className="text-brand-muted text-sm">No conversations yet.</p>
-                <p className="text-brand-muted text-xs mt-1">Browse talent or job posts to start connecting!</p>
+              /* An empty inbox is the most honest page on the site, and the
+                 easiest to get wrong. "No conversations yet" teaches somebody
+                 that nothing happens here. Saying what will land, and what
+                 makes it likelier, turns a dead screen into the one nudge that
+                 actually pays off for them. */
+              <div className="p-6">
+                {(session?.user as { role?: string } | undefined)?.role === 'employer' ? (
+                  <>
+                    <p className="font-semibold text-sm mb-1">No conversations yet</p>
+                    <p className="text-brand-muted text-sm leading-relaxed mb-4">
+                      Message anyone on the platform directly — no introduction fee, no account
+                      manager, and nothing taken from what you agree with them.
+                    </p>
+                    <Link href="/browse" className="btn-secondary text-sm">Browse talent</Link>
+                  </>
+                ) : (
+                  <>
+                    <p className="font-semibold text-sm mb-1">This is where employers reach you</p>
+                    <p className="text-brand-muted text-sm leading-relaxed mb-3">
+                      Messages arrive here when somebody wants to hire. Nothing yet — the platform
+                      is young and we are bringing businesses in now.
+                    </p>
+                    <p className="text-brand-muted text-sm leading-relaxed mb-4">
+                      What decides whether you get one: a profile with a bio, three or more skills,
+                      and something they can actually look at. Employers skim, and the thin
+                      profiles get skipped.
+                    </p>
+                    <Link href="/dashboard" className="btn-secondary text-sm">Finish your profile</Link>
+                  </>
+                )}
               </div>
             ) : (
               conversations.map((conv) => {
