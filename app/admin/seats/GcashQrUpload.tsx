@@ -11,6 +11,8 @@ import { useState, useEffect } from 'react'
 
 export function GcashQrUpload() {
   const [url, setUrl] = useState<string | null>(null)
+  const [price, setPrice] = useState('')
+  const [savingPrice, setSavingPrice] = useState(false)
   const [busy, setBusy] = useState(false)
   const [note, setNote] = useState('')
   const [error, setError] = useState('')
@@ -18,7 +20,10 @@ export function GcashQrUpload() {
   useEffect(() => {
     fetch('/api/site-settings')
       .then(r => r.json())
-      .then(d => setUrl(d.gcashQrUrl ?? null))
+      .then(d => {
+        setUrl(d.gcashQrUrl ?? null)
+        setPrice(d.seatPricePesos ?? '')
+      })
       .catch(() => {})
   }, [])
 
@@ -53,9 +58,42 @@ export function GcashQrUpload() {
     }
   }
 
+  async function savePrice(e: React.FormEvent) {
+    e.preventDefault()
+    setSavingPrice(true); setNote(''); setError('')
+    try {
+      const res = await fetch('/api/site-settings', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ seatPricePesos: String(Number(price)) }),
+      })
+      if (!res.ok) { setError('Could not save the price.'); return }
+      setNote(`Price is now ₱${Number(price)}. Upload a matching QR if the amount is printed on it.`)
+    } catch {
+      setError('Could not reach the server.')
+    } finally {
+      setSavingPrice(false)
+    }
+  }
+
   return (
     <section className="panel">
-      <div className="panel-head"><h2>GCash QR</h2></div>
+      <div className="panel-head"><h2>Payment</h2></div>
+
+      <form onSubmit={savePrice} style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap', marginBottom: 14 }}>
+        <label style={{ fontSize: 13 }} htmlFor="seat-price">Price per 30 days</label>
+        <span style={{ fontFamily: 'var(--mono)' }}>₱</span>
+        <input
+          id="seat-price" value={price} onChange={e => setPrice(e.target.value)}
+          inputMode="numeric" placeholder="129"
+          style={{ width: 90, fontFamily: 'var(--mono)', padding: '6px 9px',
+                   border: '1px solid var(--rule)', borderRadius: 7, background: 'var(--paper)' }}
+        />
+        <button className="dbtn" type="submit" disabled={savingPrice || !Number(price)}>
+          {savingPrice ? '…' : 'Save price'}
+        </button>
+        <span className="quiet">Applies everywhere at once — the seat page, the claim, and the Discord ping.</span>
+      </form>
       <p className="quiet pad">
         Shown on the practice account page beside the number. Most people would rather scan than
         type thirteen digits, and a mistyped reference is a payment somebody has to chase.

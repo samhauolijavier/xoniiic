@@ -5,7 +5,13 @@ import type { AccessSource, SandboxAccess } from '@prisma/client'
 // pesos, a passed scenario, someone else's generosity. The source changes who
 // owes what; it never changes how long the seat lasts.
 export const SEAT_DAYS = 30
-export const SEAT_PRICE_PESOS = 100
+
+// The default, not the authority. The live figure is a site setting so the
+// price can move without a deploy — it has already moved once, and it is tied
+// to a QR image with the amount printed on it, so the two need to be changeable
+// together and at the same moment.
+export const SEAT_PRICE_PESOS = 129
+export const SEAT_PRICE_SETTING = 'seatPricePesos'
 
 const DAY = 24 * 60 * 60 * 1000
 
@@ -151,4 +157,23 @@ export async function referralCodeFor(userId: string): Promise<string> {
     return code
   }
   throw new Error('Could not allocate a referral code')
+}
+
+/**
+ * What a seat costs today. Falls back to the default if nothing is set or the
+ * stored value is nonsense — a broken setting must never show someone a price
+ * of zero, or NaN, on a payment page.
+ */
+export async function seatPrice(): Promise<number> {
+  try {
+    const setting = await withRetry(() => db.siteSetting.findUnique({
+      where: { key: SEAT_PRICE_SETTING },
+      select: { value: true },
+    }))
+    const parsed = Number(setting?.value)
+    if (Number.isFinite(parsed) && parsed > 0 && parsed <= 100000) return Math.round(parsed)
+  } catch (error) {
+    console.error('Seat price lookup failed, using default:', error)
+  }
+  return SEAT_PRICE_PESOS
 }

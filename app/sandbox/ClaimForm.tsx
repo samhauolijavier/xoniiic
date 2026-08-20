@@ -45,14 +45,20 @@ export function ClaimForm({
 
   return (
     <div className="claim">
-      <h2>Get a practice account — ₱{price} for 30 days</h2>
+      <h2>Get a Practice Account — ₱{price} for 30 days</h2>
       <div className="pay-row">
         {/* Scanning beats typing thirteen digits into a phone, and a mistyped
             number is a payment somebody has to chase. The number stays for
             anyone paying from a second device or a desktop. */}
         {gcashQrUrl && (
-          /* eslint-disable-next-line @next/next/no-img-element */
-          <img className="qr" src={gcashQrUrl} alt={`GCash QR for paying ₱${price}`} width={148} height={148} />
+          <div className="qr-frame">
+            {/* A frame around it rather than sizing the image directly: GCash
+                screenshots come in every aspect ratio, and letting the image
+                sit centred inside a fixed square keeps it square without
+                stretching whatever was uploaded. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className="qr" src={gcashQrUrl} alt={`GCash QR for paying ₱${price}`} />
+          </div>
         )}
         <ol className="steps">
           <li>

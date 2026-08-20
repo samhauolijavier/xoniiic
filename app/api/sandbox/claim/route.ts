@@ -2,7 +2,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { NextRequest, NextResponse } from 'next/server'
 import { db, withRetry } from '@/lib/db'
-import { normalizeReference, referenceLooksValid, SEAT_PRICE_PESOS } from '@/lib/sandbox'
+import { normalizeReference, referenceLooksValid, seatPrice } from '@/lib/sandbox'
 import { notifyDiscord } from '@/lib/discord'
 
 export const dynamic = 'force-dynamic'
@@ -14,6 +14,7 @@ export async function POST(req: NextRequest) {
   }
   const me = session.user as { id: string }
 
+  const price = await seatPrice()
   const body = await req.json().catch(() => ({}))
   const reference = normalizeReference(String(body.reference ?? ''))
   const proofUrl = typeof body.proofUrl === 'string' && body.proofUrl ? body.proofUrl : null
@@ -39,7 +40,7 @@ export async function POST(req: NextRequest) {
       data: {
         userId: me.id,
         reference,
-        amount: SEAT_PRICE_PESOS,
+        amount: price,
         proofUrl,
         // A reference typed in means the money has moved; what is missing is a
         // human confirming it landed. Only a claim with no reference at all
@@ -66,7 +67,7 @@ export async function POST(req: NextRequest) {
         { name: 'Who', value: claimant?.name || 'No name yet', inline: true },
         { name: 'Email', value: claimant?.email || 'unknown', inline: true },
         { name: 'GCash reference', value: reference, inline: true },
-        { name: 'Amount', value: `PHP ${SEAT_PRICE_PESOS}`, inline: true },
+        { name: 'Amount', value: `PHP ${price}`, inline: true },
       ],
     })
 

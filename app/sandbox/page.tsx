@@ -22,7 +22,7 @@ import { authOptions } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { db, withRetry } from '@/lib/db'
-import { seatStatus, referralCodeFor, SEAT_PRICE_PESOS, SEAT_DAYS } from '@/lib/sandbox'
+import { seatStatus, referralCodeFor, seatPrice, SEAT_DAYS } from '@/lib/sandbox'
 import { ClaimForm } from './ClaimForm'
 import { CopyLink } from './CopyLink'
 import './sandbox.css'
@@ -41,13 +41,14 @@ export default async function SandboxPage() {
   if (!session?.user) redirect('/login?callbackUrl=/sandbox')
   const me = session.user as { id: string; name?: string | null }
 
-  const [status, referralCode, gcash, gcashQr, qualified, passed] = await Promise.all([
+  const [status, referralCode, gcash, gcashQr, qualified, passed, price] = await Promise.all([
     seatStatus(me.id),
     referralCodeFor(me.id),
     withRetry(() => db.siteSetting.findUnique({ where: { key: 'private.gcashNumber' }, select: { value: true } })),
     withRetry(() => db.siteSetting.findUnique({ where: { key: 'gcashQrUrl' }, select: { value: true } })),
     withRetry(() => db.referral.count({ where: { referrerId: me.id, qualified: true } })),
     withRetry(() => db.scenarioAttempt.count({ where: { userId: me.id, passed: true } })),
+    seatPrice(),
   ])
 
   const pct = status.active ? Math.min(100, (status.daysLeft / SEAT_DAYS) * 100) : 0
@@ -55,7 +56,7 @@ export default async function SandboxPage() {
 
   return (
     <div className="seatpage">
-      <h1>Practice account</h1>
+      <h1>Practice Account</h1>
       <p className="lede">
         A real GoHighLevel sub-account to build in, break, and rebuild — so the work on your
         profile is work you have actually done.
@@ -64,11 +65,13 @@ export default async function SandboxPage() {
       <article className={`seat ${status.urgency}`}>
         <div className="seat-head">
           <div>
-            <h2>GoHighLevel practice account</h2>
+            <h2>GoHighLevel Practice Account</h2>
             <p className="seat-sub">
               {status.subAccount
                 ? `Sandbox sub-account · ${status.subAccount}`
-                : 'Sandbox sub-account, assigned when your seat opens'}
+                : status.pendingReference
+                  ? 'We have your payment. Your sub-account is assigned once we match it.'
+                  : 'Sandbox sub-account, assigned when your seat opens'}
             </p>
           </div>
           <div className="seat-days">
@@ -76,6 +79,11 @@ export default async function SandboxPage() {
               <>
                 <span className="n">{status.daysLeft}</span>
                 <span className="u">{status.daysLeft === 1 ? 'day left' : 'days left'}</span>
+              </>
+            ) : status.pendingReference ? (
+              <>
+                <span className="n">₱{price}</span>
+                <span className="u">paid · being checked</span>
               </>
             ) : (
               <>
@@ -124,7 +132,7 @@ export default async function SandboxPage() {
           <div className="way">
             <div className="way-top">
               <strong>Top up</strong>
-              <span className="plus">₱{SEAT_PRICE_PESOS} · {SEAT_DAYS} days</span>
+              <span className="plus">₱{price} · {SEAT_DAYS} days</span>
             </div>
             <p>GCash. One payment, no subscription — nothing renews by itself.</p>
             <a className="sbtn ghost" href="#claim">Top up</a>
@@ -148,7 +156,7 @@ export default async function SandboxPage() {
           </div>
         ) : (
           <ClaimForm
-            price={SEAT_PRICE_PESOS}
+            price={price}
             gcashNumber={gcash?.value ?? null}
             gcashQrUrl={gcashQr?.value ?? null}
           />

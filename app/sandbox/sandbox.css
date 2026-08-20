@@ -86,14 +86,22 @@
 }
 
 /* QR beside the steps on a wide screen, above them on a phone — where the
-   thumb already is, and where it is the first thing seen. */
-.pay-row { display: flex; gap: 18px; align-items: flex-start; flex-wrap: wrap; margin-bottom: 4px; }
-.pay-row .steps { flex: 1; min-width: 240px; margin-bottom: 12px; }
-.qr { width: 148px; height: 148px; object-fit: contain; flex: none;
-  border: 1px solid var(--rule); border-radius: var(--r); background: #fff; padding: 6px; }
+   thumb already is, and the first thing seen.
+   Centred vertically against the steps rather than pinned to the top, because
+   a short QR next to three lines of text looked dropped rather than placed. */
+.pay-row { display: flex; gap: 22px; align-items: center; flex-wrap: wrap; margin-bottom: 4px; }
+.pay-row .steps { flex: 1; min-width: 240px; margin-bottom: 0; }
 
-@media (max-width: 560px) {
+/* Big enough to scan off the screen with a second phone, which is how people
+   actually pay when they are already reading on a laptop. */
+.qr-frame { flex: none; display: flex; align-items: center; justify-content: center;
+  width: 232px; height: 232px; padding: 10px; background: #fff;
+  border: 1px solid var(--rule); border-radius: var(--r-lg); }
+.qr { display: block; max-width: 100%; max-height: 100%; width: auto; height: auto;
+  object-fit: contain; }
+
+@media (max-width: 620px) {
   .pay-row { flex-direction: column; align-items: center; }
-  .qr { width: 190px; height: 190px; }
-  .pay-row .steps { min-width: 0; }
+  .qr-frame { width: min(280px, 78vw); height: min(280px, 78vw); }
+  .pay-row .steps { min-width: 0; margin-top: 4px; }
 }
