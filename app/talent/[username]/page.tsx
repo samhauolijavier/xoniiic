@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic"
 import { notFound } from 'next/navigation'
 import { db } from '@/lib/db'
 import { getServerSession } from 'next-auth'
+import { OwnerGap, OwnerViewBanner } from '@/components/seeker/OwnerGap'
 import { authOptions } from '@/lib/auth'
 import Image from 'next/image'
 import { Badge } from '@/components/ui/Badge'
@@ -169,6 +170,18 @@ export default async function TalentProfilePage({ params }: { params: { username
   }
 
   const canContact = user && !isOwner
+
+  // Only computed for the owner — nobody else is shown any of this.
+  const gaps = isOwner
+    ? [
+        !profile.coverUrl,
+        !profile.bio,
+        profile.skills.length < 3,
+        !profile.videoIntroUrl,
+        !profile.portfolioLinks?.length,
+        !profile.certificates?.length,
+      ].filter(Boolean).length
+    : 0
   const isLoggedIn = !!session
 
   const reviews = profile.reviewsReceived
@@ -233,6 +246,19 @@ export default async function TalentProfilePage({ params }: { params: { username
           </a>
         </div>
       )}
+      {isOwner && <OwnerViewBanner remaining={gaps} />}
+
+      {isOwner && !profile.coverUrl && (
+        <div className="mb-6">
+          <OwnerGap
+            title="No banner across the top"
+            because="It is the first thing on the page and the widest space you have. The tools you work in, your own branding, or your workspace all say more than a blank strip does."
+            cta="Add a banner"
+            href="/dashboard"
+          />
+        </div>
+      )}
+
       {/* Banner, only if they uploaded one. No placeholder: a grey rectangle
           where a banner should be advertises the gap instead of hiding it. */}
       {profile.coverUrl && (
@@ -472,6 +498,14 @@ export default async function TalentProfilePage({ params }: { params: { username
           )}
 
           {/* Video Intro card */}
+          {isOwner && !profile.videoIntroUrl && (
+            <OwnerGap
+              title="No intro video"
+              because="Hiring someone remote means guessing how they communicate. Sixty seconds of you speaking answers that better than a paragraph claiming you are a good communicator."
+              cta="Add a video"
+              href="/profile/edit"
+            />
+          )}
           {profile.videoIntroUrl && (
             <div className="card p-5">
               <h3 className="font-semibold text-brand-text mb-3">Video Introduction</h3>
@@ -527,6 +561,14 @@ export default async function TalentProfilePage({ params }: { params: { username
         {/* Main Content */}
         <div className={`lg:col-span-2 space-y-6 ${!isLoggedIn ? 'relative' : ''}`}>
           {/* Bio */}
+          {isOwner && !profile.bio && (
+            <OwnerGap
+              title="No bio"
+              because="This is where somebody decides whether to message you. Without it they have a rate and a list of skills, which every other profile also has."
+              cta="Write a bio"
+              href="/profile/edit"
+            />
+          )}
           {profile.bio && (
             <div className="card p-6">
               <h2 className="text-lg font-bold text-brand-text mb-3">About</h2>
@@ -535,6 +577,14 @@ export default async function TalentProfilePage({ params }: { params: { username
           )}
 
           {/* Skills by Category */}
+          {isOwner && profile.skills.length < 3 && (
+            <OwnerGap
+              title={profile.skills.length === 0 ? 'No skills listed' : 'Only a skill or two listed'}
+              because="Skills are how people find you at all — browse and search run on them. Three is the point where you start appearing in searches you would want to be in."
+              cta="Add skills"
+              href="/profile/edit"
+            />
+          )}
           {Object.keys(skillsByCategory).length > 0 && (
             <div className="card p-6">
               <h2 className="text-lg font-bold text-brand-text mb-5">Skills</h2>
@@ -568,6 +618,14 @@ export default async function TalentProfilePage({ params }: { params: { username
           )}
 
           {/* Portfolio Links */}
+          {isOwner && !profile.portfolioLinks?.length && (
+            <OwnerGap
+              title="No work to look at"
+              because="Anyone can list a skill. A link to something you actually built is the difference between a claim and evidence — and it is what an employer is scrolling for."
+              cta="Add your work"
+              href="/profile/edit"
+            />
+          )}
           {profile.portfolioLinks && profile.portfolioLinks.length > 0 && (
             <div className="card p-6">
               <h2 className="text-lg font-bold text-brand-text mb-4">Portfolio & Links</h2>
@@ -617,6 +675,14 @@ export default async function TalentProfilePage({ params }: { params: { username
           )}
 
           {/* Certificates */}
+          {isOwner && !profile.certificates?.length && (
+            <OwnerGap
+              title="No certificates"
+              because="Optional, but they settle an argument quickly. A GoHighLevel or Meta certificate tells somebody you were tested on this rather than taught it."
+              cta="Add a certificate"
+              href="/profile/edit"
+            />
+          )}
           {profile.certificates && profile.certificates.length > 0 && (
             <div className="card p-6">
               <h2 className="text-lg font-bold text-brand-text mb-4">Certifications</h2>
