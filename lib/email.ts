@@ -263,3 +263,60 @@ export async function sendTestimonialApprovedEmail(opts: {
     console.error('[Email] Failed to send testimonial approval:', error)
   }
 }
+
+/**
+ * Somebody sent you a message.
+ *
+ * Deliberately does not include the message body. A profile URL is something
+ * people paste on LinkedIn, so a stranger can start a conversation — and
+ * forwarding whatever they typed straight into an inbox turns this into a
+ * delivery service for anything anyone wants to say. The email says who and
+ * how many; reading it happens on the site, where blocking and reporting live.
+ */
+export async function sendNewMessageEmail(opts: {
+  email: string
+  recipientName?: string | null
+  senderName: string
+  conversationId: string
+}) {
+  if (!resend) {
+    console.log('[Email] No RESEND_API_KEY set, skipping new-message email')
+    return
+  }
+
+  const site = process.env.NEXT_PUBLIC_APP_URL ?? 'https://virtualfreaks.co'
+
+  try {
+    await resend.emails.send({
+      from: 'Virtual Freaks <noreply@virtualfreaks.co>',
+      to: opts.email,
+      subject: `${opts.senderName} sent you a message`,
+      html: `
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 520px; margin: 0 auto; padding: 32px 20px; color: #1a1418;">
+          <h1 style="font-size: 20px; margin: 0 0 20px; color: #a21caf;">Virtual Freaks</h1>
+          <h2 style="font-size: 21px; margin: 0 0 12px;">
+            ${opts.senderName} sent you a message
+          </h2>
+          <p style="color: #4d4549; font-size: 15px; line-height: 1.65;">
+            ${opts.recipientName ? `Hi ${opts.recipientName}, s` : 'S'}omebody has started a
+            conversation with you on Virtual Freaks. Replying quickly matters more than replying
+            perfectly &mdash; most people message several profiles at once.
+          </p>
+          <p style="margin: 26px 0;">
+            <a href="${site}/messages?c=${encodeURIComponent(opts.conversationId)}"
+               style="background: #a21caf; color: #fff; text-decoration: none; padding: 12px 22px; border-radius: 8px; font-size: 15px; font-weight: 600; display: inline-block;">
+              Read and reply
+            </a>
+          </p>
+          <hr style="border: none; border-top: 1px solid #e6e0e2; margin: 28px 0;" />
+          <p style="color: #837b80; font-size: 12px; line-height: 1.6;">
+            You can turn these off in your notification settings. If a message is abusive or
+            unwanted, report it from the conversation and we will look at it.
+          </p>
+        </div>
+      `,
+    })
+  } catch (error) {
+    console.error('[Email] Failed to send new-message email:', error)
+  }
+}
