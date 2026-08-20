@@ -25,6 +25,13 @@ export type SeatStatus = {
   subAccount: string | null
   /** a claim they have made that nobody has checked yet */
   pendingReference: string | null
+  /**
+   * Payment confirmed, sandbox not built yet. The middle of the process:
+   * their money is matched, somebody is creating their GoHighLevel user, and
+   * the thirty days have deliberately not started — a clock running on an
+   * account they cannot log into yet is a day they paid for and lost.
+   */
+  awaitingSandbox: boolean
 }
 
 /**
@@ -57,10 +64,16 @@ export async function liveGrants(userId: string): Promise<SandboxAccess[]> {
 
 export async function seatStatus(userId: string): Promise<SeatStatus> {
   const now = new Date()
-  const [grants, pending] = await Promise.all([
+  const [grants, pending, confirmed] = await Promise.all([
     liveGrants(userId),
     withRetry(() => db.gcashPayment.findFirst({
       where: { userId, state: { in: ['awaiting_proof', 'awaiting_check'] } },
+      orderBy: { createdAt: 'desc' },
+      select: { reference: true },
+    })),
+    // Verified, but no seat hung off it yet — step three of the process.
+    withRetry(() => db.gcashPayment.findFirst({
+      where: { userId, state: 'verified', accessId: null },
       orderBy: { createdAt: 'desc' },
       select: { reference: true },
     })),
@@ -77,7 +90,8 @@ export async function seatStatus(userId: string): Promise<SeatStatus> {
     urgency: urgencyFor(daysLeft, active),
     sources: grants.map(g => g.source),
     subAccount: grants.find(g => g.subAccount)?.subAccount ?? null,
-    pendingReference: pending?.reference ?? null,
+    pendingReference: pending?.reference ?? confirmed?.reference ?? null,
+    awaitingSandbox: Boolean(confirmed) && !active,
   }
 }
 

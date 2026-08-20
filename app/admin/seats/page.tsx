@@ -49,8 +49,16 @@ interface Recent {
   user: Person
 }
 
+interface NeedsSandbox {
+  id: string
+  reference: string
+  waitingHours: number
+  user: Person
+}
+
 interface Desk {
   waiting: Waiting[]
+  needsSandbox: NeedsSandbox[]
   live: Live[]
   lapsing: { id: string; daysLeft: number; user: Person; source: string }[]
   recent: Recent[]
@@ -70,6 +78,8 @@ export default function SeatDeskPage() {
   const [desk, setDesk] = useState<Desk | null>(null)
   const [loading, setLoading] = useState(true)
   const [busyId, setBusyId] = useState<string | null>(null)
+  // Which sub-account each person was put into, typed as the VA creates them.
+  const [subAccounts, setSubAccounts] = useState<Record<string, string>>({})
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
 
@@ -176,10 +186,61 @@ export default function SeatDeskPage() {
                       disabled={busyId === p.id}
                       onClick={() => act({ action: 'verify', paymentId: p.id }, p.id)}
                     >
-                      {busyId === p.id ? '…' : 'Open seat'}
+                      {busyId === p.id ? '…' : 'Confirm payment'}
                     </button>
                     <button className="dbtn ghost" disabled={busyId === p.id} onClick={() => reject(p)}>
                       Not matched
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </section>
+
+      <section className="panel">
+        <div className="panel-head">
+          <h2>Paid — needs a GoHighLevel user</h2>
+          <span className="count">{desk?.needsSandbox.length ?? 0}</span>
+        </div>
+        <p className="quiet pad">
+          Money matched. Create them in the shared sandbox, then type the sub-account here and
+          press the button — that starts their 30 days and sends the only email they get. Nothing
+          is counting against them until you do.
+        </p>
+        {!desk?.needsSandbox.length ? (
+          <p className="quiet pad">Nobody waiting on a sandbox.</p>
+        ) : (
+          <table className="grid">
+            <thead>
+              <tr><th>Who</th><th>Email to add</th><th>Waiting</th><th>Sub-account</th><th /></tr>
+            </thead>
+            <tbody>
+              {desk.needsSandbox.map(p => (
+                <tr key={p.id} className={p.waitingHours >= 24 ? 'stale' : ''}>
+                  <td><strong>{p.user.name ?? 'No name yet'}</strong></td>
+                  <td className="mono">{p.user.email}</td>
+                  <td className="mono">{p.waitingHours}h</td>
+                  <td>
+                    <input
+                      value={subAccounts[p.id] ?? ''}
+                      onChange={e => setSubAccounts(s => ({ ...s, [p.id]: e.target.value }))}
+                      placeholder="Sandbox name"
+                      style={{ width: 150, fontSize: 12, padding: '5px 8px',
+                               border: '1px solid var(--rule)', borderRadius: 6, background: 'var(--paper)' }}
+                    />
+                  </td>
+                  <td className="row-actions">
+                    <button
+                      className="dbtn"
+                      disabled={busyId === p.id || !(subAccounts[p.id] ?? '').trim()}
+                      onClick={() => act(
+                        { action: 'ready', paymentId: p.id, subAccount: subAccounts[p.id] },
+                        p.id
+                      )}
+                    >
+                      {busyId === p.id ? '…' : 'Sandbox ready — send email'}
                     </button>
                   </td>
                 </tr>

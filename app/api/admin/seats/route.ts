@@ -29,10 +29,17 @@ export async function GET() {
   const lapsingBy = new Date(now.getTime() + LAPSING_WINDOW_DAYS * 24 * 60 * 60 * 1000)
 
   try {
-    const [waiting, live, recent] = await Promise.all([
+    const [waiting, needsSandbox, live, recent] = await Promise.all([
       withRetry(() => db.gcashPayment.findMany({
         where: { state: { in: ['awaiting_proof', 'awaiting_check'] } },
         orderBy: { createdAt: 'asc' },
+        include: { user: PERSON },
+      })),
+      // Money matched, GoHighLevel user not created yet. This queue is the
+      // step that used to be invisible, and the one people wait inside.
+      withRetry(() => db.gcashPayment.findMany({
+        where: { state: 'verified', accessId: null },
+        orderBy: { checkedAt: 'asc' },
         include: { user: PERSON },
       })),
       withRetry(() => db.sandboxAccess.findMany({
@@ -57,6 +64,13 @@ export async function GET() {
         state: p.state,
         createdAt: p.createdAt,
         waitingHours: Math.floor((now.getTime() - p.createdAt.getTime()) / 3_600_000),
+        user: p.user,
+      })),
+      needsSandbox: needsSandbox.map(p => ({
+        id: p.id,
+        reference: p.reference,
+        checkedAt: p.checkedAt,
+        waitingHours: p.checkedAt ? Math.floor((now.getTime() - p.checkedAt.getTime()) / 3_600_000) : 0,
         user: p.user,
       })),
       live: live.map(a => ({
@@ -112,26 +126,29 @@ export async function POST(req: NextRequest) {
 
       const payment = await withRetry(() => db.gcashPayment.findUnique({
         where: { id: paymentId },
-        select: { userId: true, reference: true },
-      }))
+        select: { userId: true, reference: true, user: { select: { email: true } } },
+      })).then(p => p && ({ ...p, email: p.user.email }))
       if (!payment) return NextResponse.json({ error: 'Payment not found' }, { status: 404 })
 
-      const access = await grantSeat({
-        userId: payment.userId,
-        source: 'paid',
-        subAccount: body.subAccount ? String(body.subAccount) : null,
-        note: `GCash ${payment.reference}`,
-        grantedBy: admin.id,
-      })
-      await withRetry(() => db.gcashPayment.update({
-        where: { id: paymentId },
-        data: { accessId: access.id },
-      }))
-
       await qualifyReferral(payment.userId)
-      await announceSeat(payment.userId, access.expiresAt, 'paid')
 
-      return NextResponse.json({ message: 'Seat opened.', expiresAt: access.expiresAt })
+      // Deliberately no seat and no email here. Next step is creating their
+      // GoHighLevel user by hand; the days start, and they get told, only once
+      // there is something to log into.
+      await notifyDiscord({
+        title: 'Create their GoHighLevel user',
+        description: 'Payment confirmed. Add them to the shared sandbox, then press "Sandbox ready" on the seat desk to start their 30 days.',
+        url: `${process.env.NEXT_PUBLIC_APP_URL ?? 'https://virtualfreaks.co'}/admin/seats`,
+        tone: 'good',
+        fields: [
+          { name: 'Email to add', value: payment.email ?? 'unknown', inline: true },
+          { name: 'Reference', value: payment.reference, inline: true },
+        ],
+      })
+
+      return NextResponse.json({
+        message: 'Payment confirmed. Create their GoHighLevel user, then press "Sandbox ready".',
+      })
     }
 
     if (action === 'reject') {
@@ -150,6 +167,47 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: 'That payment has already been handled.' }, { status: 409 })
       }
       return NextResponse.json({ message: 'Marked as not matched.' })
+    }
+
+    if (action === 'ready') {
+      const paymentId = String(body.paymentId ?? '')
+      const subAccount = String(body.subAccount ?? '').trim()
+      if (!paymentId) return NextResponse.json({ error: 'paymentId is required' }, { status: 400 })
+      if (!subAccount) {
+        return NextResponse.json({
+          error: 'Name the sub-account you put them in — it is the only record of where they are.',
+        }, { status: 400 })
+      }
+
+      const payment = await withRetry(() => db.gcashPayment.findUnique({
+        where: { id: paymentId },
+        select: { userId: true, reference: true, accessId: true, state: true },
+      }))
+      if (!payment) return NextResponse.json({ error: 'Payment not found' }, { status: 404 })
+      if (payment.state !== 'verified') {
+        return NextResponse.json({ error: 'Confirm the payment first.' }, { status: 409 })
+      }
+      if (payment.accessId) {
+        return NextResponse.json({ error: 'Their seat is already open.' }, { status: 409 })
+      }
+
+      const access = await grantSeat({
+        userId: payment.userId,
+        source: 'paid',
+        subAccount,
+        note: `GCash ${payment.reference}`,
+        grantedBy: admin.id,
+      })
+      await withRetry(() => db.gcashPayment.update({
+        where: { id: paymentId },
+        data: { accessId: access.id },
+      }))
+
+      await announceSeat(payment.userId, access.expiresAt, 'paid')
+
+      return NextResponse.json({
+        message: `Seat open and they have been emailed. Runs until ${access.expiresAt.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}.`,
+      })
     }
 
     if (action === 'grant') {

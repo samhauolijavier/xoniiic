@@ -62,19 +62,25 @@ export default async function SandboxPage() {
         profile is work you have actually done.
       </p>
 
-      <article className={`seat ${status.urgency}${!status.active && status.pendingReference ? ' paid' : ''}`}>
+      <article className={`seat ${status.urgency}${!status.active && (status.pendingReference || status.awaitingSandbox) ? ' paid' : ''}`}>
         <div className="seat-head">
           <div>
             <h2>GoHighLevel Practice Account</h2>
             <p className="seat-sub">
               {status.subAccount
                 ? `Sandbox sub-account · ${status.subAccount}`
-                : status.pendingReference
-                  ? 'Your sub-account is assigned once we match the payment.'
-                  : 'Sandbox sub-account, assigned when your seat opens'}
+                : status.awaitingSandbox
+                  ? 'Payment confirmed. We are building your sub-account now.'
+                  : status.pendingReference
+                    ? 'Your sub-account is assigned once we match the payment.'
+                    : 'Sandbox sub-account, assigned when your seat opens'}
             </p>
-            {!status.active && status.pendingReference && (
-              <span className="paid-flag">Payment received — checking it now</span>
+            {!status.active && (status.pendingReference || status.awaitingSandbox) && (
+              <span className="paid-flag">
+                {status.awaitingSandbox
+                  ? 'Payment confirmed — your 30 days start when your sandbox is ready'
+                  : 'Payment received — checking it now'}
+              </span>
             )}
           </div>
           <div className="seat-days">
@@ -82,6 +88,11 @@ export default async function SandboxPage() {
               <>
                 <span className="n">{status.daysLeft}</span>
                 <span className="u">{status.daysLeft === 1 ? 'day left' : 'days left'}</span>
+              </>
+            ) : status.awaitingSandbox ? (
+              <>
+                <span className="n">Soon</span>
+                <span className="u">building your sandbox</span>
               </>
             ) : status.pendingReference ? (
               <>
@@ -146,11 +157,15 @@ export default async function SandboxPage() {
       <div id="claim">
         {status.pendingReference ? (
           <div className="claim">
-            <h2>Payment received — waiting on us</h2>
+            <h2>{status.awaitingSandbox ? 'Building your sandbox' : 'Payment received — waiting on us'}</h2>
             <div className="pending">
               <span>Reference</span>
               <code>{status.pendingReference}</code>
-              <span>· we match it by hand, usually the same day</span>
+              <span>
+                {status.awaitingSandbox
+                  ? '· confirmed. Your GoHighLevel user is being created now.'
+                  : '· we match it by hand, usually the same day'}
+              </span>
             </div>
             <p className="note quiet">
               No need to send it again. If something is wrong with it we will tell you here and
