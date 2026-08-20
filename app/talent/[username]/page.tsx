@@ -45,8 +45,8 @@ export async function generateMetadata({ params }: { params: { username: string 
   const profile = await db.seekerProfile.findUnique({
     where: { username: params.username },
     include: {
-      user: { select: { name: true } },
-      skills: { include: { skill: true }, orderBy: { rating: 'desc' }, take: 1 },
+      user: { select: { name: true, placedBadgeAt: true } },
+      skills: { include: { skill: true }, orderBy: { rating: 'desc' }, take: 4 },
     },
   })
 
@@ -66,6 +66,16 @@ export async function generateMetadata({ params }: { params: { username: string 
     description = description.slice(0, 157) + '...'
   }
 
+  // The card somebody's LinkedIn audience actually sees. A person, not a
+  // paragraph: photo, name, headline, and the skills they lead with.
+  const ogImage = `${appUrl}/api/og?` + new URLSearchParams({
+    name,
+    headline: profile.title ?? '',
+    avatar: profile.avatarUrl ?? '',
+    skills: profile.skills.map(s => s.skill.name).join(','),
+    placed: profile.user.placedBadgeAt ? '1' : '0',
+  }).toString()
+
   return {
     title,
     description,
@@ -77,20 +87,13 @@ export async function generateMetadata({ params }: { params: { username: string 
       description,
       url: canonicalUrl,
       type: 'profile',
-      images: [
-        {
-          url: `${appUrl}/api/og?title=${encodeURIComponent(name + (profile.title ? ' — ' + profile.title : ''))}&description=${encodeURIComponent(description)}`,
-          width: 1200,
-          height: 630,
-          alt: name,
-        },
-      ],
+      images: [{ url: ogImage, width: 1200, height: 630, alt: name }],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      images: [`${appUrl}/api/og?title=${encodeURIComponent(name + (profile.title ? ' — ' + profile.title : ''))}&description=${encodeURIComponent(description)}`],
+      images: [ogImage],
     },
   }
 }

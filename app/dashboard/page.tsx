@@ -6,7 +6,7 @@ import { redirect } from 'next/navigation'
 import { Badge } from '@/components/ui/Badge'
 import Link from 'next/link'
 import { getCompletionScore } from '@/lib/completionScore'
-import { ShareProfileLink } from '@/components/seeker/ShareProfileLink'
+import { ShareProfileCard } from './ShareProfileCard'
 import { PremiumBadge } from '@/components/ui/PremiumBadge'
 import { FoundingMemberBadge } from '@/components/ui/FoundingMemberBadge'
 import { WhoViewedSection } from './WhoViewedSection'
@@ -66,6 +66,14 @@ export default async function DashboardPage() {
       {dbUser && !dbUser.emailVerified && <VerifyBanner email={dbUser.email} />}
 
       <TestimonialCard />
+
+      {profile && (
+        <ShareProfileCard
+          username={profile.username}
+          name={user.name ?? null}
+          headline={profile.title ?? null}
+        />
+      )}
 
       <CoverUpload initialUrl={profile?.coverUrl ?? null} />
 
@@ -288,7 +296,6 @@ export default async function DashboardPage() {
             </Link>
           </div>
         </div>
-        <ShareProfileLink username={profile.username} />
       </div>
 
       {/* Activity Feed */}
