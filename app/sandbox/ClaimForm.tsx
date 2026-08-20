@@ -3,7 +3,15 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-export function ClaimForm({ price, gcashNumber }: { price: number; gcashNumber: string | null }) {
+export function ClaimForm({
+  price,
+  gcashNumber,
+  gcashQrUrl,
+}: {
+  price: number
+  gcashNumber: string | null
+  gcashQrUrl: string | null
+}) {
   const router = useRouter()
   const [reference, setReference] = useState('')
   const [busy, setBusy] = useState(false)
@@ -38,16 +46,26 @@ export function ClaimForm({ price, gcashNumber }: { price: number; gcashNumber: 
   return (
     <div className="claim">
       <h2>Get a practice account — ₱{price} for 30 days</h2>
-      <ol className="steps">
-        <li>
-          Send <strong>₱{price}</strong> by GCash to{' '}
-          {gcashNumber
-            ? <code>{gcashNumber}</code>
-            : <em>the number shown on the Virtual Freaks channel</em>}
-        </li>
-        <li>Open the receipt and find the <strong>reference number</strong></li>
-        <li>Type it below. Your seat opens once we match it — usually the same day.</li>
-      </ol>
+      <div className="pay-row">
+        {/* Scanning beats typing thirteen digits into a phone, and a mistyped
+            number is a payment somebody has to chase. The number stays for
+            anyone paying from a second device or a desktop. */}
+        {gcashQrUrl && (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img className="qr" src={gcashQrUrl} alt={`GCash QR for paying ₱${price}`} width={148} height={148} />
+        )}
+        <ol className="steps">
+          <li>
+            {gcashQrUrl ? <>Scan the QR in your GCash app, or send </> : <>Send </>}
+            <strong>₱{price}</strong> to{' '}
+            {gcashNumber
+              ? <code>{gcashNumber}</code>
+              : <em>the number shown on the Virtual Freaks channel</em>}
+          </li>
+          <li>Open the receipt and find the <strong>reference number</strong></li>
+          <li>Type it below. Your seat opens once we match it — usually the same day.</li>
+        </ol>
+      </div>
 
       <form className="claim-row" onSubmit={submit}>
         <input

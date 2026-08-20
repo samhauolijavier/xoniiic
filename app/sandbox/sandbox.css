@@ -84,3 +84,16 @@
 @media (max-width: 760px) {
   .ways { grid-template-columns: 1fr; }
 }
+
+/* QR beside the steps on a wide screen, above them on a phone — where the
+   thumb already is, and where it is the first thing seen. */
+.pay-row { display: flex; gap: 18px; align-items: flex-start; flex-wrap: wrap; margin-bottom: 4px; }
+.pay-row .steps { flex: 1; min-width: 240px; margin-bottom: 12px; }
+.qr { width: 148px; height: 148px; object-fit: contain; flex: none;
+  border: 1px solid var(--rule); border-radius: var(--r); background: #fff; padding: 6px; }
+
+@media (max-width: 560px) {
+  .pay-row { flex-direction: column; align-items: center; }
+  .qr { width: 190px; height: 190px; }
+  .pay-row .steps { min-width: 0; }
+}

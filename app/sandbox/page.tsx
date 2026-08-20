@@ -41,10 +41,11 @@ export default async function SandboxPage() {
   if (!session?.user) redirect('/login?callbackUrl=/sandbox')
   const me = session.user as { id: string; name?: string | null }
 
-  const [status, referralCode, gcash, qualified, passed] = await Promise.all([
+  const [status, referralCode, gcash, gcashQr, qualified, passed] = await Promise.all([
     seatStatus(me.id),
     referralCodeFor(me.id),
     withRetry(() => db.siteSetting.findUnique({ where: { key: 'private.gcashNumber' }, select: { value: true } })),
+    withRetry(() => db.siteSetting.findUnique({ where: { key: 'gcashQrUrl' }, select: { value: true } })),
     withRetry(() => db.referral.count({ where: { referrerId: me.id, qualified: true } })),
     withRetry(() => db.scenarioAttempt.count({ where: { userId: me.id, passed: true } })),
   ])
@@ -146,7 +147,11 @@ export default async function SandboxPage() {
             </p>
           </div>
         ) : (
-          <ClaimForm price={SEAT_PRICE_PESOS} gcashNumber={gcash?.value ?? null} />
+          <ClaimForm
+            price={SEAT_PRICE_PESOS}
+            gcashNumber={gcash?.value ?? null}
+            gcashQrUrl={gcashQr?.value ?? null}
+          />
         )}
       </div>
     </div>

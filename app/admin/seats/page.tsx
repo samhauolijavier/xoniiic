@@ -14,6 +14,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import { GcashQrUpload } from './GcashQrUpload'
 import './seats.css'
 
 interface Person { id: string; name: string | null; email: string }
@@ -141,6 +142,8 @@ export default function SeatDeskPage() {
 
       {error && <p className="banner bad">{error}</p>}
       {success && <p className="banner good">{success}</p>}
+
+      <GcashQrUpload />
 
       <section className="panel">
         <div className="panel-head">
