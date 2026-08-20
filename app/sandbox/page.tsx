@@ -62,7 +62,7 @@ export default async function SandboxPage() {
         profile is work you have actually done.
       </p>
 
-      <article className={`seat ${status.urgency}`}>
+      <article className={`seat ${status.urgency}${!status.active && status.pendingReference ? ' paid' : ''}`}>
         <div className="seat-head">
           <div>
             <h2>GoHighLevel Practice Account</h2>
@@ -70,9 +70,12 @@ export default async function SandboxPage() {
               {status.subAccount
                 ? `Sandbox sub-account · ${status.subAccount}`
                 : status.pendingReference
-                  ? 'We have your payment. Your sub-account is assigned once we match it.'
+                  ? 'Your sub-account is assigned once we match the payment.'
                   : 'Sandbox sub-account, assigned when your seat opens'}
             </p>
+            {!status.active && status.pendingReference && (
+              <span className="paid-flag">Payment received — checking it now</span>
+            )}
           </div>
           <div className="seat-days">
             {status.active ? (
@@ -83,7 +86,7 @@ export default async function SandboxPage() {
             ) : status.pendingReference ? (
               <>
                 <span className="n">₱{price}</span>
-                <span className="u">paid · being checked</span>
+                <span className="u">received</span>
               </>
             ) : (
               <>

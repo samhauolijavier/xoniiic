@@ -63,15 +63,19 @@ export async function sendSeatOpenEmail(opts: {
     day: 'numeric', month: 'long', year: 'numeric',
   })
 
-  const invite = opts.provisioned
-    ? `<p style="color: #4a4740; font-size: 15px; line-height: 1.6;">
-         <strong>GoHighLevel will email you separately</strong> with a link to set your password.
-         It comes from GoHighLevel, not from us, so check your spam folder if it has not arrived
-         within a few minutes.
-       </p>`
-    : `<p style="color: #4a4740; font-size: 15px; line-height: 1.6;">
-         We are setting up your login now and will email it to you shortly.
-       </p>`
+  // One wording, whether the GHL user has been created yet or not.
+  //
+  // The old pair said either "GoHighLevel will email you" or "we will email you
+  // shortly" — and the second was wrong, because we never send the login. It
+  // comes from GoHighLevel, from a GoHighLevel address, and somebody waiting on
+  // an email from Virtual Freaks will not go looking for it. Naming the sender
+  // is the whole job of this paragraph.
+  const invite = `<p style="color: #4a4740; font-size: 15px; line-height: 1.6;">
+       <strong>Your login comes from GoHighLevel, not from us.</strong> Watch for a separate
+       email from them inviting you to set your own password — usually within the hour.
+       We never see or send that password. If it has not arrived, check your spam folder
+       before anything else; that is where it lands most often.
+     </p>`
 
   try {
     await resend.emails.send({

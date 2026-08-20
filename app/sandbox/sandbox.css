@@ -9,6 +9,10 @@
   --ink: #1a1418; --ink-2: #4d4549; --ink-3: #837b80;
   --rule: #e6e0e2;
   --accent: #a21caf;
+  /* Semantic, not brand. Money arriving is the one moment on this page worth a
+     colour of its own — fuchsia is the accent for everything clickable, so a
+     payment landing needs to read differently from a button. */
+  --good: #15803d; --good-bg: #f0fdf4; --good-line: #bbf7d0;
   --warn: #b45309; --bad: #b91c1c;
   --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
   --r: 8px; --r-lg: 12px;
@@ -105,3 +109,13 @@
   .qr-frame { width: min(280px, 78vw); height: min(280px, 78vw); }
   .pay-row .steps { min-width: 0; margin-top: 4px; }
 }
+
+/* Payment received. Loud on purpose: somebody who has just sent money wants to
+   be told it arrived, and a grey caption is not telling them. */
+.seat.paid { border-color: var(--good-line); background: var(--good-bg); }
+.seat.paid .seat-days .n { color: var(--good); font-size: 26px; }
+.seat.paid .seat-days .u { color: var(--good); font-weight: 620; letter-spacing: .01em; }
+.paid-flag { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 620;
+  color: var(--good); background: #fff; border: 1px solid var(--good-line);
+  border-radius: 100px; padding: 4px 11px; margin-top: 7px; }
+.paid-flag::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--good); }
