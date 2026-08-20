@@ -182,7 +182,7 @@ export default async function Home() {
                 Full Leaderboard →
               </Link>
             </div>
-            <div className="grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
+            <div className="grid grid-cols-2 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 items-stretch">
               {topTalent.map((entry) => {
                 const initials = entry.name
                   ? entry.name.split(' ').map((n) => n[0]).join('').toUpperCase()
@@ -192,8 +192,8 @@ export default async function Home() {
                 // in monospace, and the top three carry the accent instead.
                 const isPodium = entry.rank <= 3
                 return (
-                  <Link key={entry.id} href={`/talent/${entry.username}`}>
-                    <div className="card p-4 text-center group hover-glow cursor-pointer">
+                  <Link key={entry.id} href={`/talent/${entry.username}`} className="block h-full">
+                    <div className="card p-4 text-center group hover-glow cursor-pointer h-full flex flex-col">
                       <div className={`font-mono text-sm mb-2 tabular-nums ${isPodium ? 'text-brand-purple font-semibold' : 'text-brand-muted'}`}>
                         #{entry.rank}
                       </div>
@@ -216,12 +216,15 @@ export default async function Home() {
                         <p className="text-sm font-semibold text-brand-text group-hover:gradient-text transition-all truncate">
                           {entry.name || entry.username}
                         </p>
-                        {entry.premium && <span className="text-amber-400 text-xs">⭐</span>}
+                        {entry.premium && <span className="text-brand-purple text-xs font-semibold">PRO</span>}
                       </div>
-                      {entry.topSkill && (
-                        <p className="text-xs text-brand-muted truncate mb-1">{entry.topSkill}</p>
-                      )}
-                      <p className="text-xs text-brand-muted">
+                      {/* Always rendered. Two of five profiles have no top skill,
+                          and letting the line vanish made those cards shorter
+                          than the rest of the row. */}
+                      <p className="text-xs text-brand-muted truncate mb-1 min-h-[1rem]">
+                        {entry.topSkill ?? '\u00A0'}
+                      </p>
+                      <p className="text-xs text-brand-muted mt-auto">
                         <span className="font-semibold text-brand-text">{entry.profileViews}</span> views
                       </p>
                     </div>

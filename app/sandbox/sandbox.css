@@ -47,12 +47,18 @@
   padding: 11px 13px; background: var(--sunken); border: 1px solid var(--rule); border-radius: var(--r); }
 .seat-scope strong { color: var(--ink); }
 
-.ways { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-.way { border: 1px solid var(--rule); border-radius: var(--r); padding: 13px; background: var(--paper); }
+/* Equal heights with the actions on one line, because three cards whose
+   buttons sit at three different heights read as a mistake rather than a menu. */
+.ways { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; align-items: stretch; }
+.way { border: 1px solid var(--rule); border-radius: var(--r); padding: 13px; background: var(--paper);
+  display: flex; flex-direction: column; }
+.way > :last-child { margin-top: auto; }
+.way .sbtn, .way .ref-row { align-self: flex-start; }
+.way .ref-row { align-self: stretch; }
 .way-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 6px; }
 .way-top strong { font-size: 13px; font-weight: 590; }
 .plus { font-family: var(--mono); font-size: 11px; color: var(--accent); white-space: nowrap; }
-.way p { font-size: 12px; color: var(--ink-2); line-height: 1.5; margin: 0 0 10px; }
+.way p { font-size: 12px; color: var(--ink-2); line-height: 1.5; margin: 0 0 10px; flex: 1; }
 
 .sbtn { display: inline-block; font: inherit; font-size: 13px; font-weight: 560; cursor: pointer;
   border-radius: var(--r); padding: 8px 14px; border: 1px solid var(--accent);
