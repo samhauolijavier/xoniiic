@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useSession, signOut } from 'next-auth/react'
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { VFLogo } from '@/components/ui/Logo'
 
 interface NavNotification {
@@ -45,6 +45,17 @@ function notifTimeAgo(dateStr: string): string {
 export function Navbar() {
   const { data: session, status } = useSession()
   const router = useRouter()
+  const pathname = usePathname()
+
+  // The two sides of the marketplace, and the way across.
+  //
+  // Once somebody is on the business side, an unchanged "For businesses" link
+  // is a door they have already walked through — it tells them nothing and
+  // offers no way back. So the door always points at the side they are not on.
+  const onBusinessSide = pathname?.startsWith('/hire') || pathname?.startsWith('/post-a-need')
+  const door = onBusinessSide
+    ? { href: '/', label: 'For freelancers' }
+    : { href: '/hire', label: 'For businesses' }
   const [mobileOpen, setMobileOpen] = useState(false)
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [notifDropdownOpen, setNotifDropdownOpen] = useState(false)
@@ -524,8 +535,11 @@ export function Navbar() {
               </>
             ) : (
               <div className="flex items-center gap-2">
-                <Link href="/hire" className="hidden md:block text-sm text-brand-muted hover:text-brand-text transition-colors px-3 py-1.5">
-                  For businesses
+                <Link
+                  href={door.href}
+                  className="hidden md:inline-flex items-center text-sm font-medium text-brand-purple border border-brand-purple/40 hover:bg-brand-purple/[0.06] rounded-full px-3.5 py-1.5 transition-colors"
+                >
+                  {door.label}
                 </Link>
                 <Link href="/jobs" className="hidden md:block text-sm text-brand-muted hover:text-brand-text transition-colors px-3 py-1.5">
                   Jobs
@@ -561,8 +575,8 @@ export function Navbar() {
         {/* Mobile Menu */}
         {mobileOpen && (
           <div className="md:hidden border-t border-brand-border py-4 space-y-1">
-            <Link href="/hire" className="block px-4 py-3 text-sm text-brand-muted" onClick={() => setMobileOpen(false)}>
-              For businesses
+            <Link href={door.href} className="block px-4 py-3 text-sm font-medium text-brand-purple" onClick={() => setMobileOpen(false)}>
+              {door.label}
             </Link>
             <Link href="/browse" className="block px-4 py-3 text-sm text-brand-muted" onClick={() => setMobileOpen(false)}>
               Browse Talent

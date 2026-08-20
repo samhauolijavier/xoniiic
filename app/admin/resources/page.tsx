@@ -29,7 +29,7 @@ interface Resource {
 
 const KIND_HELP: Record<Resource['kind'], string> = {
   video: 'A YouTube link. Shows up as something to watch.',
-  scenario: 'The brief someone practises against. This is the thing that makes a video worth following.',
+  scenario: 'The brief someone practices against. This is the thing that makes a video worth following.',
   document: 'A template, checklist, or spreadsheet they fill in.',
 }
 
@@ -149,7 +149,7 @@ export default function AdminResourcesPage() {
     <div className="max-w-5xl mx-auto px-5 py-10">
       <h1 className="text-2xl font-bold mb-1">Resources</h1>
       <p className="text-brand-muted text-sm mb-6">
-        Everything that hangs off a video: the scenario people practise against, the templates
+        Everything that hangs off a video: the scenario people practice against, the templates
         they fill in, and the video itself. Uploads save as drafts — nothing is public until you
         publish it.
       </p>

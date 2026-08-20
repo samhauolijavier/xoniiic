@@ -102,7 +102,7 @@ export async function POST(req: NextRequest) {
     }
     if (file.type && !ALLOWED.has(file.type)) {
       return NextResponse.json({
-        error: `${file.type} is not a file type people can practise with here. PDF, Word, Excel, CSV, images, or a zip.`,
+        error: `${file.type} is not a file type people can practice with here. PDF, Word, Excel, CSV, images, or a zip.`,
       }, { status: 400 })
     }
 

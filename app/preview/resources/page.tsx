@@ -73,7 +73,7 @@ export default function Resources() {
           <p className="eyebrow">Practice · free</p>
           <h1>Do the work. Get it marked.<br /><span className="mark-accent">Wear it on your profile.</span></h1>
           <p className="lede">
-            Every scenario is a real job someone paid for, with the account to practise in.
+            Every scenario is a real job someone paid for, with the account to practice in.
             Finish one, submit it, and a verified badge lands on your profile where employers
             filter by it. No course. No certificate mill.
           </p>
@@ -82,7 +82,7 @@ export default function Resources() {
           {[
             ['Watch', 'A real build, start to finish'],
             ['Download', 'Workbook, snapshot, the account export'],
-            ['Practise', 'In a real account you can break'],
+            ['Practice', 'In a real account you can break'],
             ['Submit', 'We mark it by hand'],
             ['Wear it', 'Badge on your profile, filterable'],
           ].map(([t, s], i) => (
@@ -135,7 +135,7 @@ export default function Resources() {
       <section className="band-dark band">
         <div className="wrap sandbox">
           <div>
-            <h2>Practise in a real account</h2>
+            <h2>Practice in a real account</h2>
             <p>
               A real working account for your track, reset weekly. Build it, break it, fix it. Most people learning this have never seen the inside of a
               paid account — that is the actual barrier, and it is not the tutorials.

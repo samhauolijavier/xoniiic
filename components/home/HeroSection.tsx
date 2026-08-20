@@ -11,7 +11,7 @@ export function HeroSection() {
 
   const [heroTag, setHeroTag] = useState('Free profile \u2022 No commission, ever')
   const [heroHeadline, setHeroHeadline] = useState('Nobody hires you without experience. Start here.')
-  const [heroSubtitle, setHeroSubtitle] = useState('Build a profile that shows real work, practise on live systems, and get found by people hiring directly. Free, and it stays free.')
+  const [heroSubtitle, setHeroSubtitle] = useState('Build a profile that shows real work, practice on live systems, and get found by people hiring directly. Free, and it stays free.')
   const [heroCta1, setHeroCta1] = useState('Make a free profile')
   const [heroCta2, setHeroCta2] = useState('See the practice account')
   // Starts blank rather than with a claim. The old defaults said 500+

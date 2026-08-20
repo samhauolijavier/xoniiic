@@ -148,7 +148,7 @@ export default async function HirePage() {
       <section className="border-y border-brand-border bg-brand-purple/[0.04]">
         <div className="max-w-4xl mx-auto px-5 py-14">
           <h2 className="text-2xl font-bold tracking-tight mb-3">
-            People here practise on real systems
+            People here practice on real systems
           </h2>
           <p className="text-brand-muted leading-relaxed max-w-2xl mb-4">
             Virtual Freaks runs its own training. Members work through scenario briefs in a live

@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   // otherwise search sends employers to the page written for someone else,
   // and /hire, which was written for them, never gets found.
   title: 'Virtual Freaks — Get hired as a VA or remote professional',
-  description: 'Build a free profile that shows real work, practise on live systems, and get found by people hiring directly. No commission, ever. Hiring instead? See virtualfreaks.co/hire.',
+  description: 'Build a free profile that shows real work, practice on live systems, and get found by people hiring directly. No commission, ever. Hiring instead? See virtualfreaks.co/hire.',
   keywords: ['virtual assistant jobs', 'remote work philippines', 'VA portfolio', 'get hired as a VA', 'remote jobs', 'GoHighLevel practice', 'freelancer profile', 'hire remote talent'],
   alternates: {
     canonical: 'https://virtualfreaks.co',

@@ -20,7 +20,7 @@ import type { Resource } from '@prisma/client'
 export const metadata: Metadata = {
   title: 'Resources',
   description:
-    'Scenario briefs, templates, and walkthroughs you can practise with — free to download, no account needed.',
+    'Scenario briefs, templates, and walkthroughs you can practice with — free to download, no account needed.',
   alternates: { canonical: 'https://virtualfreaks.co/resources' },
 }
 

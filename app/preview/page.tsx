@@ -52,7 +52,7 @@ export default function Preview() {
       </header>
 
       {/* ── Hero ────────────────────────────────────────────────────────
-          Asymmetric. A centred hero with three cards under it is the shape
+          Asymmetric. A centered hero with three cards under it is the shape
           every template ships; this puts the claim on the left and live
           evidence on the right, so the first thing seen is the product
           working rather than a promise about it. */}
