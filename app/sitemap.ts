@@ -32,7 +32,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const profilePages: MetadataRoute.Sitemap = profiles
       .filter((p) => p.username)
       .map((p) => ({
-        url: `${baseUrl}/talent/${p.username}`,
+        url: `${baseUrl}/@${p.username}`,
         lastModified: p.updatedAt,
         changeFrequency: 'weekly' as const,
         priority: 0.8,

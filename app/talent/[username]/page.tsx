@@ -53,7 +53,7 @@ export async function generateMetadata({ params }: { params: { username: string 
   if (!profile) return { title: 'Not Found' }
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://virtualfreaks.co'
-  const canonicalUrl = `${appUrl}/talent/${params.username}`
+  const canonicalUrl = `${appUrl}/@${params.username}`
   const name = profile.user.name || profile.username
   const title = profile.title ? `${name} — ${profile.title} | Virtual Freaks` : `${name} | Virtual Freaks`
   const topSkill = profile.skills[0]?.skill.name
@@ -221,7 +221,7 @@ export default async function TalentProfilePage({ params }: { params: { username
   const isVimeo = profile.videoIntroUrl ? isVimeoUrl(profile.videoIntroUrl) : false
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://virtualfreaks.co'
-  const profileUrl = `${appUrl}/talent/${profile.username}`
+  const profileUrl = `${appUrl}/@${profile.username}`
   const personSchema = {
     '@context': 'https://schema.org',
     '@type': 'Person',
@@ -465,12 +465,12 @@ export default async function TalentProfilePage({ params }: { params: { username
                   It takes a minute and costs nothing, now or later. It is how we keep real people
                   on both sides of a conversation.
                 </p>
-                <Link href={`/register?redirect=/talent/${profile.username}`} className="btn-primary w-full justify-center text-sm">
+                <Link href={`/register?redirect=/@${profile.username}`} className="btn-primary w-full justify-center text-sm">
                   Create a free account
                 </Link>
                 <p className="text-xs text-brand-muted mt-2 text-center">
                   Already have one?{' '}
-                  <Link href={`/login?callbackUrl=/talent/${profile.username}`} className="text-brand-purple underline underline-offset-2">
+                  <Link href={`/login?callbackUrl=/@${profile.username}`} className="text-brand-purple underline underline-offset-2">
                     Sign in
                   </Link>
                 </p>

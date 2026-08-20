@@ -192,7 +192,7 @@ export default async function Home() {
                 // in monospace, and the top three carry the accent instead.
                 const isPodium = entry.rank <= 3
                 return (
-                  <Link key={entry.id} href={`/talent/${entry.username}`} className="block h-full">
+                  <Link key={entry.id} href={`/@${entry.username}`} className="block h-full">
                     <div className="card p-4 text-center group hover-glow cursor-pointer h-full flex flex-col">
                       <div className={`font-mono text-sm mb-2 tabular-nums ${isPodium ? 'text-brand-purple font-semibold' : 'text-brand-muted'}`}>
                         #{entry.rank}

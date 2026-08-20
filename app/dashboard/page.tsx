@@ -100,7 +100,7 @@ export default async function DashboardPage() {
               ★ Upgrade to Premium
             </Link>
           )}
-          <Link href={`/talent/${profile.username}`} className="btn-secondary text-sm">
+          <Link href={`/@${profile.username}`} className="btn-secondary text-sm">
             View Profile
           </Link>
           <Link href="/profile/edit" className="btn-primary text-sm">
@@ -288,10 +288,10 @@ export default async function DashboardPage() {
             <div className="flex items-center gap-4">
               <Badge status={profile.availability} />
               <span className="text-sm text-brand-muted">
-                Public profile: virtualfreaks.co/talent/{profile.username}
+                Public profile: virtualfreaks.co/@{profile.username}
               </span>
             </div>
-            <Link href={`/talent/${profile.username}`} className="text-sm text-brand-purple hover:underline" target="_blank">
+            <Link href={`/@${profile.username}`} className="text-sm text-brand-purple hover:underline" target="_blank">
               View as employer →
             </Link>
           </div>

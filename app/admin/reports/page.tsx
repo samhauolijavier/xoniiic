@@ -83,7 +83,7 @@ export default async function AdminReportsPage() {
                     : 'Unknown'
 
                 const targetHref = report.seekerProfile
-                  ? `/talent/${report.seekerProfile.username}`
+                  ? `/@${report.seekerProfile.username}`
                   : report.employerProfile
                     ? `/employers/${report.employerProfile.userId}`
                     : null

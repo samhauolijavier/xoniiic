@@ -380,7 +380,7 @@ export default function AdminLeadsPage() {
                     className="text-brand-text hover:bg-brand-border/20 transition-colors cursor-pointer"
                     onClick={() => {
                       if (u.role === 'seeker' && u.seekerProfile?.username) {
-                        router.push(`/talent/${u.seekerProfile.username}`)
+                        router.push(`/@${u.seekerProfile.username}`)
                       } else if (u.role === 'employer') {
                         router.push(`/admin/employers`)
                       }

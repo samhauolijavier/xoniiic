@@ -10,6 +10,23 @@ const nextConfig = {
     // fails here, in seconds, instead of in front of whoever just signed up.
     ignoreBuildErrors: false,
   },
+
+  // Profiles live at /@username.
+  //
+  // It cannot be a folder: in the App Router an @-prefixed directory is a
+  // parallel route slot, not a literal path segment. So the page stays at
+  // app/talent/[username] and the pretty URL is mapped onto it.
+  //
+  // The rewrite is invisible — the address bar keeps /@username while the
+  // talent page renders. The redirect sends every old /talent/... link to the
+  // new address permanently, so anything already shared or indexed still
+  // arrives. No loop: redirects are matched against the incoming URL, and
+  // /@username never matches /talent/:username.
+  async rewrites() {
+    return [
+      { source: '/@:username', destination: '/talent/:username' },
+    ]
+  },
   images: {
     // Scoped deliberately. This was hostname: '**', which let anyone pass any
     // URL on the internet through the image optimiser — an abuse vector that
@@ -58,6 +75,10 @@ const nextConfig = {
   async redirects() {
     return [
       { source: '/home', destination: '/', permanent: true },
+      // Profiles moved to /@username. Kept permanently so anything already
+      // shared or indexed still arrives. Listed before the bare /talent rule
+      // because the first match wins and this one is the specific case.
+      { source: '/talent/:username', destination: '/@:username', permanent: true },
       { source: '/talent', destination: '/browse', permanent: true },
       { source: '/freelancers', destination: '/browse', permanent: true },
       { source: '/find-talent', destination: '/browse', permanent: true },

@@ -12,7 +12,7 @@ export function ShareProfileLink({ username, profileName, compact = false }: Sha
   const [copied, setCopied] = useState(false)
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://virtualfreaks.co'
-  const profileUrl = `${appUrl}/talent/${username}`
+  const profileUrl = `${appUrl}/@${username}`
 
   const handleCopy = async () => {
     try {

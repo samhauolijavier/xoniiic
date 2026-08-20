@@ -155,7 +155,7 @@ export default async function LeaderboardPage({
                 }[entry.rank]!
 
                 return (
-                  <Link key={entry.id} href={`/talent/${entry.username}`}>
+                  <Link key={entry.id} href={`/@${entry.username}`}>
                     <div className={`relative card p-6 text-center group hover-glow cursor-pointer border ${rankConfig.border}`}>
                       {/* Rank label at top */}
                       <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold mb-4 bg-gradient-to-r ${rankConfig.bg} text-white`}>
@@ -225,7 +225,7 @@ export default async function LeaderboardPage({
                   ? entry.name.split(' ').map((n: string) => n[0]).join('').toUpperCase()
                   : entry.username[0].toUpperCase()
                 return (
-                  <Link key={entry.id} href={`/talent/${entry.username}`}>
+                  <Link key={entry.id} href={`/@${entry.username}`}>
                     <div className="flex items-center gap-4 p-4 hover:bg-brand-border/30 transition-all cursor-pointer group">
                       {/* Rank */}
                       <div className="w-8 h-8 rounded-full bg-brand-border flex items-center justify-center text-sm font-bold text-brand-muted flex-shrink-0">

@@ -866,7 +866,7 @@ export default function ProfileEditPage() {
 
           <div className="flex gap-3 justify-between items-center">
             {profileData.username && (
-              <a href={`/talent/${profileData.username}`} className="btn-secondary text-sm" target="_blank">
+              <a href={`/@${profileData.username}`} className="btn-secondary text-sm" target="_blank">
                 View Public Profile
               </a>
             )}

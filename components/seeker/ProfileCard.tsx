@@ -55,7 +55,7 @@ export function ProfileCard({ profile, hideMonetization, hideRate }: ProfileCard
     : false
 
   return (
-    <Link href={`/talent/${profile.username}`}>
+    <Link href={`/@${profile.username}`}>
       <div className="card p-5 h-full flex flex-col group cursor-pointer hover-glow relative overflow-hidden">
         {profile.featured && (
           <div className="absolute top-0 right-0">

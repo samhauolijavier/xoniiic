@@ -515,7 +515,7 @@ export function Navbar() {
                         )}
                         {user?.role === 'seeker' && user?.username && (
                           <Link
-                            href={`/talent/${user.username}`}
+                            href={`/@${user.username}`}
                             onClick={() => setDropdownOpen(false)}
                             className="block px-4 py-2 text-sm text-brand-muted hover:text-brand-text hover:bg-brand-border transition-all"
                           >

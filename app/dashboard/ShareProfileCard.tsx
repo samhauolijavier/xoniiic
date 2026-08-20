@@ -26,7 +26,7 @@ export function ShareProfileCard({
 }) {
   const [copied, setCopied] = useState<'link' | 'post' | null>(null)
 
-  const url = `https://virtualfreaks.co/talent/${username}`
+  const url = `https://virtualfreaks.co/@${username}`
   const post = [
     headline
       ? `I'm ${name?.split(' ')[0] ?? 'available'} — ${headline}.`
@@ -59,7 +59,7 @@ export function ShareProfileCard({
 
       <div className="flex items-center gap-2 mb-3 flex-wrap">
         <code className="text-xs bg-brand-bg border border-brand-border rounded-lg px-3 py-2 flex-1 min-w-[220px] overflow-hidden text-ellipsis whitespace-nowrap">
-          virtualfreaks.co/talent/{username}
+          virtualfreaks.co/@{username}
         </code>
         <button className="btn-secondary text-sm" onClick={() => copy('link')}>
           {copied === 'link' ? 'Copied' : 'Copy link'}
