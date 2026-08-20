@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic"
 import { notFound } from 'next/navigation'
 import { db } from '@/lib/db'
+import Link from 'next/link'
 import { getServerSession } from 'next-auth'
 import { OwnerGap, OwnerViewBanner } from '@/components/seeker/OwnerGap'
 import { authOptions } from '@/lib/auth'
@@ -178,6 +179,7 @@ export default async function TalentProfilePage({ params }: { params: { username
         !profile.bio,
         profile.skills.length < 3,
         !profile.videoIntroUrl,
+        !profile.whatsapp,
         !profile.portfolioLinks?.length,
         !profile.certificates?.length,
       ].filter(Boolean).length
@@ -431,7 +433,44 @@ export default async function TalentProfilePage({ params }: { params: { username
             {canContact && (
               <div className="mt-5 space-y-2">
                 <ContactModal profileId={profile.id} profileName={profile.user.name || profile.username} />
+                {/* Their own channel, on their own terms. Signed-in only: a
+                    phone number on a page open to the whole internet is a
+                    number that gets scraped, and that lands on them. */}
+                {profile.whatsapp && (
+                  <a
+                    href={`https://wa.me/${profile.whatsapp.replace(/[^0-9]/g, '')}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="btn-secondary w-full justify-center text-sm"
+                  >
+                    Message on WhatsApp
+                  </a>
+                )}
                 <SaveButton profileId={profile.id} />
+              </div>
+            )}
+
+            {/* Logged out. This used to render nothing at all — a profile with
+                no way to act and no reason given, which reads as broken rather
+                than as a door. */}
+            {!user && (
+              <div className="mt-5 rounded-xl border border-brand-border bg-brand-purple/[0.03] p-4 text-left">
+                <p className="text-sm text-brand-text font-medium mb-1">
+                  Make a free account to message {profile.user.name?.split(' ')[0] || 'them'}
+                </p>
+                <p className="text-xs text-brand-muted leading-relaxed mb-3">
+                  It takes a minute and costs nothing, now or later. It is how we keep real people
+                  on both sides of a conversation.
+                </p>
+                <Link href={`/register?redirect=/talent/${profile.username}`} className="btn-primary w-full justify-center text-sm">
+                  Create a free account
+                </Link>
+                <p className="text-xs text-brand-muted mt-2 text-center">
+                  Already have one?{' '}
+                  <Link href={`/login?callbackUrl=/talent/${profile.username}`} className="text-brand-purple underline underline-offset-2">
+                    Sign in
+                  </Link>
+                </p>
               </div>
             )}
 
@@ -498,6 +537,14 @@ export default async function TalentProfilePage({ params }: { params: { username
           )}
 
           {/* Video Intro card */}
+          {isOwner && !profile.whatsapp && (
+            <OwnerGap
+              title="No WhatsApp number"
+              because="Plenty of clients would rather carry on in WhatsApp than in a platform inbox, and the ones who prefer it will simply move on to somebody who offers it. Only signed-in visitors ever see the number."
+              cta="Add WhatsApp"
+              href="/profile/edit"
+            />
+          )}
           {isOwner && !profile.videoIntroUrl && (
             <OwnerGap
               title="No intro video"

@@ -73,6 +73,7 @@ export async function PATCH(req: NextRequest) {
       timezone,
       portfolioLinks,
       languages,
+      whatsapp,
       linkedinUrl,
       githubUrl,
       twitterUrl,
@@ -103,6 +104,11 @@ export async function PATCH(req: NextRequest) {
         ...(title !== undefined && { title }),
         ...(videoIntroUrl !== undefined && { videoIntroUrl }),
         ...(timezone !== undefined && { timezone }),
+        ...(whatsapp !== undefined && {
+          whatsapp: typeof whatsapp === 'string' && whatsapp.trim()
+            ? whatsapp.replace(/[^0-9+]/g, '').slice(0, 20)
+            : null,
+        }),
         ...(linkedinUrl !== undefined && { linkedinUrl }),
         ...(githubUrl !== undefined && { githubUrl }),
         ...(twitterUrl !== undefined && { twitterUrl }),

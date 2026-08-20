@@ -87,6 +87,10 @@ model SeekerProfile {
   videoIntroUrl    String?
   timezone         String?
   lastActiveAt     DateTime?
+  // Their own channel, on their own terms. Shown to signed-in visitors only —
+  // a phone number on a page open to the whole internet is a number that gets
+  // scraped and sold, and that harm lands on the member, not on us.
+  whatsapp         String?
   linkedinUrl      String?
   githubUrl        String?
   twitterUrl       String?
@@ -270,6 +274,9 @@ model EmployerProfile {
   userId           String    @unique
   companyName      String?
   website          String?
+  // Same reasoning as the seeker side: a way to take a conversation off the
+  // platform when both people want to, visible only to signed-in visitors.
+  whatsapp         String?
   linkedIn         String?
   description      String?
   logoUrl          String?
