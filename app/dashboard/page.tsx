@@ -15,6 +15,7 @@ import { ActivityFeedWidget } from '@/components/ui/ActivityFeedWidget'
 import { isMonetizationEnabled } from '@/lib/monetization'
 import { ContactRequestCard } from './ContactRequestCard'
 import { TestimonialCard } from './TestimonialCard'
+import { CoverUpload } from './CoverUpload'
 import { VerifyBanner } from './VerifyBanner'
 
 export default async function DashboardPage() {
@@ -65,6 +66,8 @@ export default async function DashboardPage() {
       {dbUser && !dbUser.emailVerified && <VerifyBanner email={dbUser.email} />}
 
       <TestimonialCard />
+
+      <CoverUpload initialUrl={profile?.coverUrl ?? null} />
 
       {/* Header */}
       <div className="flex items-start justify-between mb-8 flex-wrap gap-4">

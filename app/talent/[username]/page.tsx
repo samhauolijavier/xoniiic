@@ -233,6 +233,18 @@ export default async function TalentProfilePage({ params }: { params: { username
           </a>
         </div>
       )}
+      {/* Banner, only if they uploaded one. No placeholder: a grey rectangle
+          where a banner should be advertises the gap instead of hiding it. */}
+      {profile.coverUrl && (
+        /* eslint-disable-next-line @next/next/no-img-element */
+        <img
+          src={profile.coverUrl}
+          alt={`${name}'s banner`}
+          className="w-full rounded-2xl border border-brand-border mb-6"
+          style={{ aspectRatio: '4 / 1', objectFit: 'cover' }}
+        />
+      )}
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Sidebar */}
         <div className="lg:col-span-1 space-y-5">

@@ -71,6 +71,9 @@ model SeekerProfile {
   userId           String           @unique
   username         String           @unique
   avatarUrl        String?
+  // Optional, and optional means invisible: a profile without one has no
+  // banner area at all rather than a grey placeholder announcing the gap.
+  coverUrl         String?
   bio              String?
   location         String?
   hourlyRate       Float?
