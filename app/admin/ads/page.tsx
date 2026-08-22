@@ -1,5 +1,27 @@
 'use client'
 
+type AdRow = {
+  active: boolean
+  imageUrl?: string | null
+  startsAt?: string | null
+  endsAt?: string | null
+}
+
+/** Why an ad is or is not on screen, in the order the checks actually run. */
+function adState(ad: AdRow): { live: boolean; label: string } {
+  if (!ad.imageUrl) return { live: false, label: 'No image' }
+  if (!ad.active) return { live: false, label: 'Switched off' }
+  const now = Date.now()
+  if (ad.startsAt && new Date(ad.startsAt).getTime() > now) {
+    return { live: false, label: `Starts ${new Date(ad.startsAt).toLocaleDateString('en-GB')}` }
+  }
+  if (ad.endsAt && new Date(ad.endsAt).getTime() < now) {
+    return { live: false, label: 'Finished' }
+  }
+  return { live: true, label: 'Showing now' }
+}
+
+
 import { PLACEMENTS, isPlacement } from '@/lib/ads'
 
 import { useState, useEffect } from 'react'
@@ -183,11 +205,11 @@ export default function AdminAdsPage() {
             </div>
             <div>
               <label className="text-xs text-brand-muted mb-1 block">Alt text</label>
-              <input type="text" value={formData.altText} onChange={e => setFormData({...formData, altText: e.target.value})} className="input-field" placeholder="Rad CRM — all-in-one CRM for agencies" required />
+              <input type="text" value={formData.altText} onChange={e => setFormData({...formData, altText: e.target.value})} className="input-field" placeholder="Free CRM course — 50% off this month" required />
               <p className="text-xs text-brand-muted mt-1">
                 What the image says, in words. Screen readers announce it to blind visitors, and
                 it shows in place of the picture when one fails to load. Describe the offer, not
-                the file — &ldquo;Rad CRM course, 50% off&rdquo;, never &ldquo;banner image&rdquo;.
+                the file — &ldquo;CRM course, 50% off&rdquo;, never &ldquo;banner image&rdquo;.
               </p>
             </div>
             <div>
@@ -249,8 +271,13 @@ export default function AdminAdsPage() {
                 <td className="p-4 text-brand-muted">{ad.viewCount}</td>
                 <td className="p-4 text-brand-muted">{ad.clickCount}</td>
                 <td className="p-4">
-                  <span className={`px-2 py-0.5 rounded-full text-xs ${ad.active ? 'bg-emerald-900/40 text-emerald-400' : 'bg-red-900/40 text-red-400'}`}>
-                    {ad.active ? 'Active' : 'Inactive'}
+                  {/* "Active" answered the wrong question. An ad can be active
+                      and still invisible — no image, a start date in the future,
+                      an end date already past — and the only way to find out was
+                      to go and look at the page. This says whether it is on
+                      screen right now, and if not, why not. */}
+                  <span className={`px-2 py-0.5 rounded-full text-xs ${adState(ad).live ? 'bg-brand-purple/[0.10] text-brand-purple' : 'bg-brand-border text-brand-muted'}`}>
+                    {adState(ad).label}
                   </span>
                 </td>
                 <td className="p-4">

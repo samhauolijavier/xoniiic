@@ -16,6 +16,7 @@ import { isMonetizationEnabled } from '@/lib/monetization'
 import { ContactRequestCard } from './ContactRequestCard'
 import { TestimonialCard } from './TestimonialCard'
 import { CoverUpload } from './CoverUpload'
+import { AdSlot } from '@/components/ads/AdSlot'
 import { VerifyBanner } from './VerifyBanner'
 
 export default async function DashboardPage() {
@@ -76,6 +77,9 @@ export default async function DashboardPage() {
       )}
 
       <CoverUpload initialUrl={profile?.coverUrl ?? null} />
+
+      {/* Renders nothing unless something is booked. */}
+      <AdSlot placement="banner" />
 
       {/* Header */}
       <div className="flex items-start justify-between mb-8 flex-wrap gap-4">
