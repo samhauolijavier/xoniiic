@@ -4,7 +4,6 @@ import { db } from '@/lib/db'
 import Link from 'next/link'
 import { getServerSession } from 'next-auth'
 import { OwnerGap, OwnerViewBanner } from '@/components/seeker/OwnerGap'
-import { AdSlot } from '@/components/ads/AdSlot'
 import { authOptions } from '@/lib/auth'
 import Image from 'next/image'
 import { Badge } from '@/components/ui/Badge'
@@ -608,8 +607,6 @@ export default async function TalentProfilePage({ params }: { params: { username
             </div>
           )}
 
-          {/* Nothing renders here unless an ad is actually booked. */}
-          <AdSlot placement="sidebar" />
         </div>
 
         {/* Main Content */}

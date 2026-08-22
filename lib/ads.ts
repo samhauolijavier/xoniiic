@@ -9,19 +9,25 @@
  * artwork.
  */
 export const PLACEMENTS = {
+  // Retired. Its only home was the profile page, and profiles are the link
+  // members post publicly — an advert beside somebody's name on the page they
+  // are using as a portfolio makes them look hosted somewhere free. Kept
+  // defined so existing rows still read, but no longer offered.
   sidebar: {
-    label: 'Sidebar',
+    label: 'Sidebar (retired)',
     width: 300,
     height: 250,
     ratio: '6 / 5',
-    note: 'Medium rectangle. Sits beside profile and browse content.',
+    note: 'No longer has anywhere to appear.',
+    retired: true,
   },
   banner: {
     label: 'Banner',
     width: 728,
     height: 90,
     ratio: '728 / 90',
-    note: 'Leaderboard. Runs across the top of a page, above the content.',
+    note: 'Runs across the top of the dashboard, browse, jobs, and the leaderboard.',
+    retired: false,
   },
 } as const
 

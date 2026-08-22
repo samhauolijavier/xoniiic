@@ -1,6 +1,7 @@
 'use client'
 
 type AdRow = {
+  placement: string
   active: boolean
   imageUrl?: string | null
   startsAt?: string | null
@@ -9,6 +10,9 @@ type AdRow = {
 
 /** Why an ad is or is not on screen, in the order the checks actually run. */
 function adState(ad: AdRow): { live: boolean; label: string } {
+  // Checked first: an ad on a placement with nowhere to render will never show
+  // however correct everything else about it is.
+  if (ad.placement === 'sidebar') return { live: false, label: 'Placement retired' }
   if (!ad.imageUrl) return { live: false, label: 'No image' }
   if (!ad.active) return { live: false, label: 'Switched off' }
   const now = Date.now()
@@ -54,7 +58,7 @@ export default function AdminAdsPage() {
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
   const [formData, setFormData] = useState({
-    name: '', placement: 'sidebar', imageUrl: '', linkUrl: '', altText: '', advertiser: '',
+    name: '', placement: 'banner', imageUrl: '', linkUrl: '', altText: '', advertiser: '',
     startsAt: '', endsAt: '', priority: '0', audience: 'all',
   })
   const [saving, setSaving] = useState(false)
@@ -111,7 +115,7 @@ export default function AdminAdsPage() {
     })
     if (res.ok) {
       setShowForm(false)
-      setFormData({ name: '', placement: 'sidebar', imageUrl: '', linkUrl: '', altText: '', advertiser: '', startsAt: '', endsAt: '', priority: '0', audience: 'all' })
+      setFormData({ name: '', placement: 'banner', imageUrl: '', linkUrl: '', altText: '', advertiser: '', startsAt: '', endsAt: '', priority: '0', audience: 'all' })
       loadAds()
     }
     setSaving(false)
@@ -165,8 +169,9 @@ export default function AdminAdsPage() {
               {/* Footer and inline were offered and rendered nowhere. A slot
                   you can create but never see is a slot somebody sells and
                   then has to apologise for. */}
+              {/* Only what has somewhere to appear. Sidebar's only home was the
+                  profile page, and that is the link members post publicly. */}
               <select value={formData.placement} onChange={e => setFormData({...formData, placement: e.target.value})} className="input-field">
-                <option value="sidebar">Sidebar</option>
                 <option value="banner">Banner</option>
               </select>
               {spec && (
