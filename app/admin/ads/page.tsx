@@ -22,7 +22,7 @@ function adState(ad: AdRow): { live: boolean; label: string } {
 }
 
 
-import { PLACEMENTS, isPlacement } from '@/lib/ads'
+import { PLACEMENTS, isPlacement, AUDIENCES } from '@/lib/ads'
 
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
@@ -33,6 +33,9 @@ interface AdSlot {
   id: string
   name: string
   placement: string
+  audience?: string
+  startsAt?: string | null
+  endsAt?: string | null
   imageUrl: string
   linkUrl: string
   altText: string
@@ -52,7 +55,7 @@ export default function AdminAdsPage() {
   const [showForm, setShowForm] = useState(false)
   const [formData, setFormData] = useState({
     name: '', placement: 'sidebar', imageUrl: '', linkUrl: '', altText: '', advertiser: '',
-    startsAt: '', endsAt: '', priority: '0',
+    startsAt: '', endsAt: '', priority: '0', audience: 'all',
   })
   const [saving, setSaving] = useState(false)
   const [uploading, setUploading] = useState(false)
@@ -108,7 +111,7 @@ export default function AdminAdsPage() {
     })
     if (res.ok) {
       setShowForm(false)
-      setFormData({ name: '', placement: 'sidebar', imageUrl: '', linkUrl: '', altText: '', advertiser: '', startsAt: '', endsAt: '', priority: '0' })
+      setFormData({ name: '', placement: 'sidebar', imageUrl: '', linkUrl: '', altText: '', advertiser: '', startsAt: '', endsAt: '', priority: '0', audience: 'all' })
       loadAds()
     }
     setSaving(false)
@@ -217,6 +220,20 @@ export default function AdminAdsPage() {
               <input type="text" value={formData.advertiser} onChange={e => setFormData({...formData, advertiser: e.target.value})} className="input-field" />
             </div>
             <div>
+              <label className="text-xs text-brand-muted mb-1 block">Who sees it</label>
+              <select value={formData.audience} onChange={e => setFormData({...formData, audience: e.target.value})} className="input-field">
+                {Object.entries(AUDIENCES).map(([value, label]) => (
+                  <option key={value} value={value}>{label}</option>
+                ))}
+              </select>
+              <p className="text-xs text-brand-muted mt-1">
+                A course affiliate wants freelancers; a CRM affiliate wants the people hiring them.
+                Showing each side the other&apos;s ads wastes the slot and the click. Signed-out
+                visitors only ever see &ldquo;Everyone&rdquo;.
+              </p>
+            </div>
+
+            <div>
               <label className="text-xs text-brand-muted mb-1 block">Priority</label>
               <input type="number" value={formData.priority} onChange={e => setFormData({...formData, priority: e.target.value})} className="input-field" />
               <p className="text-xs text-brand-muted mt-1">
@@ -255,6 +272,7 @@ export default function AdminAdsPage() {
             <tr className="text-left text-brand-muted border-b border-brand-border">
               <th className="p-4 font-medium">Name</th>
               <th className="p-4 font-medium">Placement</th>
+              <th className="p-4 font-medium">Audience</th>
               <th className="p-4 font-medium">Advertiser</th>
               <th className="p-4 font-medium">Views</th>
               <th className="p-4 font-medium">Clicks</th>
@@ -267,6 +285,7 @@ export default function AdminAdsPage() {
               <tr key={ad.id} className="text-brand-text hover:bg-brand-border/20 transition-colors">
                 <td className="p-4 font-medium">{ad.name}</td>
                 <td className="p-4 text-brand-muted capitalize">{ad.placement}</td>
+                <td className="p-4 text-brand-muted text-xs">{AUDIENCES[(ad.audience ?? 'all') as keyof typeof AUDIENCES] ?? 'Everyone'}</td>
                 <td className="p-4 text-brand-muted">{ad.advertiser || '-'}</td>
                 <td className="p-4 text-brand-muted">{ad.viewCount}</td>
                 <td className="p-4 text-brand-muted">{ad.clickCount}</td>

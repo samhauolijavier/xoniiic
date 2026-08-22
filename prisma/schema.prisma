@@ -180,6 +180,14 @@ model AdSlot {
   // Higher wins the slot. Ads sharing a priority take turns, so two
   // advertisers who paid the same both get a fair share rather than one
   // sitting permanently under the other by accident of upload order.
+  // Who sees it: "all", "seeker", or "employer".
+  //
+  // The two sides of this marketplace want opposite advertising — a course
+  // affiliate wants freelancers, a CRM affiliate wants the people hiring them
+  // — and showing each the other's ads wastes both the slot and the click.
+  // A string rather than an enum because new segments are a config change, not
+  // a migration.
+  audience   String    @default("all")
   priority   Int       @default(0)
   clickCount Int       @default(0)
   viewCount  Int       @default(0)

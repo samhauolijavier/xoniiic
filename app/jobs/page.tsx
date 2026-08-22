@@ -13,6 +13,7 @@ export const metadata: Metadata = {
 import { db, withRetry } from '@/lib/db'
 import { excludeDemoAccounts } from '@/lib/constants'
 import Link from 'next/link'
+import { AdSlot } from '@/components/ads/AdSlot'
 
 const CATEGORIES = [
   'Development',
@@ -138,6 +139,7 @@ export default async function JobBoardPage({
   return (
     <div className="min-h-screen bg-brand-bg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <AdSlot placement="banner" />
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-2xl sm:text-3xl font-black text-brand-text">

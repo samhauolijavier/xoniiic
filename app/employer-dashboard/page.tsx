@@ -11,6 +11,7 @@ import { FREE_CONTACTS_PER_MONTH, FREE_ACTIVE_JOB_POSTS } from '@/lib/stripe'
 import { ActivityFeedWidget } from '@/components/ui/ActivityFeedWidget'
 import { FoundingMemberBadge } from '@/components/ui/FoundingMemberBadge'
 import { isMonetizationEnabled } from '@/lib/monetization'
+import { AdSlot } from '@/components/ads/AdSlot'
 
 export default async function EmployerDashboardPage() {
   const session = await getServerSession(authOptions)
@@ -92,6 +93,7 @@ export default async function EmployerDashboardPage() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <AdSlot placement="banner" />
       {/* Email Verification Banner — hibernated, enable when SES is ready */}
 
       {/* Header */}

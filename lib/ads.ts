@@ -35,17 +35,35 @@ export function placementSpec(placement: string) {
   return isPlacement(placement) ? PLACEMENTS[placement] : PLACEMENTS.sidebar
 }
 
+export const AUDIENCES = {
+  all: 'Everyone',
+  seeker: 'Freelancers only',
+  employer: 'Businesses only',
+} as const
+
+export type Audience = keyof typeof AUDIENCES
+
+/** A viewer's role reduced to the audiences they belong to. */
+export function audiencesFor(role?: string | null): string[] {
+  if (role === 'seeker') return ['all', 'seeker']
+  if (role === 'employer') return ['all', 'employer']
+  // Signed out, or an admin looking around: only untargeted ads. Somebody
+  // whose side we do not know is not worth spending a targeted impression on.
+  return ['all']
+}
+
 /**
- * Whether an ad should be on screen right now.
+ * Whether an ad should be on screen right now, for this viewer.
  *
  * Scheduling is a range with both ends optional: no start means it runs from
  * the moment it is switched on, and no end means it runs until somebody turns
  * it off. Both are common — a house ad has neither, a paid placement has both.
  */
-export function adWhereClause(placement: Placement, now = new Date()) {
+export function adWhereClause(placement: Placement, audiences: string[], now = new Date()) {
   return {
     placement,
     active: true,
+    audience: { in: audiences },
     AND: [
       { OR: [{ startsAt: null }, { startsAt: { lte: now } }] },
       { OR: [{ endsAt: null }, { endsAt: { gte: now } }] },

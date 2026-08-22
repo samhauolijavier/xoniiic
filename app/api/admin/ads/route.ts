@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json()
-    const { name, placement, imageUrl, linkUrl, altText, advertiser, startsAt, endsAt, priority } = body
+    const { name, placement, imageUrl, linkUrl, altText, advertiser, startsAt, endsAt, priority, audience } = body
 
     if (!name || !placement || !imageUrl || !linkUrl || !altText) {
       return NextResponse.json({ error: 'All fields are required' }, { status: 400 })
@@ -58,6 +58,9 @@ export async function POST(req: NextRequest) {
         startsAt: starts,
         endsAt: ends,
         priority: Number.isFinite(Number(priority)) ? Math.trunc(Number(priority)) : 0,
+        // Anything unrecognised falls back to everyone — a typo should widen
+        // the audience, never silently hide a paid placement from both sides.
+        audience: ['all', 'seeker', 'employer'].includes(String(audience)) ? String(audience) : 'all',
         active: true,
       },
     })

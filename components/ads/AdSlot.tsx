@@ -10,15 +10,24 @@
  * tells every visitor the site could not sell it.
  */
 import { db, withRetry } from '@/lib/db'
-import { adWhereClause, placementSpec, type Placement } from '@/lib/ads'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
+import { adWhereClause, audiencesFor, placementSpec, type Placement } from '@/lib/ads'
 
 export async function AdSlot({ placement }: { placement: Placement }) {
   const spec = placementSpec(placement)
 
+  // Resolved here rather than passed in. Every page that wants a slot would
+  // otherwise have to thread the viewer's role down to it, and the one that
+  // forgot would quietly show freelancer ads to businesses.
+  const session = await getServerSession(authOptions)
+  const role = (session?.user as { role?: string } | undefined)?.role
+  const audiences = audiencesFor(role)
+
   let ads: { id: string; imageUrl: string; linkUrl: string; altText: string; priority: number }[] = []
   try {
     ads = await withRetry(() => db.adSlot.findMany({
-      where: adWhereClause(placement),
+      where: adWhereClause(placement, audiences),
       orderBy: [{ priority: 'desc' }, { createdAt: 'desc' }],
       select: { id: true, imageUrl: true, linkUrl: true, altText: true, priority: true },
     }))

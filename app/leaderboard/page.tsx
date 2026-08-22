@@ -16,6 +16,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Badge } from '@/components/ui/Badge'
 import { FoundingMemberBadge } from '@/components/ui/FoundingMemberBadge'
+import { AdSlot } from '@/components/ads/AdSlot'
 
 const CATEGORIES = ['All', 'Development', 'Design', 'Virtual Assistant', 'Writing', 'Marketing']
 
@@ -100,6 +101,7 @@ export default async function LeaderboardPage({
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <AdSlot placement="banner" />
       {/* Header */}
       <div className="text-center mb-10">
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-3">
