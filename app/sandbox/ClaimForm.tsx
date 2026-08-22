@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
 export function ClaimForm({
@@ -17,6 +17,22 @@ export function ClaimForm({
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [done, setDone] = useState<string | null>(null)
+  const [zoomed, setZoomed] = useState(false)
+
+  // Escape closes it, and the page behind stops scrolling while it is open.
+  // A lightbox you can only dismiss by finding a small × is a lightbox people
+  // feel trapped in.
+  useEffect(() => {
+    if (!zoomed) return
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setZoomed(false) }
+    window.addEventListener('keydown', onKey)
+    const previous = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      document.body.style.overflow = previous
+    }
+  }, [zoomed])
 
   async function submit(e: React.FormEvent) {
     e.preventDefault()
@@ -51,20 +67,28 @@ export function ClaimForm({
             number is a payment somebody has to chase. The number stays for
             anyone paying from a second device or a desktop. */}
         {gcashQrUrl && (
-          /* A link, not just a picture. The uploaded image is usually a whole
-             GCash screenshot, so the code itself occupies maybe a third of the
-             frame — at any sensible page size that is too small to scan. Full
-             resolution is one tap away, and that version always scans. */
-          <a className="qr-frame" href={gcashQrUrl} target="_blank" rel="noreferrer" title="Open full size">
+          /* A button, not a link. The uploaded image is usually a whole GCash
+             screenshot, so the code itself occupies maybe a third of the frame
+             — too small to scan at any sensible page size. Opening it over the
+             page keeps somebody on the step they are in the middle of; a new
+             tab loses them the form they were about to fill in. */
+          <div className="qr-col">
+          <button
+            type="button"
+            className="qr-frame"
+            onClick={() => setZoomed(true)}
+            aria-label="Show the QR code larger"
+          >
             {/* A frame around it rather than sizing the image directly: GCash
                 screenshots come in every aspect ratio, and letting the image
                 sit centred inside a fixed square keeps it square without
                 stretching whatever was uploaded. */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img className="qr" src={gcashQrUrl} alt={`GCash QR for paying ₱${price}`} />
-          </a>
+          </button>
+            <span className="qr-hint">Click the code to enlarge it</span>
+          </div>
         )}
-        {gcashQrUrl && <span className="qr-hint">Tap the code to open it full size</span>}
         <ol className="steps">
           <li>
             {gcashQrUrl ? <>Scan the QR in your GCash app, or send </> : <>Send </>}
@@ -94,6 +118,27 @@ export function ClaimForm({
 
       {error && <p className="note bad">{error}</p>}
       {done && <p className="note good">{done}</p>}
+      {zoomed && gcashQrUrl && (
+        <div
+          className="qr-zoom"
+          role="dialog"
+          aria-modal="true"
+          aria-label="GCash QR code"
+          onClick={() => setZoomed(false)}
+        >
+          {/* Clicking the picture itself should not dismiss it — people tap a
+              QR while lining up a camera, and closing under them is maddening. */}
+          <div className="qr-zoom-inner" onClick={e => e.stopPropagation()}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={gcashQrUrl} alt={`GCash QR for paying ₱${price}`} />
+            <div className="qr-zoom-foot">
+              <span>₱{price}{gcashNumber ? ` · ${gcashNumber}` : ''}</span>
+              <button type="button" className="sbtn ghost" onClick={() => setZoomed(false)}>Close</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <p className="note quiet">
         One payment, 30 days. Nothing renews by itself and no card is stored — when the 30 days
         are up, it simply stops unless you top up again.

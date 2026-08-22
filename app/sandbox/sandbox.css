@@ -104,17 +104,17 @@
 
 /* Big enough to scan off the screen with a second phone, which is how people
    actually pay when they are already reading on a laptop. */
-.qr-frame { flex: none; display: flex; align-items: center; justify-content: center;
+.qr-frame { font: inherit; cursor: zoom-in; flex: none; display: flex; align-items: center; justify-content: center;
   width: 300px; height: 300px; padding: 10px; background: #fff;
   border: 1px solid var(--rule); border-radius: var(--r-lg); }
 .qr { display: block; max-width: 100%; max-height: 100%; width: auto; height: auto;
   object-fit: contain; }
-.qr-hint { display: block; font-size: 11px; color: var(--ink-3); margin: 6px 0 0; flex: none;
-  width: 300px; text-align: center; }
+.qr-hint { display: block; font-size: 11px; color: var(--ink-3); margin: 7px 0 0; text-align: center; }
 
-@media (max-width: 620px) {
-  .qr-hint { width: min(320px, 86vw); }
-}
+/* The code and its caption are one object. Left loose in the row they became
+   two columns, and the caption ended up stranded in the empty space beside the
+   picture. */
+.qr-col { flex: none; display: flex; flex-direction: column; align-items: center; }
 
 @media (max-width: 620px) {
   .pay-row { flex-direction: column; align-items: center; }
@@ -131,3 +131,14 @@
   color: var(--good); background: #fff; border: 1px solid var(--good-line);
   border-radius: 100px; padding: 4px 11px; margin-top: 7px; }
 .paid-flag::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--good); }
+
+/* Enlarged over the page rather than in a new tab, so nobody loses the form
+   they were halfway through filling in. */
+.qr-zoom { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center;
+  justify-content: center; padding: 24px; background: rgba(26, 20, 24, .72); }
+.qr-zoom-inner { background: #fff; border-radius: var(--r-lg); padding: 18px;
+  max-width: min(560px, 92vw); box-shadow: 0 20px 60px rgba(26, 20, 24, .35); cursor: default; }
+.qr-zoom-inner img { display: block; width: 100%; height: auto;
+  max-height: 70vh; object-fit: contain; }
+.qr-zoom-foot { display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; margin-top: 14px; font-family: var(--mono); font-size: 13px; color: var(--ink-2); }
