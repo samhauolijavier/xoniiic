@@ -24,6 +24,7 @@ import { authOptions } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import { isMonetizationEnabled } from '@/lib/monetization'
 import { excludeDemoAccounts, publiclyListable } from '@/lib/constants'
+import { AdSlot } from '@/components/ads/AdSlot'
 
 interface SearchParams {
   page?: string
@@ -223,6 +224,7 @@ export default async function BrowsePage({
             )
           ) : (
             <>
+              <AdSlot placement="banner" />
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
                 {profiles.map((profile) => (
                   <ProfileCard key={profile.id} profile={profile} hideMonetization={!monetizationOn} hideRate={sessionUser.role === 'seeker'} />

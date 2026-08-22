@@ -32,14 +32,33 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json()
-    const { name, placement, imageUrl, linkUrl, altText, advertiser } = body
+    const { name, placement, imageUrl, linkUrl, altText, advertiser, startsAt, endsAt } = body
 
     if (!name || !placement || !imageUrl || !linkUrl || !altText) {
       return NextResponse.json({ error: 'All fields are required' }, { status: 400 })
     }
 
+    // A link typed as "theradcrm.com" is not a URL a browser will follow — it
+    // resolves relative to this site and sends the click to a page that does
+    // not exist. Adding the scheme here means nobody has to remember to.
+    const href = /^https?:\/\//i.test(String(linkUrl).trim())
+      ? String(linkUrl).trim()
+      : `https://${String(linkUrl).trim()}`
+
+    const starts = startsAt ? new Date(startsAt) : null
+    const ends = endsAt ? new Date(endsAt) : null
+    if (starts && ends && ends <= starts) {
+      return NextResponse.json({ error: 'The end date has to be after the start date.' }, { status: 400 })
+    }
+
     const ad = await db.adSlot.create({
-      data: { name, placement, imageUrl, linkUrl, altText, advertiser, active: true },
+      data: {
+        name, placement, imageUrl, altText, advertiser,
+        linkUrl: href,
+        startsAt: starts,
+        endsAt: ends,
+        active: true,
+      },
     })
 
     return NextResponse.json({ ad }, { status: 201 })

@@ -1,5 +1,7 @@
 'use client'
 
+import { PLACEMENTS, isPlacement } from '@/lib/ads'
+
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
@@ -28,8 +30,30 @@ export default function AdminAdsPage() {
   const [showForm, setShowForm] = useState(false)
   const [formData, setFormData] = useState({
     name: '', placement: 'sidebar', imageUrl: '', linkUrl: '', altText: '', advertiser: '',
+    startsAt: '', endsAt: '',
   })
   const [saving, setSaving] = useState(false)
+  const [uploading, setUploading] = useState(false)
+  const [uploadError, setUploadError] = useState('')
+
+  const spec = isPlacement(formData.placement) ? PLACEMENTS[formData.placement] : null
+
+  async function uploadImage(file: File) {
+    setUploading(true); setUploadError('')
+    try {
+      const body = new FormData()
+      body.set('image', file)
+      body.set('placement', formData.placement)
+      const res = await fetch('/api/admin/ads/upload', { method: 'POST', body })
+      const data = await res.json()
+      if (!res.ok) { setUploadError(data.error ?? 'Upload failed.'); return }
+      setFormData(f => ({ ...f, imageUrl: data.url }))
+    } catch {
+      setUploadError('Could not reach the server.')
+    } finally {
+      setUploading(false)
+    }
+  }
 
   const user = session?.user as { role?: string } | undefined
 
@@ -62,7 +86,7 @@ export default function AdminAdsPage() {
     })
     if (res.ok) {
       setShowForm(false)
-      setFormData({ name: '', placement: 'sidebar', imageUrl: '', linkUrl: '', altText: '', advertiser: '' })
+      setFormData({ name: '', placement: 'sidebar', imageUrl: '', linkUrl: '', altText: '', advertiser: '', startsAt: '', endsAt: '' })
       loadAds()
     }
     setSaving(false)
@@ -113,32 +137,80 @@ export default function AdminAdsPage() {
             </div>
             <div>
               <label className="text-xs text-brand-muted mb-1 block">Placement</label>
+              {/* Footer and inline were offered and rendered nowhere. A slot
+                  you can create but never see is a slot somebody sells and
+                  then has to apologise for. */}
               <select value={formData.placement} onChange={e => setFormData({...formData, placement: e.target.value})} className="input-field">
                 <option value="sidebar">Sidebar</option>
                 <option value="banner">Banner</option>
-                <option value="footer">Footer</option>
-                <option value="inline">Inline</option>
               </select>
+              {spec && (
+                <p className="text-xs text-brand-muted mt-1">
+                  <strong>{spec.width} × {spec.height}px.</strong> {spec.note}
+                </p>
+              )}
             </div>
             <div>
-              <label className="text-xs text-brand-muted mb-1 block">Image URL</label>
-              <input type="text" value={formData.imageUrl} onChange={e => setFormData({...formData, imageUrl: e.target.value})} className="input-field" required />
+              <label className="text-xs text-brand-muted mb-1 block">Image</label>
+              <input
+                type="file"
+                accept="image/png,image/jpeg,image/webp,image/gif"
+                disabled={uploading}
+                onChange={e => { const f = e.target.files?.[0]; if (f) uploadImage(f) }}
+                className="text-sm w-full"
+              />
+              {uploading && <p className="text-xs text-brand-muted mt-1">Uploading…</p>}
+              {uploadError && <p className="text-xs text-red-600 mt-1">{uploadError}</p>}
+              {formData.imageUrl && !uploading && (
+                <div className="mt-2">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={formData.imageUrl}
+                    alt="Ad preview"
+                    className="rounded-lg border border-brand-border bg-brand-card"
+                    style={{ width: '100%', maxWidth: spec?.width ?? 300, aspectRatio: spec?.ratio, objectFit: 'contain' }}
+                  />
+                  <p className="text-xs text-brand-muted mt-1">
+                    This is the shape it will render in. Anything not that ratio sits inside it
+                    with space around, rather than being stretched.
+                  </p>
+                </div>
+              )}
             </div>
             <div>
               <label className="text-xs text-brand-muted mb-1 block">Link URL</label>
               <input type="url" value={formData.linkUrl} onChange={e => setFormData({...formData, linkUrl: e.target.value})} className="input-field" required />
             </div>
             <div>
-              <label className="text-xs text-brand-muted mb-1 block">Alt Text</label>
-              <input type="text" value={formData.altText} onChange={e => setFormData({...formData, altText: e.target.value})} className="input-field" required />
+              <label className="text-xs text-brand-muted mb-1 block">Alt text</label>
+              <input type="text" value={formData.altText} onChange={e => setFormData({...formData, altText: e.target.value})} className="input-field" placeholder="Rad CRM — all-in-one CRM for agencies" required />
+              <p className="text-xs text-brand-muted mt-1">
+                What the image says, in words. Screen readers announce it to blind visitors, and
+                it shows in place of the picture when one fails to load. Describe the offer, not
+                the file — &ldquo;Rad CRM course, 50% off&rdquo;, never &ldquo;banner image&rdquo;.
+              </p>
             </div>
             <div>
               <label className="text-xs text-brand-muted mb-1 block">Advertiser</label>
               <input type="text" value={formData.advertiser} onChange={e => setFormData({...formData, advertiser: e.target.value})} className="input-field" />
             </div>
+            <div>
+              <label className="text-xs text-brand-muted mb-1 block">Starts</label>
+              <input type="date" value={formData.startsAt} onChange={e => setFormData({...formData, startsAt: e.target.value})} className="input-field" />
+              <p className="text-xs text-brand-muted mt-1">Leave blank to run as soon as it is active.</p>
+            </div>
+            <div>
+              <label className="text-xs text-brand-muted mb-1 block">Ends</label>
+              <input type="date" value={formData.endsAt} onChange={e => setFormData({...formData, endsAt: e.target.value})} className="input-field" />
+              <p className="text-xs text-brand-muted mt-1">
+                Leave blank to run until you switch it off. Set it and the ad takes itself down —
+                nobody has to remember the day a booking ends.
+              </p>
+            </div>
+
             <div className="sm:col-span-2 flex gap-3 justify-end">
               <button type="button" onClick={() => setShowForm(false)} className="btn-secondary text-sm">Cancel</button>
-              <button type="submit" disabled={saving} className="btn-primary text-sm">
+              <button type="submit" disabled={saving || uploading || !formData.imageUrl} className="btn-primary text-sm">
                 {saving ? 'Creating...' : 'Create Ad Slot'}
               </button>
             </div>
