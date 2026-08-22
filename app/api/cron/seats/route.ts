@@ -48,6 +48,11 @@ export async function GET(req: NextRequest) {
   let warned = 0
   let ended = 0
 
+  // Checked once for the whole run rather than per member.
+  const scenariosAvailable = await withRetry(() =>
+    db.resource.count({ where: { published: true, kind: 'scenario' } })
+  ).then(n => n > 0).catch(() => false)
+
   try {
     // Ending in three days. Matched on a single day's window so a seat is
     // warned about once, not once per run.
@@ -69,6 +74,7 @@ export async function GET(req: NextRequest) {
         name: seat.user.name,
         expiresAt: seat.expiresAt,
         daysLeft: WARN_AT_DAYS,
+        scenariosAvailable,
       })
       warned++
     }

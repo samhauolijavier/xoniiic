@@ -381,6 +381,7 @@ export async function sendSeatEndingEmail(opts: {
   name?: string | null
   expiresAt: Date
   daysLeft: number
+  scenariosAvailable: boolean
 }) {
   if (!resend) {
     console.log('[Email] No RESEND_API_KEY set, skipping seat-ending email')
@@ -410,10 +411,15 @@ export async function sendSeatEndingEmail(opts: {
             what go on your profile.
           </p>
 
+          ${opts.scenariosAvailable ? `
           <p style="color: #4d4549; font-size: 15px; line-height: 1.65;">
             <strong>Two ways to keep it that cost nothing:</strong> pass a scenario, or bring two
             people who take a seat. Either adds thirty days, and both work as well as paying.
-          </p>
+          </p>` : `
+          <p style="color: #4d4549; font-size: 15px; line-height: 1.65;">
+            <strong>A way to keep it that costs nothing:</strong> bring two people who take a seat
+            and thirty days are added automatically. It works as well as paying.
+          </p>`}
 
           <p style="margin: 26px 0;">
             <a href="${site}/sandbox"

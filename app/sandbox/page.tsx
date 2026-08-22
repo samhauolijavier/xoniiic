@@ -41,13 +41,18 @@ export default async function SandboxPage() {
   if (!session?.user) redirect('/login?callbackUrl=/sandbox')
   const me = session.user as { id: string; name?: string | null }
 
-  const [status, referralCode, gcash, gcashQr, qualified, passed, price] = await Promise.all([
+  const [status, referralCode, gcash, gcashQr, qualified, passed, price, scenarioCount] = await Promise.all([
     seatStatus(me.id),
     referralCodeFor(me.id),
     withRetry(() => db.siteSetting.findUnique({ where: { key: 'private.gcashNumber' }, select: { value: true } })),
     withRetry(() => db.siteSetting.findUnique({ where: { key: 'gcashQrUrl' }, select: { value: true } })),
     withRetry(() => db.referral.count({ where: { referrerId: me.id, qualified: true } })),
     withRetry(() => db.scenarioAttempt.count({ where: { userId: me.id, passed: true } })),
+    // Whether there is anything to attempt yet. The card below offers thirty
+    // days for passing a scenario, and until one is published that is an offer
+    // nobody can take up — so it does not appear. Publish the first scenario
+    // and it turns itself on; no copy to remember to change back.
+    withRetry(() => db.resource.count({ where: { published: true, kind: 'scenario' } })),
     seatPrice(),
   ])
 
@@ -117,19 +122,21 @@ export default async function SandboxPage() {
           are not affected when it runs out.
         </p>
 
-        <div className="ways">
-          <div className="way">
-            <div className="way-top">
-              <strong>Pass a scenario</strong>
-              <span className="plus">+{SEAT_DAYS} days</span>
+        <div className={`ways${scenarioCount > 0 ? '' : ' ways-2'}`}>
+          {scenarioCount > 0 && (
+            <div className="way">
+              <div className="way-top">
+                <strong>Pass a scenario</strong>
+                <span className="plus">+{SEAT_DAYS} days</span>
+              </div>
+              <p>
+                {passed === 0
+                  ? 'Scenarios are free to attempt, always. Passing three adds a month.'
+                  : `You have passed ${passed}. Every third one adds a month.`}
+              </p>
+              <Link className="sbtn ghost" href="/resources">Open scenarios</Link>
             </div>
-            <p>
-              {passed === 0
-                ? 'Scenarios are free to attempt, always. Passing three adds a month.'
-                : `You have passed ${passed}. Every third one adds a month.`}
-            </p>
-            <Link className="sbtn ghost" href="/resources">Open scenarios</Link>
-          </div>
+          )}
 
           <div className="way">
             <div className="way-top">
