@@ -15,12 +15,12 @@ import { adWhereClause, placementSpec, type Placement } from '@/lib/ads'
 export async function AdSlot({ placement }: { placement: Placement }) {
   const spec = placementSpec(placement)
 
-  let ads: { id: string; imageUrl: string; linkUrl: string; altText: string }[] = []
+  let ads: { id: string; imageUrl: string; linkUrl: string; altText: string; priority: number }[] = []
   try {
     ads = await withRetry(() => db.adSlot.findMany({
       where: adWhereClause(placement),
-      orderBy: { createdAt: 'desc' },
-      select: { id: true, imageUrl: true, linkUrl: true, altText: true },
+      orderBy: [{ priority: 'desc' }, { createdAt: 'desc' }],
+      select: { id: true, imageUrl: true, linkUrl: true, altText: true, priority: true },
     }))
   } catch (error) {
     // An ad is never worth breaking a page for.
@@ -30,10 +30,14 @@ export async function AdSlot({ placement }: { placement: Placement }) {
 
   if (!ads.length) return null
 
-  // One slot, one ad. Rotating on the server would mean a different ad on every
-  // render and no cache; picking by the minute gives every booked ad a turn
-  // without making the page uncacheable.
-  const ad = ads[Math.floor(Date.now() / 60000) % ads.length]
+  // Priority decides the slot; rotation only settles ties.
+  //
+  // Everything below the top tier waits, which is what makes priority mean
+  // something — an advertiser told they are top should not be sharing with
+  // whoever was uploaded after them. Within a tier the minute picks, so equals
+  // get equal share without making the page uncacheable.
+  const topTier = ads.filter(a => a.priority === ads[0].priority)
+  const ad = topTier[Math.floor(Date.now() / 60000) % topTier.length]
 
   return (
     <div className="my-6">

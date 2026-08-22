@@ -43,7 +43,9 @@ export default function AdminSkillsPage() {
   }, [user])
 
   async function loadSkills() {
-    const res = await fetch('/api/skills')
+    // Everything, including switched-off skills — this is the page that
+    // switches them back on.
+    const res = await fetch('/api/skills?all=1')
     if (res.ok) {
       const data = await res.json()
       setSkills(data.skills)
@@ -177,22 +179,34 @@ export default function AdminSkillsPage() {
                 {catSkills.map(skill => (
                   <div
                     key={skill.id}
+                    /* Colours were picked for the dark theme and washed out
+                       on paper — a hidden skill has to look plainly different
+                       from a live one, or it reads as a rendering glitch. */
                     className={`flex items-center justify-between p-2.5 rounded-lg border text-sm transition-all ${
                       skill.active
-                        ? 'border-brand-border bg-brand-border/20 text-brand-text'
-                        : 'border-red-900/30 bg-red-900/10 text-brand-muted opacity-60'
+                        ? 'border-brand-border bg-brand-card text-brand-text'
+                        : 'border-dashed border-brand-muted/50 bg-brand-bg text-brand-muted'
                     }`}
                   >
-                    <span className="truncate">{skill.name}</span>
+                    <span className={`truncate ${skill.active ? '' : 'line-through'}`}>
+                      {skill.name}
+                    </span>
+                    {/* The button says what pressing it does. It used to show
+                        the state instead, so a live skill read "Off" — which is
+                        how one gets switched off by somebody who thought they
+                        were reading a label. */}
                     <button
                       onClick={() => toggleActive(skill.id, skill.active)}
-                      className={`ml-2 flex-shrink-0 text-xs px-1.5 py-0.5 rounded transition-colors ${
+                      title={skill.active
+                        ? 'Hide this skill from the list people pick from'
+                        : 'Show this skill again'}
+                      className={`ml-2 flex-shrink-0 text-xs font-medium px-2 py-0.5 rounded border transition-colors ${
                         skill.active
-                          ? 'text-red-400 hover:text-red-300'
-                          : 'text-emerald-400 hover:text-emerald-300'
+                          ? 'border-brand-border text-brand-muted hover:text-brand-text'
+                          : 'border-brand-purple text-brand-purple hover:bg-brand-purple/[0.06]'
                       }`}
                     >
-                      {skill.active ? 'Off' : 'On'}
+                      {skill.active ? 'Hide' : 'Restore'}
                     </button>
                   </div>
                 ))}

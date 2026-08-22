@@ -18,9 +18,22 @@ export async function PATCH(
     }
 
     const body = await req.json()
+
+    // Only these three. This passed the whole request body into update(), so
+    // anything sent — slug, isCustom, a typo'd field — was written straight to
+    // the row. A skill whose slug quietly changes breaks every link to it.
+    const data: Record<string, unknown> = {}
+    if (typeof body.active === 'boolean') data.active = body.active
+    if (typeof body.name === 'string' && body.name.trim()) data.name = body.name.trim()
+    if (typeof body.category === 'string' && body.category.trim()) data.category = body.category.trim()
+
+    if (!Object.keys(data).length) {
+      return NextResponse.json({ error: 'Nothing to change.' }, { status: 400 })
+    }
+
     const skill = await db.skill.update({
       where: { id: params.id },
-      data: body,
+      data,
     })
 
     return NextResponse.json({ skill })

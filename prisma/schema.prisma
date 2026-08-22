@@ -177,6 +177,10 @@ model AdSlot {
   active     Boolean   @default(true)
   startsAt   DateTime?
   endsAt     DateTime?
+  // Higher wins the slot. Ads sharing a priority take turns, so two
+  // advertisers who paid the same both get a fair share rather than one
+  // sitting permanently under the other by accident of upload order.
+  priority   Int       @default(0)
   clickCount Int       @default(0)
   viewCount  Int       @default(0)
   advertiser String?

@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json()
-    const { name, placement, imageUrl, linkUrl, altText, advertiser, startsAt, endsAt } = body
+    const { name, placement, imageUrl, linkUrl, altText, advertiser, startsAt, endsAt, priority } = body
 
     if (!name || !placement || !imageUrl || !linkUrl || !altText) {
       return NextResponse.json({ error: 'All fields are required' }, { status: 400 })
@@ -57,6 +57,7 @@ export async function POST(req: NextRequest) {
         linkUrl: href,
         startsAt: starts,
         endsAt: ends,
+        priority: Number.isFinite(Number(priority)) ? Math.trunc(Number(priority)) : 0,
         active: true,
       },
     })

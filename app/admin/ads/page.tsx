@@ -30,7 +30,7 @@ export default function AdminAdsPage() {
   const [showForm, setShowForm] = useState(false)
   const [formData, setFormData] = useState({
     name: '', placement: 'sidebar', imageUrl: '', linkUrl: '', altText: '', advertiser: '',
-    startsAt: '', endsAt: '',
+    startsAt: '', endsAt: '', priority: '0',
   })
   const [saving, setSaving] = useState(false)
   const [uploading, setUploading] = useState(false)
@@ -86,7 +86,7 @@ export default function AdminAdsPage() {
     })
     if (res.ok) {
       setShowForm(false)
-      setFormData({ name: '', placement: 'sidebar', imageUrl: '', linkUrl: '', altText: '', advertiser: '', startsAt: '', endsAt: '' })
+      setFormData({ name: '', placement: 'sidebar', imageUrl: '', linkUrl: '', altText: '', advertiser: '', startsAt: '', endsAt: '', priority: '0' })
       loadAds()
     }
     setSaving(false)
@@ -194,6 +194,15 @@ export default function AdminAdsPage() {
               <label className="text-xs text-brand-muted mb-1 block">Advertiser</label>
               <input type="text" value={formData.advertiser} onChange={e => setFormData({...formData, advertiser: e.target.value})} className="input-field" />
             </div>
+            <div>
+              <label className="text-xs text-brand-muted mb-1 block">Priority</label>
+              <input type="number" value={formData.priority} onChange={e => setFormData({...formData, priority: e.target.value})} className="input-field" />
+              <p className="text-xs text-brand-muted mt-1">
+                Higher shows first. Ads on the same number take turns, a minute each, so equals
+                get equal share. Leave everything at 0 and they simply rotate.
+              </p>
+            </div>
+
             <div>
               <label className="text-xs text-brand-muted mb-1 block">Starts</label>
               <input type="date" value={formData.startsAt} onChange={e => setFormData({...formData, startsAt: e.target.value})} className="input-field" />
