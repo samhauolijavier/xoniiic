@@ -228,8 +228,9 @@ export default function AdminAdsPage() {
               </select>
               <p className="text-xs text-brand-muted mt-1">
                 A course affiliate wants freelancers; a CRM affiliate wants the people hiring them.
-                Showing each side the other&apos;s ads wastes the slot and the click. Signed-out
-                visitors only ever see &ldquo;Everyone&rdquo;.
+                Showing each side the other&apos;s ads wastes the slot and the click. Nobody
+                signed out sees any ad &mdash; a profile is a member&apos;s shopfront and they
+                post that link publicly.
               </p>
             </div>
 

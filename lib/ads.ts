@@ -43,13 +43,26 @@ export const AUDIENCES = {
 
 export type Audience = keyof typeof AUDIENCES
 
-/** A viewer's role reduced to the audiences they belong to. */
+/**
+ * A viewer's role reduced to the audiences they belong to.
+ *
+ * An empty list means no ads at all, and that is what a signed-out visitor
+ * gets. Three reasons, and the first is the one that matters:
+ *
+ * A profile page is a member's shopfront. They are being asked to post
+ * /@username on LinkedIn, and when their client follows that link and finds an
+ * advert for somebody else's CRM beside their name, the member looks like they
+ * are hosted somewhere free. That is what would stop people sharing the link.
+ *
+ * A signed-out visitor is also the least valuable impression — nobody buys
+ * "unknown person, might be anyone" — and the most valuable conversion, since
+ * the page is already asking them to make an account and an ad competes with
+ * that.
+ */
 export function audiencesFor(role?: string | null): string[] {
   if (role === 'seeker') return ['all', 'seeker']
   if (role === 'employer') return ['all', 'employer']
-  // Signed out, or an admin looking around: only untargeted ads. Somebody
-  // whose side we do not know is not worth spending a targeted impression on.
-  return ['all']
+  return []
 }
 
 /**

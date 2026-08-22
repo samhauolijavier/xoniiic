@@ -24,6 +24,11 @@ export async function AdSlot({ placement }: { placement: Placement }) {
   const role = (session?.user as { role?: string } | undefined)?.role
   const audiences = audiencesFor(role)
 
+  // Nothing to match against means nothing to show. Returning before the query
+  // also means a page open to the public does not hit the database for an ad it
+  // was never going to render.
+  if (!audiences.length) return null
+
   let ads: { id: string; imageUrl: string; linkUrl: string; altText: string; priority: number }[] = []
   try {
     ads = await withRetry(() => db.adSlot.findMany({
