@@ -6,6 +6,11 @@ import type { AccessSource, SandboxAccess } from '@prisma/client'
 // owes what; it never changes how long the seat lasts.
 export const SEAT_DAYS = 30
 
+// How many people someone has to bring before a free month is owed. The seat
+// page states this number, so it lives here rather than in the copy — a
+// promise printed in one file and enforced in another drifts apart quietly.
+export const REFERRALS_FOR_A_MONTH = 2
+
 // The default, not the authority. The live figure is a site setting so the
 // price can move without a deploy — it has already moved once, and it is tied
 // to a QR image with the amount printed on it, so the two need to be changeable

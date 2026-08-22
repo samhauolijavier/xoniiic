@@ -2,10 +2,10 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { NextRequest, NextResponse } from 'next/server'
 import { db, withRetry } from '@/lib/db'
-import { grantSeat, daysBetween, SEAT_DAYS } from '@/lib/sandbox'
+import { grantSeat, daysBetween, SEAT_DAYS, REFERRALS_FOR_A_MONTH } from '@/lib/sandbox'
 import type { AccessSource } from '@prisma/client'
 import { notifyDiscord } from '@/lib/discord'
-import { sendSeatOpenEmail } from '@/lib/email'
+import { sendSeatOpenEmail, sendReferralRewardEmail } from '@/lib/email'
 
 export const dynamic = 'force-dynamic'
 
@@ -258,8 +258,57 @@ async function qualifyReferral(invitedId: string) {
       where: { invitedId, qualified: false },
       data: { qualified: true },
     }))
+
+    // Then actually pay it.
+    //
+    // The seat page has been promising "bring two people, get thirty days"
+    // with nothing behind it — referrals were counted and marked qualified,
+    // and there the trail ended. A promise made where money changes hands has
+    // to be kept by the machine, not by somebody remembering.
+    const referral = await withRetry(() => db.referral.findUnique({
+      where: { invitedId },
+      select: { referrerId: true },
+    }))
+    if (!referral) return
+
+    const owed = await withRetry(() => db.referral.findMany({
+      where: { referrerId: referral.referrerId, qualified: true, rewarded: false },
+      orderBy: { createdAt: 'asc' },
+      select: { id: true },
+    }))
+    if (owed.length < REFERRALS_FOR_A_MONTH) return
+
+    // Pay one month per complete set, and mark exactly the referrals that paid
+    // for it. A leftover stays unrewarded and counts toward the next month
+    // rather than being swallowed.
+    const months = Math.floor(owed.length / REFERRALS_FOR_A_MONTH)
+    const spending = owed.slice(0, months * REFERRALS_FOR_A_MONTH).map(r => r.id)
+
+    for (let i = 0; i < months; i++) {
+      await grantSeat({
+        userId: referral.referrerId,
+        source: 'referred',
+        note: `${REFERRALS_FOR_A_MONTH} referrals joined`,
+      })
+    }
+    await withRetry(() => db.referral.updateMany({
+      where: { id: { in: spending } },
+      data: { rewarded: true },
+    }))
+
+    const referrer = await withRetry(() => db.user.findUnique({
+      where: { id: referral.referrerId },
+      select: { email: true, name: true },
+    }))
+    if (referrer) {
+      await sendReferralRewardEmail({
+        email: referrer.email,
+        name: referrer.name,
+        months,
+      })
+    }
   } catch (error) {
-    console.error('Referral qualify error (seat still granted):', error)
+    console.error('Referral reward error (seat still granted):', error)
   }
 }
 

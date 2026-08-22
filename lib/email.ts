@@ -320,3 +320,117 @@ export async function sendNewMessageEmail(opts: {
     console.error('[Email] Failed to send new-message email:', error)
   }
 }
+
+/** Somebody they invited got a seat, and that earned them a month. */
+export async function sendReferralRewardEmail(opts: {
+  email: string
+  name?: string | null
+  months: number
+}) {
+  if (!resend) {
+    console.log('[Email] No RESEND_API_KEY set, skipping referral reward email')
+    return
+  }
+
+  const site = process.env.NEXT_PUBLIC_APP_URL ?? 'https://virtualfreaks.co'
+  const days = opts.months * 30
+
+  try {
+    await resend.emails.send({
+      from: 'Virtual Freaks <noreply@virtualfreaks.co>',
+      to: opts.email,
+      subject: `You have earned ${days} more days`,
+      html: `
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 520px; margin: 0 auto; padding: 32px 20px; color: #1a1418;">
+          <h1 style="font-size: 20px; margin: 0 0 20px; color: #a21caf;">Virtual Freaks</h1>
+          <h2 style="font-size: 22px; margin: 0 0 12px;">
+            ${days} days added${opts.name ? `, ${opts.name}` : ''}
+          </h2>
+          <p style="color: #4d4549; font-size: 15px; line-height: 1.65;">
+            The people you brought have their practice accounts open, so
+            ${opts.months === 1 ? 'a month is' : `${opts.months} months are`} on us. It has already
+            been added &mdash; nothing for you to claim.
+          </p>
+          <p style="color: #4d4549; font-size: 15px; line-height: 1.65;">
+            Thank you for that. Somebody trusting your recommendation is worth more to this place
+            than anything we could say about ourselves.
+          </p>
+          <p style="margin: 26px 0;">
+            <a href="${site}/sandbox"
+               style="background: #a21caf; color: #fff; text-decoration: none; padding: 12px 22px; border-radius: 8px; font-size: 15px; font-weight: 600; display: inline-block;">
+              See your practice account
+            </a>
+          </p>
+        </div>
+      `,
+    })
+  } catch (error) {
+    console.error('[Email] Failed to send referral reward email:', error)
+  }
+}
+
+/**
+ * Three days left.
+ *
+ * Sent while there is still time to do something, and it leads with the two
+ * free routes rather than the payment link — somebody who cannot spare 129
+ * pesos this month should not be made to feel the door is closing on them.
+ */
+export async function sendSeatEndingEmail(opts: {
+  email: string
+  name?: string | null
+  expiresAt: Date
+  daysLeft: number
+}) {
+  if (!resend) {
+    console.log('[Email] No RESEND_API_KEY set, skipping seat-ending email')
+    return
+  }
+
+  const site = process.env.NEXT_PUBLIC_APP_URL ?? 'https://virtualfreaks.co'
+  const until = opts.expiresAt.toLocaleDateString('en-GB', {
+    day: 'numeric', month: 'long', year: 'numeric',
+  })
+
+  try {
+    await resend.emails.send({
+      from: 'Virtual Freaks <noreply@virtualfreaks.co>',
+      to: opts.email,
+      subject: `Your practice account ends on ${until}`,
+      html: `
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 520px; margin: 0 auto; padding: 32px 20px; color: #1a1418;">
+          <h1 style="font-size: 20px; margin: 0 0 20px; color: #a21caf;">Virtual Freaks</h1>
+          <h2 style="font-size: 22px; margin: 0 0 12px;">
+            ${opts.daysLeft} days left on your practice account
+          </h2>
+          <p style="color: #4d4549; font-size: 15px; line-height: 1.65;">
+            ${opts.name ? `${opts.name}, y` : 'Y'}our GoHighLevel sandbox closes on
+            <strong>${until}</strong>. Anything you have built in there stops being reachable, so
+            if there is work you want to keep, take screenshots of it before then &mdash; those are
+            what go on your profile.
+          </p>
+
+          <p style="color: #4d4549; font-size: 15px; line-height: 1.65;">
+            <strong>Two ways to keep it that cost nothing:</strong> pass a scenario, or bring two
+            people who take a seat. Either adds thirty days, and both work as well as paying.
+          </p>
+
+          <p style="margin: 26px 0;">
+            <a href="${site}/sandbox"
+               style="background: #a21caf; color: #fff; text-decoration: none; padding: 12px 22px; border-radius: 8px; font-size: 15px; font-weight: 600; display: inline-block;">
+              See your options
+            </a>
+          </p>
+
+          <hr style="border: none; border-top: 1px solid #e6e0e2; margin: 28px 0;" />
+          <p style="color: #837b80; font-size: 13px; line-height: 1.6;">
+            This is only the practice account. Your Virtual Freaks profile, your badges and your
+            messages are free forever and are not affected when it ends.
+          </p>
+        </div>
+      `,
+    })
+  } catch (error) {
+    console.error('[Email] Failed to send seat-ending email:', error)
+  }
+}
