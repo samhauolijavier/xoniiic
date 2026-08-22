@@ -119,7 +119,8 @@ export function GcashQrUpload() {
             style={{ fontSize: 13 }}
           />
           <p className="quiet" style={{ marginTop: 8, lineHeight: 1.5 }}>
-            Screenshot the QR in your GCash app and upload it. PNG, JPG, or WebP.
+            <strong>Crop it to just the code.</strong> A full app screenshot puts the QR in about
+            a third of the frame, and at that size nobody can scan it off a screen. PNG, JPG, or WebP.
             {url ? ' Uploading a new one replaces this.' : ''}
           </p>
           {url && (

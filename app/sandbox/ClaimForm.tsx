@@ -51,15 +51,20 @@ export function ClaimForm({
             number is a payment somebody has to chase. The number stays for
             anyone paying from a second device or a desktop. */}
         {gcashQrUrl && (
-          <div className="qr-frame">
+          /* A link, not just a picture. The uploaded image is usually a whole
+             GCash screenshot, so the code itself occupies maybe a third of the
+             frame — at any sensible page size that is too small to scan. Full
+             resolution is one tap away, and that version always scans. */
+          <a className="qr-frame" href={gcashQrUrl} target="_blank" rel="noreferrer" title="Open full size">
             {/* A frame around it rather than sizing the image directly: GCash
                 screenshots come in every aspect ratio, and letting the image
                 sit centred inside a fixed square keeps it square without
                 stretching whatever was uploaded. */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img className="qr" src={gcashQrUrl} alt={`GCash QR for paying ₱${price}`} />
-          </div>
+          </a>
         )}
+        {gcashQrUrl && <span className="qr-hint">Tap the code to open it full size</span>}
         <ol className="steps">
           <li>
             {gcashQrUrl ? <>Scan the QR in your GCash app, or send </> : <>Send </>}
