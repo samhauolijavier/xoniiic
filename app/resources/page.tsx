@@ -15,6 +15,7 @@ export const dynamic = 'force-dynamic'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { db, withRetry } from '@/lib/db'
+import { seatPrice } from '@/lib/sandbox'
 import type { Resource } from '@prisma/client'
 
 export const metadata: Metadata = {
@@ -48,6 +49,10 @@ export default async function ResourcesPage() {
     // the section exists even if the database is having a moment.
     console.error('Resources load error:', error)
   }
+
+  // Read, never typed. This said 100 while the price was 129 — the kind of
+  // number that goes stale the moment it is written down twice.
+  const price = await seatPrice()
 
   const grouped = resources.reduce<Record<string, Resource[]>>((acc, r) => {
     (acc[r.track] ||= []).push(r)
@@ -114,8 +119,8 @@ export default async function ResourcesPage() {
         <h2 className="font-semibold mb-1.5">Want somewhere to actually do it?</h2>
         <p className="text-sm text-brand-muted leading-relaxed mb-4 max-w-xl">
           The briefs are free forever. A GoHighLevel practice account — a real sandbox to build
-          in, break, and rebuild — is ₱100 for 30 days, and you can earn more time instead of
-          paying for it.
+          in, break, and rebuild — is ₱{price} for 30 days, and you can earn more time instead
+          of paying for it.
         </p>
         <Link href="/sandbox" className="btn-primary">See the practice account</Link>
       </div>
