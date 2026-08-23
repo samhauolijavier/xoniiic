@@ -38,7 +38,9 @@ export function isPlacement(value: string): value is Placement {
 }
 
 export function placementSpec(placement: string) {
-  return isPlacement(placement) ? PLACEMENTS[placement] : PLACEMENTS.sidebar
+  // Falls back to banner, not sidebar. Sidebar is retired, so an unrecognised
+  // placement would otherwise be sized as the one unit that renders nowhere.
+  return isPlacement(placement) ? PLACEMENTS[placement] : PLACEMENTS.banner
 }
 
 export const AUDIENCES = {
