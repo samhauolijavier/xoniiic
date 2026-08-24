@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
 
 export const dynamic = 'force-dynamic'
 
@@ -23,11 +25,25 @@ export async function GET(
     })
     if (!ad) return NextResponse.redirect(fallback)
 
+    // Which side of the marketplace clicked, as a count — never who.
+    //
+    // An advertiser is buying the shape of an audience: how many saw it, how
+    // many acted, and which side they were on. None of that needs a name, and
+    // keeping a record of which member clicked which advert would build a log
+    // of what everybody here is interested in — a thing nobody is paying for
+    // and a liability to hold.
+    const session = await getServerSession(authOptions)
+    const role = (session?.user as { role?: string } | undefined)?.role
+
     // Counted without waiting: a slow write should never sit between somebody
     // clicking and the page they wanted.
     db.adSlot.update({
       where: { id: params.id },
-      data: { clickCount: { increment: 1 } },
+      data: {
+        clickCount: { increment: 1 },
+        ...(role === 'seeker' ? { clicksSeeker: { increment: 1 } } : {}),
+        ...(role === 'employer' ? { clicksEmployer: { increment: 1 } } : {}),
+      },
     }).catch(error => console.error('Ad click count failed:', error))
 
     // Only http and https. The destination is supplied by an advertiser, and

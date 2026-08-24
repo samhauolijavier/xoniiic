@@ -191,6 +191,17 @@ model AdSlot {
   priority   Int       @default(0)
   clickCount Int       @default(0)
   viewCount  Int       @default(0)
+  // Split by which side of the marketplace was looking.
+  //
+  // Counters, not a log of who clicked what. An advertiser buys the shape of
+  // an audience — how many, which side, what proportion acted — and none of
+  // that requires knowing a single person's name. Storing the individuals
+  // would create a record of what each member is interested in, which is a
+  // liability to hold and not a thing anyone is paying for.
+  viewsSeeker    Int    @default(0)
+  viewsEmployer  Int    @default(0)
+  clicksSeeker   Int    @default(0)
+  clicksEmployer Int    @default(0)
   advertiser String?
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt

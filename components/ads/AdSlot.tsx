@@ -53,6 +53,20 @@ export async function AdSlot({ placement }: { placement: Placement }) {
   const topTier = ads.filter(a => a.priority === ads[0].priority)
   const ad = topTier[Math.floor(Date.now() / 60000) % topTier.length]
 
+  // Count the impression. Nothing incremented viewCount before, so the Views
+  // column an advertiser looks at first has always read zero.
+  //
+  // Not awaited: a counter is never worth holding a page render for, and a
+  // failed count costs a number rather than a page.
+  db.adSlot.update({
+    where: { id: ad.id },
+    data: {
+      viewCount: { increment: 1 },
+      ...(role === 'seeker' ? { viewsSeeker: { increment: 1 } } : {}),
+      ...(role === 'employer' ? { viewsEmployer: { increment: 1 } } : {}),
+    },
+  }).catch(error => console.error('Ad view count failed:', error))
+
   return (
     <div className="my-6">
       <a

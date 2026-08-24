@@ -37,6 +37,10 @@ interface AdSlot {
   id: string
   name: string
   placement: string
+  viewsSeeker?: number
+  viewsEmployer?: number
+  clicksSeeker?: number
+  clicksEmployer?: number
   audience?: string
   startsAt?: string | null
   endsAt?: string | null
@@ -293,8 +297,29 @@ export default function AdminAdsPage() {
                 <td className="p-4 text-brand-muted capitalize">{ad.placement}</td>
                 <td className="p-4 text-brand-muted text-xs">{AUDIENCES[(ad.audience ?? 'all') as keyof typeof AUDIENCES] ?? 'Everyone'}</td>
                 <td className="p-4 text-brand-muted">{ad.advertiser || '-'}</td>
-                <td className="p-4 text-brand-muted">{ad.viewCount}</td>
-                <td className="p-4 text-brand-muted">{ad.clickCount}</td>
+                {/* The split is what an advertiser actually asks about — not
+                    how many, but who. Counts only; no record of individuals. */}
+                <td className="p-4 text-brand-muted">
+                  <span className="font-mono">{ad.viewCount}</span>
+                  {(ad.viewsSeeker || ad.viewsEmployer) ? (
+                    <span className="block text-[11px]">
+                      {ad.viewsSeeker ?? 0} freelancer · {ad.viewsEmployer ?? 0} business
+                    </span>
+                  ) : null}
+                </td>
+                <td className="p-4 text-brand-muted">
+                  <span className="font-mono">{ad.clickCount}</span>
+                  {ad.viewCount > 0 && (
+                    <span className="block text-[11px]">
+                      {((ad.clickCount / ad.viewCount) * 100).toFixed(1)}% clicked
+                    </span>
+                  )}
+                  {(ad.clicksSeeker || ad.clicksEmployer) ? (
+                    <span className="block text-[11px]">
+                      {ad.clicksSeeker ?? 0} freelancer · {ad.clicksEmployer ?? 0} business
+                    </span>
+                  ) : null}
+                </td>
                 <td className="p-4">
                   {/* "Active" answered the wrong question. An ad can be active
                       and still invisible — no image, a start date in the future,
