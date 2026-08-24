@@ -60,6 +60,7 @@ model User {
   referralsMade            Referral[]                @relation("ReferralsMade")
   scenarioAttempts         ScenarioAttempt[]
   testimonials             Testimonial[]
+  adClicks                 AdClick[]
   // Earned by having a testimonial approved. Employers filter on it,
   // which is what makes it worth having rather than decorative.
   placedBadgeAt            DateTime?
@@ -205,6 +206,31 @@ model AdSlot {
   advertiser String?
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
+  clicks     AdClick[]
+}
+
+// Who clicked, for Spencer — not for the advertiser.
+//
+// This is first-party data: his platform, his members, his own affiliate
+// links, and a relationship he already has with the person. Somebody who
+// clicks a GoHighLevel offer has told him something useful about themselves,
+// and following that up is ordinary business.
+//
+// What it is NOT for is handing to the advertiser. That would be sharing
+// personal data with a third party with no consent behind it.
+//
+// Whether he may EMAIL somebody about it is a separate question, answered by
+// their marketing opt-in — which the admin view shows beside every name.
+model AdClick {
+  id        String   @id @default(cuid())
+  adId      String
+  userId    String
+  createdAt DateTime @default(now())
+  ad        AdSlot   @relation(fields: [adId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([adId, createdAt])
+  @@index([userId])
 }
 
 model PortfolioLink {

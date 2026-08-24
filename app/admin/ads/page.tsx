@@ -27,6 +27,7 @@ function adState(ad: AdRow): { live: boolean; label: string } {
 
 
 import { PLACEMENTS, isPlacement, AUDIENCES } from '@/lib/ads'
+import { WhoClicked } from './WhoClicked'
 
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
@@ -332,6 +333,7 @@ export default function AdminAdsPage() {
                 </td>
                 <td className="p-4">
                   <div className="flex gap-2">
+                    <WhoClicked adId={ad.id} adName={ad.name} />
                     <button onClick={() => toggleActive(ad.id, ad.active)} className="text-xs text-brand-muted hover:text-brand-text transition-colors">
                       {ad.active ? 'Disable' : 'Enable'}
                     </button>

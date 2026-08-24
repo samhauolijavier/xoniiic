@@ -33,7 +33,20 @@ export async function GET(
     // of what everybody here is interested in — a thing nobody is paying for
     // and a liability to hold.
     const session = await getServerSession(authOptions)
-    const role = (session?.user as { role?: string } | undefined)?.role
+    const viewer = session?.user as { id?: string; role?: string } | undefined
+    const role = viewer?.role
+
+    // Who clicked, kept for Spencer.
+    //
+    // Somebody clicking a GoHighLevel or Wavv offer has said something useful
+    // about themselves, and following that up is ordinary business between a
+    // platform and its own members. It never leaves this system — the
+    // advertiser gets counts, not people.
+    if (viewer?.id) {
+      db.adClick.create({
+        data: { adId: params.id, userId: viewer.id },
+      }).catch(error => console.error('Ad click log failed:', error))
+    }
 
     // Counted without waiting: a slow write should never sit between somebody
     // clicking and the page they wanted.
