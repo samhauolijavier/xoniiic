@@ -96,7 +96,21 @@ export const authOptions: NextAuthOptions = {
                   name: user.name,
                   role: 'pending',
                   active: true,
+                  // Google has already proven this address belongs to them —
+                  // that is the entire point of signing in with Google. Asking
+                  // for a code on top is not extra safety, it is an unpassable
+                  // gate: these accounts have no password and are never sent to
+                  // the verify screen. Left false, every Google user would drop
+                  // out of browse and the sitemap the moment verification is
+                  // switched on.
+                  emailVerified: true,
                 },
+              })
+            } else if (!existingUser.emailVerified) {
+              // Anyone who signed in with Google before the line above existed.
+              await db.user.update({
+                where: { id: existingUser.id },
+                data: { emailVerified: true },
               })
             }
             return true
