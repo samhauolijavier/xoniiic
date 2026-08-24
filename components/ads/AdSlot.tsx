@@ -65,16 +65,25 @@ export async function AdSlot({ placement }: { placement: Placement }) {
         rel="noopener noreferrer nofollow sponsored"
         className="block"
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={ad.imageUrl}
-          alt={ad.altText}
-          width={spec.width}
-          height={spec.height}
-          loading="lazy"
-          className="block w-full h-auto rounded-xl border border-brand-border bg-brand-card"
-          style={{ aspectRatio: spec.ratio, objectFit: 'contain', maxWidth: spec.width }}
-        />
+        {/* The frame is full width so the block lines up with every other card
+            on the page; the creative sits inside it at its own size rather than
+            being stretched to fill. A 728px banner blown up to a 1100px column
+            is somebody's paid artwork upscaled and soft, which is worse than a
+            little space either side of it. */}
+        <div
+          className="w-full rounded-xl border border-brand-border bg-brand-card flex items-center justify-center overflow-hidden"
+          style={{ aspectRatio: spec.ratio }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={ad.imageUrl}
+            alt={ad.altText}
+            width={spec.width}
+            height={spec.height}
+            loading="lazy"
+            className="max-w-full max-h-full object-contain"
+          />
+        </div>
       </a>
       {/* Said plainly. Somebody who works out for themselves that it was an ad
           trusts the rest of the page less than somebody who was told. */}
