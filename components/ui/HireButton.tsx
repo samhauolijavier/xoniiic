@@ -58,8 +58,8 @@ export function HireButton({ seekerId, seekerName, compact = false }: HireButton
       <button
         onClick={() => setOpen(true)}
         className={compact
-          ? 'text-xs font-medium px-3 py-1.5 rounded-lg bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/30 transition-all'
-          : 'w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/30 font-medium text-sm transition-all'
+          ? 'text-xs font-medium px-3 py-1.5 rounded-lg bg-emerald-500/20 text-emerald-700 border border-emerald-200 hover:bg-emerald-500/30 transition-all'
+          : 'w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500/20 text-emerald-700 border border-emerald-200 hover:bg-emerald-500/30 font-medium text-sm transition-all'
         }
       >
         🤝 {compact ? 'Hire' : `Mark as Hired`}
@@ -124,7 +124,7 @@ export function HireButton({ seekerId, seekerName, compact = false }: HireButton
             </div>
 
             {error && (
-              <p className="text-red-400 text-xs mt-3">{error}</p>
+              <p className="text-red-600 text-xs mt-3">{error}</p>
             )}
 
             <div className="flex gap-3 mt-5">

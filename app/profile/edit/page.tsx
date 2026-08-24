@@ -484,13 +484,13 @@ export default function ProfileEditPage() {
   }
 
   const tabs: { key: ActiveTab; label: string }[] = [
-    { key: 'profile', label: '👤 Profile' },
-    { key: 'experience', label: '💼 Experience' },
-    { key: 'education', label: '🎓 Education' },
-    { key: 'skills', label: '⚡ Skills' },
-    { key: 'portfolio', label: '🔗 Portfolio' },
+    { key: 'profile', label: 'Profile' },
+    { key: 'experience', label: 'Experience' },
+    { key: 'education', label: 'Education' },
+    { key: 'skills', label: 'Skills' },
+    { key: 'portfolio', label: 'Portfolio' },
     { key: 'projects', label: '🖼️ Projects' },
-    { key: 'certificates', label: '📜 Certificates' },
+    { key: 'certificates', label: 'Certificates' },
   ]
 
   const completionData = getCompletionScore({
@@ -523,10 +523,10 @@ export default function ProfileEditPage() {
         </div>
         <div className={`flex items-center gap-2 px-4 py-2 rounded-xl border text-sm font-semibold ${
           completionData.color === 'green'
-            ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
+            ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
             : completionData.color === 'orange'
-            ? 'bg-amber-500/10 border-amber-500/30 text-amber-400'
-            : 'bg-red-500/10 border-red-500/30 text-red-400'
+            ? 'bg-amber-50 border-amber-200 text-amber-700'
+            : 'bg-red-50 border-red-200 text-red-600'
         }`}>
           <div className="w-8 h-8 rounded-full border-2 flex items-center justify-center text-xs font-bold"
             style={{ borderColor: 'currentColor' }}
@@ -540,8 +540,8 @@ export default function ProfileEditPage() {
       {message && (
         <div className={`mb-6 p-3 rounded-lg text-sm border ${
           message.type === 'success'
-            ? 'bg-emerald-900/30 border-emerald-700/40 text-emerald-400'
-            : 'bg-red-900/30 border-red-700/40 text-red-400'
+            ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
+            : 'bg-red-50 border-red-200 text-red-600'
         }`}>
           {message.text}
         </div>
@@ -791,7 +791,7 @@ export default function ProfileEditPage() {
                     </select>
                     <button
                       onClick={() => removeLanguage(i)}
-                      className="text-red-400 hover:text-red-300 transition-colors flex-shrink-0 text-lg leading-none"
+                      className="text-red-600 hover:text-red-700 transition-colors flex-shrink-0 text-lg leading-none"
                       title="Remove"
                     >
                       ×
@@ -937,7 +937,7 @@ export default function ProfileEditPage() {
                     />
                     <button
                       onClick={() => removePortfolioLink(i)}
-                      className="text-red-400 hover:text-red-300 transition-colors flex-shrink-0 text-lg leading-none"
+                      className="text-red-600 hover:text-red-700 transition-colors flex-shrink-0 text-lg leading-none"
                       title="Remove"
                     >
                       ×
@@ -998,7 +998,7 @@ export default function ProfileEditPage() {
                     <div className="w-16 h-16 rounded-lg overflow-hidden border border-brand-border flex-shrink-0">
                       <img src={newProject.imageUrl} alt="preview" className="w-full h-full object-cover" />
                     </div>
-                    <button onClick={() => setNewProject(prev => ({ ...prev, imageUrl: '' }))} className="text-red-400 text-sm hover:text-red-300">
+                    <button onClick={() => setNewProject(prev => ({ ...prev, imageUrl: '' }))} className="text-red-600 text-sm hover:text-red-700">
                       Remove image
                     </button>
                   </div>
@@ -1036,7 +1036,7 @@ export default function ProfileEditPage() {
                       )}
                       <button
                         onClick={() => handleDeleteProject(project.id)}
-                        className="text-red-400 text-xs hover:text-red-300 mt-2 transition-colors"
+                        className="text-red-600 text-xs hover:text-red-700 mt-2 transition-colors"
                       >
                         Remove
                       </button>
@@ -1103,7 +1103,7 @@ export default function ProfileEditPage() {
                     <div className="w-16 h-16 rounded-lg overflow-hidden border border-brand-border flex-shrink-0">
                       <img src={newCert.imageUrl} alt="cert preview" className="w-full h-full object-cover" />
                     </div>
-                    <button onClick={() => setNewCert(prev => ({ ...prev, imageUrl: '' }))} className="text-red-400 text-sm hover:text-red-300">
+                    <button onClick={() => setNewCert(prev => ({ ...prev, imageUrl: '' }))} className="text-red-600 text-sm hover:text-red-700">
                       Remove image
                     </button>
                   </div>
@@ -1138,7 +1138,7 @@ export default function ProfileEditPage() {
                     </div>
                     <button
                       onClick={() => handleDeleteCertificate(cert.id)}
-                      className="text-red-400 text-sm hover:text-red-300 flex-shrink-0 transition-colors"
+                      className="text-red-600 text-sm hover:text-red-700 flex-shrink-0 transition-colors"
                     >
                       Remove
                     </button>

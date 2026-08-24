@@ -31,11 +31,11 @@ export function CookieBanner() {
         <div className="flex-1 text-sm text-brand-muted leading-relaxed">
           This website uses cookies to enable essential site functionality and improve your experience.
           By continuing to use this site, you consent to our use of cookies. See our{' '}
-          <Link href="/cookie-policy" className="text-brand-purple hover:text-purple-400 transition-colors underline">
+          <Link href="/cookie-policy" className="text-brand-purple hover:text-brand-pink transition-colors underline">
             Cookie Policy
           </Link>{' '}
           and{' '}
-          <Link href="/privacy" className="text-brand-purple hover:text-purple-400 transition-colors underline">
+          <Link href="/privacy" className="text-brand-purple hover:text-brand-pink transition-colors underline">
             Privacy Policy
           </Link>.
         </div>

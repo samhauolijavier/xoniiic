@@ -128,7 +128,7 @@ export default function VerifiedPartnerPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         {/* Partner Header */}
         <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-purple/10 border border-brand-purple/30 text-purple-300 text-sm font-medium mb-4">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-purple/10 border border-brand-purple/30 text-brand-purple text-sm font-medium mb-4">
             <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
               <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
             </svg>
@@ -181,11 +181,11 @@ export default function VerifiedPartnerPage() {
               <div className="text-xs text-brand-muted mt-1">Active Job Posts</div>
             </div>
             <div className="p-4 rounded-xl bg-brand-bg border border-brand-border text-center">
-              <div className="text-2xl font-black text-emerald-400">✓</div>
+              <div className="text-2xl font-black text-emerald-700">✓</div>
               <div className="text-xs text-brand-muted mt-1">Verified Badge</div>
             </div>
             <div className="p-4 rounded-xl bg-brand-bg border border-brand-border text-center">
-              <div className="text-2xl font-black text-purple-400">∞</div>
+              <div className="text-2xl font-black text-brand-purple">∞</div>
               <div className="text-xs text-brand-muted mt-1">No Limits</div>
             </div>
           </div>
@@ -277,7 +277,7 @@ export default function VerifiedPartnerPage() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
       {/* Header */}
       <div className="text-center mb-12">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-purple/10 border border-brand-purple/30 text-purple-300 text-sm font-medium mb-6">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-purple/10 border border-brand-purple/30 text-brand-purple text-sm font-medium mb-6">
           <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
             <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
           </svg>
@@ -303,7 +303,7 @@ export default function VerifiedPartnerPage() {
 
       {/* Free tier usage callout for non-partner employers */}
       {!statusLoading && isEmployer && !isPartner && contactsRemaining !== null && (
-        <div className="card p-5 border-amber-500/30 bg-amber-500/5 mb-8">
+        <div className="card p-5 border-amber-200 bg-amber-50 mb-8">
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div>
               <p className="text-sm font-medium text-brand-text">Your Free Tier Usage</p>
@@ -311,13 +311,13 @@ export default function VerifiedPartnerPage() {
             </div>
             <div className="flex gap-6">
               <div className="text-center">
-                <div className={`text-lg font-bold ${contactsRemaining === 0 ? 'text-red-400' : 'text-brand-text'}`}>
+                <div className={`text-lg font-bold ${contactsRemaining === 0 ? 'text-red-600' : 'text-brand-text'}`}>
                   {contactsRemaining}/5
                 </div>
                 <div className="text-xs text-brand-muted">contacts left</div>
               </div>
               <div className="text-center">
-                <div className={`text-lg font-bold ${jobPostsRemaining === 0 ? 'text-red-400' : 'text-brand-text'}`}>
+                <div className={`text-lg font-bold ${jobPostsRemaining === 0 ? 'text-red-600' : 'text-brand-text'}`}>
                   {jobPostsRemaining}/2
                 </div>
                 <div className="text-xs text-brand-muted">job posts left</div>
@@ -347,7 +347,7 @@ export default function VerifiedPartnerPage() {
               <p className="text-brand-muted mb-4">Verified Partner is available for employer accounts only.</p>
               <p className="text-brand-text text-sm">
                 Looking for seeker premium?{' '}
-                <Link href="/premium" className="text-amber-400 hover:underline">Go here</Link>
+                <Link href="/premium" className="text-amber-700 hover:underline">Go here</Link>
               </p>
             </div>
           ) : (
@@ -404,7 +404,7 @@ export default function VerifiedPartnerPage() {
                 <th className="text-left px-4 sm:px-6 py-4 font-medium">Feature</th>
                 <th className="text-center px-4 sm:px-6 py-4 font-medium w-24 sm:w-32">Free</th>
                 <th className="text-center px-4 sm:px-6 py-4 font-medium w-24 sm:w-32">
-                  <span className="inline-flex items-center gap-1 text-purple-300">
+                  <span className="inline-flex items-center gap-1 text-brand-purple">
                     <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                     </svg>
@@ -424,7 +424,7 @@ export default function VerifiedPartnerPage() {
                   <td className="px-4 sm:px-6 py-4 text-brand-text font-medium">{f.label}</td>
                   <td className="px-4 sm:px-6 py-4 text-center">
                     {f.free === true ? (
-                      <span className="text-emerald-400 text-lg">✓</span>
+                      <span className="text-emerald-700 text-lg">✓</span>
                     ) : f.free === false ? (
                       <span className="text-brand-border text-lg">🔒</span>
                     ) : (
@@ -433,9 +433,9 @@ export default function VerifiedPartnerPage() {
                   </td>
                   <td className="px-4 sm:px-6 py-4 text-center">
                     {f.partner === true ? (
-                      <span className="text-emerald-400 text-lg">✓</span>
+                      <span className="text-emerald-700 text-lg">✓</span>
                     ) : (
-                      <span className="text-purple-300 text-xs font-bold">{f.partner}</span>
+                      <span className="text-brand-purple text-xs font-bold">{f.partner}</span>
                     )}
                   </td>
                 </tr>

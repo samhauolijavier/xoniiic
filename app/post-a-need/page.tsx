@@ -42,7 +42,6 @@ export default function PostANeedPage() {
     return (
       <div className="min-h-[60vh] flex items-center justify-center px-4">
         <div className="card p-8 text-center max-w-md w-full">
-          <div className="text-5xl mb-4">🔒</div>
           <h2 className="text-xl font-bold text-brand-text mb-2">Sign in required</h2>
           <p className="text-brand-muted mb-6">You must be signed in as an employer to post a need.</p>
           <Link href="/login?callbackUrl=/post-a-need" className="btn-primary w-full justify-center">
@@ -60,7 +59,6 @@ export default function PostANeedPage() {
     return (
       <div className="min-h-[60vh] flex items-center justify-center px-4">
         <div className="card p-8 text-center max-w-md w-full">
-          <div className="text-5xl mb-4">🚫</div>
           <h2 className="text-xl font-bold text-brand-text mb-2">Employer accounts only</h2>
           <p className="text-brand-muted mb-6">Only employer accounts can post hiring needs.</p>
           <Link href="/browse" className="btn-primary w-full justify-center">
@@ -129,7 +127,6 @@ export default function PostANeedPage() {
     return (
       <div className="min-h-[60vh] flex items-center justify-center px-4">
         <div className="card p-8 text-center max-w-md w-full">
-          <div className="text-5xl mb-4">✅</div>
           <h2 className="text-xl font-bold text-brand-text mb-2">Need posted!</h2>
           <p className="text-brand-muted">Your hiring need is now live. Freelancers can express interest.</p>
           <p className="text-xs text-brand-muted mt-2">Redirecting to the needs board...</p>
@@ -154,7 +151,7 @@ export default function PostANeedPage() {
       </div>
 
       {error && (
-        <div className="mb-6 p-3 rounded-lg bg-red-900/30 border border-red-700/40 text-red-400 text-sm">
+        <div className="mb-6 p-3 rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm">
           {error}
         </div>
       )}
@@ -163,7 +160,7 @@ export default function PostANeedPage() {
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
             <label className="block text-sm font-medium text-brand-text mb-1.5">
-              Job Title <span className="text-red-400">*</span>
+              Job Title <span className="text-red-600">*</span>
             </label>
             <input
               type="text"
@@ -177,7 +174,7 @@ export default function PostANeedPage() {
 
           <div>
             <label className="block text-sm font-medium text-brand-text mb-1.5">
-              Description <span className="text-red-400">*</span>
+              Description <span className="text-red-600">*</span>
             </label>
             <textarea
               value={formData.description}
@@ -191,7 +188,7 @@ export default function PostANeedPage() {
 
           <div>
             <label className="block text-sm font-medium text-brand-text mb-1.5">
-              Category <span className="text-red-400">*</span>
+              Category <span className="text-red-600">*</span>
             </label>
             <select
               value={formData.category}

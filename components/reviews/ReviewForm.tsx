@@ -66,8 +66,8 @@ export function ReviewForm({ targetType, targetId, targetName, onSuccess }: Revi
   if (success) {
     return (
       <div className="card p-5 text-center">
-        <div className="w-10 h-10 bg-emerald-900/30 rounded-full flex items-center justify-center mx-auto mb-2">
-          <svg className="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="w-10 h-10 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-2">
+          <svg className="w-5 h-5 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
         </div>
@@ -82,7 +82,7 @@ export function ReviewForm({ targetType, targetId, targetName, onSuccess }: Revi
       <h3 className="font-semibold text-brand-text mb-4">Leave a Review for {targetName}</h3>
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && (
-          <div className="p-3 rounded-lg bg-red-900/30 border border-red-700/40 text-red-400 text-sm">
+          <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm">
             {error}
           </div>
         )}

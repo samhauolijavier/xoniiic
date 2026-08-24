@@ -55,7 +55,7 @@ export function ShareProfileLink({ username, profileName, compact = false }: Sha
           title="Copy profile link"
           className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border transition-all ${
             copied
-              ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-400'
+              ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-700'
               : 'bg-brand-card border-brand-border text-brand-muted hover:border-brand-purple hover:text-brand-text'
           }`}
         >
@@ -121,7 +121,7 @@ export function ShareProfileLink({ username, profileName, compact = false }: Sha
           onClick={handleCopy}
           className={`flex-1 flex items-center justify-center gap-2 text-sm font-medium py-2.5 px-4 rounded-xl border transition-all ${
             copied
-              ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-400'
+              ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-700'
               : 'bg-brand-card border-brand-border text-brand-text hover:border-brand-purple'
           }`}
         >

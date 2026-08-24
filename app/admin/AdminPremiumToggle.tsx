@@ -30,8 +30,8 @@ export function AdminPremiumToggle({ userId, isPremium }: { userId: string; isPr
       disabled={loading}
       className={`text-xs px-3 py-1 rounded-lg font-medium transition-all disabled:opacity-60 ${
         currentPremium
-          ? 'bg-red-900/30 text-red-400 hover:bg-red-900/50 border border-red-900/50'
-          : 'bg-amber-900/30 text-amber-400 hover:bg-amber-900/50 border border-amber-900/50'
+          ? 'bg-red-50 text-red-600 hover:bg-red-100 border border-red-900/50'
+          : 'bg-amber-50 text-amber-700 hover:bg-amber-100 border border-amber-900/50'
       }`}
     >
       {loading ? '...' : currentPremium ? 'Revoke Premium' : 'Grant Premium'}

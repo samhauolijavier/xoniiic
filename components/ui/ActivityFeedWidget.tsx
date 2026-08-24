@@ -70,7 +70,6 @@ export function ActivityFeedWidget() {
 
       {events.length === 0 ? (
         <div className="text-center py-6">
-          <div className="text-3xl mb-2">📡</div>
           <p className="text-brand-muted text-sm">No activity yet</p>
         </div>
       ) : (

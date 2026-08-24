@@ -61,7 +61,7 @@ function SaveButton({ onClick, saving, disabled, success }: {
       >
         {saving ? 'Saving...' : 'Save Changes'}
       </button>
-      {success && <span className="text-emerald-400 text-sm">Saved!</span>}
+      {success && <span className="text-emerald-700 text-sm">Saved!</span>}
     </div>
   )
 }
@@ -378,10 +378,10 @@ export default function BrandingPage() {
             bannerStyle === 'gradient'
               ? 'bg-brand-purple text-white'
               : bannerStyle === 'info'
-              ? 'bg-blue-900/40 text-blue-300 border border-blue-700/40'
+              ? 'bg-blue-50 text-blue-800 border border-blue-200'
               : bannerStyle === 'warning'
-              ? 'bg-amber-900/40 text-amber-300 border border-amber-700/40'
-              : 'bg-emerald-900/40 text-emerald-300 border border-emerald-700/40'
+              ? 'bg-amber-50 text-amber-800 border border-amber-200'
+              : 'bg-emerald-50 text-emerald-800 border border-emerald-200'
           }`}>
             {bannerText}
           </div>
@@ -422,8 +422,8 @@ export default function BrandingPage() {
                 className="hidden"
                 onChange={handleFileChange}
               />
-              {error && <p className="text-red-400 text-sm mb-3">{error}</p>}
-              {logoSuccess && <p className="text-emerald-400 text-sm mb-3">Logo updated!</p>}
+              {error && <p className="text-red-600 text-sm mb-3">{error}</p>}
+              {logoSuccess && <p className="text-emerald-700 text-sm mb-3">Logo updated!</p>}
               <div className="flex gap-3">
                 <button
                   onClick={handleUpload}
@@ -433,7 +433,7 @@ export default function BrandingPage() {
                   {uploading ? 'Uploading...' : 'Upload & Apply'}
                 </button>
                 {currentLogo && (
-                  <button onClick={handleReset} className="btn-secondary text-red-400 hover:text-red-300 text-sm">
+                  <button onClick={handleReset} className="btn-secondary text-red-600 hover:text-red-700 text-sm">
                     Reset to Default
                   </button>
                 )}
@@ -480,8 +480,8 @@ export default function BrandingPage() {
                 className="hidden"
                 onChange={handleFaviconFileChange}
               />
-              {faviconError && <p className="text-red-400 text-sm mb-3">{faviconError}</p>}
-              {faviconSuccess && <p className="text-emerald-400 text-sm mb-3">Favicon updated!</p>}
+              {faviconError && <p className="text-red-600 text-sm mb-3">{faviconError}</p>}
+              {faviconSuccess && <p className="text-emerald-700 text-sm mb-3">Favicon updated!</p>}
               <div className="flex gap-3">
                 <button
                   onClick={handleFaviconUpload}
@@ -491,7 +491,7 @@ export default function BrandingPage() {
                   {faviconUploading ? 'Uploading...' : 'Upload & Apply'}
                 </button>
                 {currentFavicon && (
-                  <button onClick={handleFaviconReset} className="btn-secondary text-red-400 hover:text-red-300 text-sm">
+                  <button onClick={handleFaviconReset} className="btn-secondary text-red-600 hover:text-red-700 text-sm">
                     Reset to Default
                   </button>
                 )}
@@ -538,7 +538,7 @@ export default function BrandingPage() {
                 />
               </div>
               {fontSize !== savedFontSize && (
-                <p className="text-amber-400 text-xs mb-3">Unsaved changes</p>
+                <p className="text-amber-700 text-xs mb-3">Unsaved changes</p>
               )}
               <SaveButton onClick={handleSaveFont} saving={savingFont} disabled={fontSize === savedFontSize} success={fontSuccess} />
             </div>
@@ -696,9 +696,9 @@ export default function BrandingPage() {
                 <div className="flex flex-wrap gap-2">
                   {[
                     { value: 'gradient', label: 'Gradient', preview: 'bg-brand-purple text-white' },
-                    { value: 'info', label: 'Info', preview: 'bg-blue-900/40 text-blue-300 border border-blue-700/40' },
-                    { value: 'warning', label: 'Warning', preview: 'bg-amber-900/40 text-amber-300 border border-amber-700/40' },
-                    { value: 'success', label: 'Success', preview: 'bg-emerald-900/40 text-emerald-300 border border-emerald-700/40' },
+                    { value: 'info', label: 'Info', preview: 'bg-blue-50 text-blue-800 border border-blue-200' },
+                    { value: 'warning', label: 'Warning', preview: 'bg-amber-50 text-amber-800 border border-amber-200' },
+                    { value: 'success', label: 'Success', preview: 'bg-emerald-50 text-emerald-800 border border-emerald-200' },
                   ].map((s) => (
                     <button
                       key={s.value}

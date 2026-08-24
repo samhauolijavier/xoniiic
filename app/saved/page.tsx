@@ -40,7 +40,6 @@ export default async function SavedPage() {
 
       {profiles.length === 0 ? (
         <div className="card p-16 text-center">
-          <div className="text-5xl mb-4">🔖</div>
           <h3 className="text-xl font-semibold text-brand-text mb-2">No saved profiles yet</h3>
           <p className="text-brand-muted mb-6">
             Browse talent and save profiles you&apos;re interested in hiring

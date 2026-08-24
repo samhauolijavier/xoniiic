@@ -134,7 +134,7 @@ function DefenseForm({ reportId, onSuccess }: DefenseFormProps) {
 
   if (submitted) {
     return (
-      <div className="mt-3 p-3 rounded-lg bg-emerald-900/20 border border-emerald-700/30 text-emerald-400 text-sm">
+      <div className="mt-3 p-3 rounded-lg bg-emerald-50 border border-emerald-700/30 text-emerald-700 text-sm">
         Your response has been submitted.
       </div>
     )
@@ -151,7 +151,7 @@ function DefenseForm({ reportId, onSuccess }: DefenseFormProps) {
         </button>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-2">
-          {error && <p className="text-red-400 text-xs">{error}</p>}
+          {error && <p className="text-red-600 text-xs">{error}</p>}
           <textarea
             value={message}
             onChange={(e) => setMessage(e.target.value)}
@@ -397,7 +397,7 @@ export default function NotificationsPage() {
                             e.stopPropagation()
                             handleDelete(notification.id)
                           }}
-                          className="w-6 h-6 rounded-md flex items-center justify-center text-brand-muted hover:text-red-400 hover:bg-red-400/10 transition-colors"
+                          className="w-6 h-6 rounded-md flex items-center justify-center text-brand-muted hover:text-red-600 hover:bg-red-400/10 transition-colors"
                           aria-label="Delete notification"
                         >
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -129,7 +129,6 @@ export default async function LeaderboardPage({
 
       {leaderboard.length < 3 ? (
         <div className="card p-16 text-center border-brand-purple/30 bg-brand-purple/[0.04]">
-          <div className="text-5xl mb-4">🏆</div>
           <h3 className="text-xl font-semibold mb-2">
             <span className="gradient-text">Leaderboard Coming Soon</span>
           </h3>
@@ -151,9 +150,9 @@ export default async function LeaderboardPage({
                   : entry.username[0].toUpperCase()
 
                 const rankConfig = {
-                  1: { border: 'border-amber-400/50', ring: 'ring-amber-400', bg: 'from-amber-400 to-yellow-300', label: '1st Place', color: 'text-amber-400' },
+                  1: { border: 'border-amber-400/50', ring: 'ring-amber-400', bg: 'from-amber-400 to-yellow-300', label: '1st Place', color: 'text-amber-700' },
                   2: { border: 'border-slate-400/40', ring: 'ring-slate-400', bg: 'from-slate-400 to-slate-300', label: '2nd Place', color: 'text-slate-400' },
-                  3: { border: 'border-amber-700/40', ring: 'ring-amber-700', bg: 'from-amber-700 to-amber-600', label: '3rd Place', color: 'text-amber-700' },
+                  3: { border: 'border-amber-200', ring: 'ring-amber-700', bg: 'from-amber-700 to-amber-600', label: '3rd Place', color: 'text-amber-700' },
                 }[entry.rank]!
 
                 return (
@@ -202,7 +201,7 @@ export default async function LeaderboardPage({
 
                       {/* Top Skill */}
                       {entry.topSkill && (
-                        <span className="inline-block text-xs px-2.5 py-1 rounded-full bg-brand-purple/20 text-purple-300 border border-brand-purple/30 mb-3">
+                        <span className="inline-block text-xs px-2.5 py-1 rounded-full bg-brand-purple/20 text-brand-purple border border-brand-purple/30 mb-3">
                           {entry.topSkill}
                         </span>
                       )}
@@ -257,7 +256,7 @@ export default async function LeaderboardPage({
                           <span className="font-semibold text-brand-text group-hover:gradient-text transition-all truncate">
                             {entry.name || entry.username}
                           </span>
-                          {entry.premium && <span className="text-amber-400 text-xs">⭐</span>}
+                          {entry.premium && <span className="text-amber-700 text-xs">⭐</span>}
                           {entry.foundingMemberNumber && (
                             <FoundingMemberBadge number={entry.foundingMemberNumber} size="sm" />
                           )}
@@ -267,7 +266,7 @@ export default async function LeaderboardPage({
                             <span className="text-xs text-brand-muted truncate">{entry.title}</span>
                           )}
                           {entry.topSkill && (
-                            <span className="text-xs px-2 py-0.5 rounded-full bg-brand-purple/10 text-purple-400 border border-brand-purple/20">
+                            <span className="text-xs px-2 py-0.5 rounded-full bg-brand-purple/10 text-brand-purple border border-brand-purple/20">
                               {entry.topSkill}
                             </span>
                           )}
@@ -301,7 +300,7 @@ export default async function LeaderboardPage({
         <p className="text-sm text-brand-muted leading-relaxed">
           Complete your profile, update your availability, add your best skills, and upload a portfolio.
           More profile views from employers = higher rank.
-          <Link href="/profile/edit" className="text-brand-purple hover:text-purple-300 ml-1 transition-colors">
+          <Link href="/profile/edit" className="text-brand-purple hover:text-brand-pink ml-1 transition-colors">
             Edit your profile →
           </Link>
         </p>

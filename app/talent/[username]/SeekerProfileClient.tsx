@@ -30,7 +30,7 @@ export function SeekerProfileClient({
       <div className="card p-4 text-center">
         <button
           onClick={() => setReportOpen(true)}
-          className="text-xs text-brand-muted hover:text-red-400 transition-colors flex items-center gap-1 mx-auto"
+          className="text-xs text-brand-muted hover:text-red-600 transition-colors flex items-center gap-1 mx-auto"
         >
           <span>🚩</span> Report this profile
         </button>
@@ -72,7 +72,7 @@ export function SeekerProfileClient({
       <div>
         <button
           onClick={() => setReportOpen(true)}
-          className="text-xs text-brand-muted hover:text-red-400 transition-colors flex items-center gap-1"
+          className="text-xs text-brand-muted hover:text-red-600 transition-colors flex items-center gap-1"
         >
           <span>🚩</span> Report this profile
         </button>

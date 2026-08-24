@@ -151,11 +151,11 @@ export default async function DashboardPage() {
       {/* Open to Work Status */}
       <div className={`mb-4 px-4 py-3 rounded-xl text-sm font-medium ${
         profile.openToWork
-          ? 'bg-emerald-500/10 border border-emerald-500/30 text-emerald-400'
+          ? 'bg-emerald-50 border border-emerald-200 text-emerald-700'
           : 'bg-brand-border/30 border border-brand-border text-brand-muted'
       }`}>
         {profile.openToWork
-          ? '🟢 You\u2019re visible to employers'
+          ? 'You\u2019re visible to employers'
           : (
             <>
               ⏸️ Your profile is hidden from browse —{' '}
@@ -175,9 +175,9 @@ export default async function DashboardPage() {
             <p className="text-sm text-brand-muted mt-0.5">Complete your profile to get more employer views</p>
           </div>
           <div className={`text-3xl font-black ${
-            completion.color === 'green' ? 'text-emerald-400' :
-            completion.color === 'orange' ? 'text-amber-400' :
-            'text-red-400'
+            completion.color === 'green' ? 'text-emerald-700' :
+            completion.color === 'orange' ? 'text-amber-700' :
+            'text-red-600'
           }`}>
             {completion.score}%
           </div>
@@ -200,9 +200,9 @@ export default async function DashboardPage() {
           {completion.items.map((item) => (
             <div key={item.key} className="flex items-center gap-2.5 text-sm">
               {item.done ? (
-                <span className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs flex-shrink-0">✓</span>
+                <span className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-700 flex items-center justify-center text-xs flex-shrink-0">✓</span>
               ) : (
-                <span className="w-5 h-5 rounded-full bg-red-500/20 text-red-400 flex items-center justify-center text-xs flex-shrink-0">✕</span>
+                <span className="w-5 h-5 rounded-full bg-red-500/20 text-red-600 flex items-center justify-center text-xs flex-shrink-0">✕</span>
               )}
               {item.done ? (
                 <span className="text-brand-muted line-through">{item.label}</span>
@@ -267,7 +267,6 @@ export default async function DashboardPage() {
           <h2 className="text-lg font-semibold text-brand-text mb-4">Contact Requests</h2>
           {profile.contactsReceived.length === 0 ? (
             <div className="text-center py-8">
-              <div className="text-4xl mb-3">📭</div>
               <p className="text-brand-muted text-sm">No contact requests yet</p>
               <p className="text-brand-muted text-xs mt-1">Keep your profile updated to attract employers</p>
             </div>
@@ -290,7 +289,6 @@ export default async function DashboardPage() {
           </div>
           {profile.skills.length === 0 ? (
             <div className="text-center py-8">
-              <div className="text-4xl mb-3">⚡</div>
               <p className="text-brand-muted text-sm">No skills added yet</p>
               <Link href="/profile/edit" className="btn-primary text-sm mt-3 inline-flex">
                 Add Skills

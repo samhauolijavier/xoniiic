@@ -3,7 +3,7 @@ import Link from 'next/link'
 export default function PremiumSuccessPage() {
   return (
     <div className="max-w-lg mx-auto px-4 py-20 text-center">
-      <div className="card p-10 border-amber-500/30 bg-amber-500/5">
+      <div className="card p-10 border-amber-200 bg-amber-50">
         <div className="text-6xl mb-6">🎉</div>
         <h1 className="text-3xl font-black text-brand-text mb-3">
           Welcome to{' '}

@@ -98,7 +98,6 @@ export default function SavedSearchesPage() {
 
       {searches.length === 0 ? (
         <div className="card p-16 text-center">
-          <div className="text-5xl mb-4">💾</div>
           <h3 className="text-xl font-semibold text-brand-text mb-2">No saved searches yet</h3>
           <p className="text-brand-muted mb-6">
             Browse talent and save your filter combinations to get notified of new matches.
@@ -131,7 +130,7 @@ export default function SavedSearchesPage() {
                 </Link>
                 <button
                   onClick={() => deleteSearch(s.id)}
-                  className="p-2 text-brand-muted hover:text-red-400 transition-colors rounded-lg hover:bg-brand-border"
+                  className="p-2 text-brand-muted hover:text-red-600 transition-colors rounded-lg hover:bg-brand-border"
                   title="Delete saved search"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -151,7 +150,7 @@ export default function SavedSearchesPage() {
         <p className="text-sm text-brand-muted leading-relaxed">
           When you visit the browse page, we automatically check if any new freelancers match your saved filters since your last visit.
           If they do, you&apos;ll receive a notification. Check your{' '}
-          <Link href="/notifications" className="text-brand-purple hover:text-purple-300 transition-colors">
+          <Link href="/notifications" className="text-brand-purple hover:text-brand-pink transition-colors">
             notifications
           </Link>{' '}
           to see new matches.

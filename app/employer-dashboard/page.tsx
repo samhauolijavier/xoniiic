@@ -162,7 +162,7 @@ export default async function EmployerDashboardPage() {
           <div className="text-sm text-brand-muted mt-0.5">Total Contacts Sent</div>
           {!isPartner && monetizationOn && (
             <div className="text-xs text-brand-muted mt-2 pt-2 border-t border-brand-border">
-              <span className={contactsThisMonth >= FREE_CONTACTS_PER_MONTH ? 'text-red-400' : 'text-brand-text'}>
+              <span className={contactsThisMonth >= FREE_CONTACTS_PER_MONTH ? 'text-red-600' : 'text-brand-text'}>
                 {contactsThisMonth}/{FREE_CONTACTS_PER_MONTH}
               </span> used this month
             </div>
@@ -176,7 +176,7 @@ export default async function EmployerDashboardPage() {
           <div className="text-sm text-brand-muted mt-0.5">Active Job Posts</div>
           {!isPartner && monetizationOn && (
             <div className="text-xs text-brand-muted mt-2 pt-2 border-t border-brand-border">
-              <span className={activeJobPosts >= FREE_ACTIVE_JOB_POSTS ? 'text-red-400' : 'text-brand-text'}>
+              <span className={activeJobPosts >= FREE_ACTIVE_JOB_POSTS ? 'text-red-600' : 'text-brand-text'}>
                 {activeJobPosts}/{FREE_ACTIVE_JOB_POSTS}
               </span> limit
             </div>
@@ -204,14 +204,12 @@ export default async function EmployerDashboardPage() {
           href="/browse"
           className="card p-4 text-center border-brand-purple/20 hover:border-brand-purple/50 transition-all group"
         >
-          <div className="text-2xl mb-1.5">🔍</div>
           <div className="text-sm font-medium text-brand-text group-hover:gradient-text transition-all">Browse Talent</div>
         </Link>
         <Link
           href="/post-a-need"
           className="card p-4 text-center border-brand-purple/20 hover:border-brand-purple/50 transition-all group"
         >
-          <div className="text-2xl mb-1.5">📝</div>
           <div className="text-sm font-medium text-brand-text group-hover:gradient-text transition-all">Post a Need</div>
         </Link>
         <Link
@@ -225,7 +223,6 @@ export default async function EmployerDashboardPage() {
           href="/saved-searches"
           className="card p-4 text-center border-brand-purple/20 hover:border-brand-purple/50 transition-all group"
         >
-          <div className="text-2xl mb-1.5">🔔</div>
           <div className="text-sm font-medium text-brand-text group-hover:gradient-text transition-all">Saved Searches</div>
         </Link>
       </div>
@@ -256,7 +253,7 @@ export default async function EmployerDashboardPage() {
                 <div key={need.id} className="p-4 rounded-xl bg-brand-border/30 border border-brand-border">
                   <div className="flex items-start justify-between gap-3 mb-1">
                     <h3 className="font-medium text-brand-text text-sm truncate">{need.title}</h3>
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-900/40 text-emerald-400 flex-shrink-0">
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 flex-shrink-0">
                       Active
                     </span>
                   </div>
@@ -307,8 +304,8 @@ export default async function EmployerDashboardPage() {
                     <div className="flex flex-col items-end gap-1">
                       <span className={`text-xs px-2 py-0.5 rounded-full ${
                         contact.status === 'pending'
-                          ? 'bg-yellow-900/40 text-yellow-400'
-                          : 'bg-emerald-900/40 text-emerald-400'
+                          ? 'bg-yellow-50 text-yellow-700'
+                          : 'bg-emerald-50 text-emerald-700'
                       }`}>
                         {contact.status}
                       </span>

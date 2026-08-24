@@ -94,8 +94,8 @@ export function ReportModal({ targetType, targetId, targetName, isOpen, onClose 
 
         {success ? (
           <div className="text-center py-6">
-            <div className="w-12 h-12 bg-emerald-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
-              <svg className="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-12 h-12 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-3">
+              <svg className="w-6 h-6 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             </div>
@@ -110,14 +110,14 @@ export function ReportModal({ targetType, targetId, targetName, isOpen, onClose 
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             {verifiedRequired && (
-              <div className="p-3 rounded-lg bg-amber-900/20 border border-amber-600/40 text-sm">
-                <p className="font-semibold text-amber-400 mb-1">Verified Partners Only</p>
-                <p className="text-amber-300/80">
+              <div className="p-3 rounded-lg bg-amber-50 border border-amber-600/40 text-sm">
+                <p className="font-semibold text-amber-700 mb-1">Verified Partners Only</p>
+                <p className="text-amber-800/80">
                   Only verified employer accounts can report freelancers.{' '}
                   <Link
                     href="/employer-profile"
                     onClick={handleClose}
-                    className="underline text-amber-400 hover:text-amber-300"
+                    className="underline text-amber-700 hover:text-amber-800"
                   >
                     Get Verified →
                   </Link>
@@ -126,7 +126,7 @@ export function ReportModal({ targetType, targetId, targetName, isOpen, onClose 
             )}
 
             {error && !verifiedRequired && (
-              <div className="p-3 rounded-lg bg-red-900/30 border border-red-700/40 text-red-400 text-sm">
+              <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm">
                 {error}
               </div>
             )}

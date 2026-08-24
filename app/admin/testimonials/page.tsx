@@ -115,7 +115,7 @@ export default function AdminTestimonialsPage() {
         edited version later.
       </p>
 
-      {error && <p className="mb-4 px-4 py-3 rounded-xl text-sm bg-red-500/10 border border-red-500/30 text-red-700">{error}</p>}
+      {error && <p className="mb-4 px-4 py-3 rounded-xl text-sm bg-red-50 border border-red-200 text-red-700">{error}</p>}
       {success && <p className="mb-4 px-4 py-3 rounded-xl text-sm bg-brand-purple/[0.06] border border-brand-purple/30 text-brand-purple">{success}</p>}
 
       {/* The prompt no longer shows to every freelancer, so there has to be a

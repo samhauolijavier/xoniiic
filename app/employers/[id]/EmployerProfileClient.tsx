@@ -49,7 +49,7 @@ export function EmployerProfileClient({
         <div>
           <button
             onClick={() => setReportOpen(true)}
-            className="text-xs text-brand-muted hover:text-red-400 transition-colors flex items-center gap-1"
+            className="text-xs text-brand-muted hover:text-red-600 transition-colors flex items-center gap-1"
           >
             <span>🚩</span> Report this employer
           </button>

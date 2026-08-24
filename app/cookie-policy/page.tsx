@@ -22,7 +22,7 @@ export default function CookiePolicyPage() {
           <section>
             <p>
               This cookie policy (the &quot;Cookie Policy&quot;) is an extension of, is subject to, and incorporated into
-              our <Link href="/privacy" className="text-brand-purple hover:text-purple-400 underline">Privacy Policy</Link>.
+              our <Link href="/privacy" className="text-brand-purple hover:text-brand-pink underline">Privacy Policy</Link>.
               All capitalized terms not defined herein bear the same definition as in the Privacy Policy.
             </p>
             <p className="mt-3">
@@ -105,7 +105,7 @@ export default function CookiePolicyPage() {
                 href="https://policies.google.com/privacy"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-brand-purple hover:text-purple-400 underline"
+                className="text-brand-purple hover:text-brand-pink underline"
               >
                 Google&apos;s Privacy Policy
               </a>.
@@ -156,7 +156,7 @@ export default function CookiePolicyPage() {
             <h2 className="text-xl font-semibold text-brand-text mb-3">Contact Us</h2>
             <p>
               If you have questions about our use of cookies, please contact us at{' '}
-              <a href="mailto:support@virtualfreaks.co" className="text-brand-purple hover:text-purple-400 underline">
+              <a href="mailto:support@virtualfreaks.co" className="text-brand-purple hover:text-brand-pink underline">
                 support@virtualfreaks.co
               </a>.
             </p>

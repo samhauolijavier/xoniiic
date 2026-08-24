@@ -30,10 +30,10 @@ export function AnnouncementBanner() {
     style === 'gradient'
       ? 'bg-brand-purple text-white'
       : style === 'info'
-      ? 'bg-blue-900/60 text-blue-200 border-b border-blue-700/40'
+      ? 'bg-blue-900/60 text-blue-200 border-b border-blue-200'
       : style === 'warning'
-      ? 'bg-amber-900/60 text-amber-200 border-b border-amber-700/40'
-      : 'bg-emerald-900/60 text-emerald-200 border-b border-emerald-700/40'
+      ? 'bg-amber-900/60 text-amber-200 border-b border-amber-200'
+      : 'bg-emerald-900/60 text-emerald-200 border-b border-emerald-200'
 
   const content = (
     <div className={`relative px-4 py-2 text-center text-sm font-medium ${styleClasses}`}>

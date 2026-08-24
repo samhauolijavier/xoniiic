@@ -92,7 +92,6 @@ export function WhoViewedSection({ isPremium, hideMonetization }: { isPremium: b
         <>
           {viewers.length === 0 ? (
             <div className="text-center py-8">
-              <div className="text-4xl mb-3">👀</div>
               <p className="text-brand-muted text-sm">No employer views in the last 30 days yet</p>
               <p className="text-brand-muted text-xs mt-1">Keep your profile updated to attract more employers</p>
             </div>
@@ -113,7 +112,7 @@ export function WhoViewedSection({ isPremium, hideMonetization }: { isPremium: b
                           {v.companyName || v.name || 'Employer'}
                         </p>
                         {v.verified && (
-                          <span className="text-xs px-1.5 py-0.5 rounded bg-blue-900/40 text-blue-400 font-medium">
+                          <span className="text-xs px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 font-medium">
                             Verified ✓
                           </span>
                         )}
@@ -149,7 +148,7 @@ export function WhoViewedSection({ isPremium, hideMonetization }: { isPremium: b
                     </p>
                     {i === 0 && (
                       <span
-                        className="text-xs px-1.5 py-0.5 rounded bg-blue-900/40 text-blue-400 font-medium"
+                        className="text-xs px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 font-medium"
                         style={{ filter: 'blur(3px)' }}
                       >
                         Verified ✓
@@ -164,7 +163,7 @@ export function WhoViewedSection({ isPremium, hideMonetization }: { isPremium: b
 
           {/* Upgrade CTA */}
           {!hideMonetization && (
-          <div className="rounded-xl bg-amber-500/5 border border-amber-500/20 p-5 text-center">
+          <div className="rounded-xl bg-amber-50 border border-amber-500/20 p-5 text-center">
             <p className="text-brand-text font-medium mb-1">
               🔓 Upgrade to Premium to see who&apos;s interested in you
             </p>

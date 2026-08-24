@@ -60,7 +60,7 @@ export function AdminEmployerActions({ userId, isVerified, verificationTier, isP
         <button
           onClick={() => handleAction('unverify')}
           disabled={loading}
-          className="px-3 py-1.5 text-xs rounded-lg bg-red-900/20 border border-red-700/30 text-red-400 hover:bg-red-900/40 transition-colors disabled:opacity-50"
+          className="px-3 py-1.5 text-xs rounded-lg bg-red-50 border border-red-700/30 text-red-600 hover:bg-red-50 transition-colors disabled:opacity-50"
         >
           {loading ? '...' : 'Unverify'}
         </button>
@@ -68,7 +68,7 @@ export function AdminEmployerActions({ userId, isVerified, verificationTier, isP
         <button
           onClick={() => handleAction('verify')}
           disabled={loading}
-          className="px-3 py-1.5 text-xs rounded-lg bg-emerald-900/20 border border-emerald-700/30 text-emerald-400 hover:bg-emerald-900/40 transition-colors disabled:opacity-50"
+          className="px-3 py-1.5 text-xs rounded-lg bg-emerald-50 border border-emerald-700/30 text-emerald-700 hover:bg-emerald-50 transition-colors disabled:opacity-50"
         >
           {loading ? '...' : 'Verify'}
         </button>
@@ -87,7 +87,7 @@ export function AdminEmployerActions({ userId, isVerified, verificationTier, isP
         <button
           onClick={handleVFVerify}
           disabled={loading}
-          className="px-3 py-1.5 text-xs rounded-lg bg-gradient-to-r from-emerald-900/30 to-teal-900/30 border border-emerald-600/30 text-emerald-300 hover:from-emerald-900/50 hover:to-teal-900/50 transition-colors disabled:opacity-50"
+          className="px-3 py-1.5 text-xs rounded-lg bg-gradient-to-r from-emerald-900/30 to-teal-900/30 border border-emerald-600/30 text-emerald-800 hover:from-emerald-900/50 hover:to-teal-900/50 transition-colors disabled:opacity-50"
           title="Award VF Verified badge (highest trust tier)"
         >
           {loading ? '...' : 'Award VF ✓'}

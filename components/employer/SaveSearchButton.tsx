@@ -53,7 +53,7 @@ export function SaveSearchButton({ searchParams }: SaveSearchButtonProps) {
 
   if (saved) {
     return (
-      <span className="inline-flex items-center gap-1.5 text-sm text-emerald-400 font-medium">
+      <span className="inline-flex items-center gap-1.5 text-sm text-emerald-700 font-medium">
         <span>✓</span> Search saved!
       </span>
     )
@@ -92,7 +92,7 @@ export function SaveSearchButton({ searchParams }: SaveSearchButtonProps) {
           >
             Cancel
           </button>
-          {error && <span className="text-xs text-red-400">{error}</span>}
+          {error && <span className="text-xs text-red-600">{error}</span>}
         </div>
       )}
     </div>

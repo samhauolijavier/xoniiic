@@ -34,7 +34,7 @@ export function AdminReportActions({ reportId, currentStatus }: AdminReportActio
         <button
           onClick={() => handleUpdate('reviewed')}
           disabled={!!loading}
-          className="px-2.5 py-1 text-xs rounded-lg bg-blue-900/20 border border-blue-700/30 text-blue-400 hover:bg-blue-900/40 transition-colors disabled:opacity-50"
+          className="px-2.5 py-1 text-xs rounded-lg bg-blue-50 border border-blue-700/30 text-blue-700 hover:bg-blue-50 transition-colors disabled:opacity-50"
         >
           {loading === 'reviewed' ? '...' : 'Mark Reviewed'}
         </button>
@@ -49,7 +49,7 @@ export function AdminReportActions({ reportId, currentStatus }: AdminReportActio
       <button
         onClick={() => handleUpdate('actioned')}
         disabled={!!loading}
-        className="px-2.5 py-1 text-xs rounded-lg bg-emerald-900/20 border border-emerald-700/30 text-emerald-400 hover:bg-emerald-900/40 transition-colors disabled:opacity-50"
+        className="px-2.5 py-1 text-xs rounded-lg bg-emerald-50 border border-emerald-700/30 text-emerald-700 hover:bg-emerald-50 transition-colors disabled:opacity-50"
       >
         {loading === 'actioned' ? '...' : 'Action'}
       </button>

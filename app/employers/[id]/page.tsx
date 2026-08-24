@@ -178,7 +178,7 @@ export default async function EmployerPublicProfilePage({ params }: { params: { 
                   <p className="text-xs text-brand-muted mb-2">Tech Stack</p>
                   <div className="flex flex-wrap gap-1.5">
                     {employerProfile.techStack.split(',').map((t: string) => (
-                      <span key={t.trim()} className="px-2 py-0.5 text-xs rounded-full bg-brand-purple/10 text-purple-300 border border-brand-purple/20">
+                      <span key={t.trim()} className="px-2 py-0.5 text-xs rounded-full bg-brand-purple/10 text-brand-purple border border-brand-purple/20">
                         {t.trim()}
                       </span>
                     ))}

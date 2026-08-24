@@ -190,7 +190,7 @@ export default function TermsOfServicePage() {
           <h2 className="text-xl font-bold text-brand-text mb-3">9. Account Termination</h2>
           <p className="text-brand-muted leading-relaxed mb-3">
             You may delete your account at any time through your account settings. Upon deletion, we will remove your profile and personal data in accordance with our{' '}
-            <Link href="/privacy" className="text-brand-purple hover:text-purple-400 transition-colors">
+            <Link href="/privacy" className="text-brand-purple hover:text-brand-pink transition-colors">
               Privacy Policy
             </Link>
             . Some information may be retained as required by law or for legitimate business purposes (such as fraud prevention).
@@ -252,7 +252,7 @@ export default function TermsOfServicePage() {
           <h2 className="text-xl font-bold text-brand-text mb-3">14. Privacy</h2>
           <p className="text-brand-muted leading-relaxed">
             Your use of the Service is also governed by our{' '}
-            <Link href="/privacy" className="text-brand-purple hover:text-purple-400 transition-colors">
+            <Link href="/privacy" className="text-brand-purple hover:text-brand-pink transition-colors">
               Privacy Policy
             </Link>
             , which is incorporated into these Terms by reference. By using the Service, you consent to the collection, use, and sharing of your information as described in the Privacy Policy.
@@ -275,7 +275,7 @@ export default function TermsOfServicePage() {
           <h2 className="text-xl font-bold text-brand-text mb-3">16. Contact</h2>
           <p className="text-brand-muted leading-relaxed">
             If you have any questions about these Terms of Service, please contact us at{' '}
-            <a href="mailto:support@virtualfreaks.com" className="text-brand-purple hover:text-purple-400 transition-colors">
+            <a href="mailto:support@virtualfreaks.com" className="text-brand-purple hover:text-brand-pink transition-colors">
               support@virtualfreaks.com
             </a>
             .

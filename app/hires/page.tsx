@@ -64,7 +64,7 @@ export default async function HiresPage() {
           <p className="text-xs text-brand-muted">Total Hires</p>
         </div>
         <div className="card p-4 text-center">
-          <p className="text-2xl font-bold text-emerald-400">{active}</p>
+          <p className="text-2xl font-bold text-emerald-700">{active}</p>
           <p className="text-xs text-brand-muted">Active</p>
         </div>
         <div className="card p-4 text-center">
@@ -75,7 +75,6 @@ export default async function HiresPage() {
 
       {hires.length === 0 ? (
         <div className="card p-12 text-center">
-          <div className="text-5xl mb-4">🤝</div>
           <h2 className="text-xl font-semibold text-brand-text mb-2">No hires yet</h2>
           <p className="text-brand-muted text-sm mb-6">
             {user.role === 'employer'
@@ -121,9 +120,9 @@ export default async function HiresPage() {
                     <div className="flex items-center gap-2 flex-wrap">
                       <h3 className="font-semibold text-brand-text">{hire.title}</h3>
                       <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${
-                        hire.status === 'active' ? 'bg-emerald-500/20 text-emerald-400' :
+                        hire.status === 'active' ? 'bg-emerald-500/20 text-emerald-700' :
                         hire.status === 'completed' ? 'bg-brand-purple/20 text-brand-purple' :
-                        'bg-red-500/20 text-red-400'
+                        'bg-red-500/20 text-red-600'
                       }`}>
                         {hire.status}
                       </span>
@@ -153,7 +152,7 @@ export default async function HiresPage() {
                             <div className="flex items-center gap-2">
                               <div className="flex">
                                 {[1,2,3,4,5].map((star) => (
-                                  <span key={star} className={`text-sm ${star <= review.rating ? 'text-amber-400' : 'text-brand-border'}`}>★</span>
+                                  <span key={star} className={`text-sm ${star <= review.rating ? 'text-amber-700' : 'text-brand-border'}`}>★</span>
                                 ))}
                               </div>
                               <span className="text-xs text-brand-muted">by {review.reviewer.name || 'Anonymous'}</span>

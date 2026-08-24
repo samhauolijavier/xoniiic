@@ -51,7 +51,7 @@ export default function LoginPage() {
 
         <div className="card p-8">
           {error && (
-            <div className="mb-4 p-3 rounded-lg bg-red-900/30 border border-red-700/40 text-red-400 text-sm">
+            <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm">
               {error}
             </div>
           )}
@@ -146,7 +146,7 @@ export default function LoginPage() {
           <div className="mt-6 pt-6 border-t border-brand-border text-center">
             <p className="text-sm text-brand-muted">
               Don&apos;t have an account?{' '}
-              <Link href="/register" className="text-brand-purple hover:text-purple-400 font-medium transition-colors">
+              <Link href="/register" className="text-brand-purple hover:text-brand-pink font-medium transition-colors">
                 Create one free
               </Link>
             </p>

@@ -176,7 +176,7 @@ export default function VerifyEmailPage() {
 
         <div className="card p-8">
           {error && (
-            <div className="mb-4 p-3 rounded-lg bg-red-900/30 border border-red-700/40 text-red-400 text-sm">
+            <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm">
               {error}
             </div>
           )}
@@ -218,7 +218,7 @@ export default function VerifyEmailPage() {
               className={`text-sm font-medium transition-colors ${
                 resendCooldown > 0
                   ? 'text-brand-muted cursor-not-allowed'
-                  : 'text-brand-purple hover:text-purple-400'
+                  : 'text-brand-purple hover:text-brand-pink'
               }`}
             >
               {resendCooldown > 0

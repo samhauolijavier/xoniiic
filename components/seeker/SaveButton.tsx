@@ -34,7 +34,7 @@ export function SaveButton({ profileId }: SaveButtonProps) {
     <button
       onClick={handleToggle}
       disabled={loading}
-      className={`btn-secondary w-full justify-center text-sm ${saved ? 'border-brand-purple text-purple-400' : ''}`}
+      className={`btn-secondary w-full justify-center text-sm ${saved ? 'border-brand-purple text-brand-purple' : ''}`}
     >
       {saved ? (
         <>

@@ -337,7 +337,7 @@ export default function AdminAdsPage() {
                     <button onClick={() => toggleActive(ad.id, ad.active)} className="text-xs text-brand-muted hover:text-brand-text transition-colors">
                       {ad.active ? 'Disable' : 'Enable'}
                     </button>
-                    <button onClick={() => deleteAd(ad.id)} className="text-xs text-red-400 hover:text-red-300 transition-colors">
+                    <button onClick={() => deleteAd(ad.id)} className="text-xs text-red-600 hover:text-red-700 transition-colors">
                       Delete
                     </button>
                   </div>

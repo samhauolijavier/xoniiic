@@ -100,8 +100,8 @@ export function ReviewList({ reviews, averageRating, totalCount }: ReviewListPro
                   </span>
                   <span className={`px-1.5 py-0.5 rounded text-xs font-medium ${
                     review.reviewerUser.role === 'employer'
-                      ? 'bg-blue-900/40 text-blue-400'
-                      : 'bg-purple-900/40 text-purple-400'
+                      ? 'bg-blue-50 text-blue-700'
+                      : 'bg-brand-purple/[0.06] text-brand-purple'
                   }`}>
                     {review.reviewerUser.role}
                   </span>

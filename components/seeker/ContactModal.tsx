@@ -66,8 +66,8 @@ export function ContactModal({ profileId, profileName }: ContactModalProps) {
 
             {success ? (
               <div className="text-center py-8">
-                <div className="w-12 h-12 bg-emerald-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <svg className="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-12 h-12 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <svg className="w-6 h-6 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
@@ -77,14 +77,14 @@ export function ContactModal({ profileId, profileName }: ContactModalProps) {
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
                 {error && (
-                  <div className="p-3 rounded-lg bg-red-900/30 border border-red-700/40 text-red-400 text-sm">
+                  <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm">
                     {error}
                   </div>
                 )}
 
                 {/* Safety Warning */}
                 <div className="bg-yellow-900/20 border border-yellow-700/30 rounded-xl p-4 text-sm text-yellow-200/80">
-                  <p className="font-semibold text-yellow-300/90 mb-2">⚠️ Stay Safe on Virtual Freaks</p>
+                  <p className="font-semibold text-yellow-800/90 mb-2">⚠️ Stay Safe on Virtual Freaks</p>
                   <ul className="space-y-1 text-xs">
                     <li>• Never pay for equipment, software, or training upfront</li>
                     <li>• Never share your full ID before signing a contract</li>

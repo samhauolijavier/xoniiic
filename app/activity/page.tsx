@@ -109,7 +109,6 @@ export default function ActivityFeedPage() {
 
       {events.length === 0 ? (
         <div className="card p-12 text-center border-brand-purple/30 bg-brand-purple/[0.04]">
-          <div className="text-5xl mb-4">🌟</div>
           <h3 className="text-lg font-bold mb-2">
             <span className="gradient-text">Stay Tuned</span>
           </h3>

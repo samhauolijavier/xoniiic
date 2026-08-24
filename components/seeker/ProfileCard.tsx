@@ -176,7 +176,7 @@ export function ProfileCard({ profile, hideMonetization, hideRate }: ProfileCard
               {profile.profileViews}
             </span>
             <span className="flex items-center gap-1">
-              <span className="text-emerald-400">EN</span>
+              <span className="text-emerald-700">EN</span>
               {profile.englishRating}/10
             </span>
           </div>

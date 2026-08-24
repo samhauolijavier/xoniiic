@@ -350,7 +350,7 @@ export default async function TalentProfilePage({
                   const minsAgo = Math.floor((Date.now() - new Date(profile.lastActiveAt).getTime()) / 60000)
                   if (minsAgo < 30) {
                     return (
-                      <span className="flex items-center gap-1.5 text-xs text-emerald-400 font-medium">
+                      <span className="flex items-center gap-1.5 text-xs text-emerald-700 font-medium">
                         <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                         Active Now
                       </span>
@@ -358,7 +358,7 @@ export default async function TalentProfilePage({
                   }
                   if (minsAgo < 1440) {
                     return (
-                      <span className="flex items-center gap-1.5 text-xs text-amber-400">
+                      <span className="flex items-center gap-1.5 text-xs text-amber-700">
                         <span className="w-2 h-2 rounded-full bg-amber-400" />
                         {minsAgo < 60 ? `${minsAgo}m ago` : `${Math.floor(minsAgo / 60)}h ago`}
                       </span>

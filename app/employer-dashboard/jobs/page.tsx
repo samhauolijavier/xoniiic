@@ -263,12 +263,12 @@ export default function EmployerJobsPage() {
 
         {/* Messages */}
         {error && (
-          <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm">
+          <div className="mb-6 p-4 bg-red-50 border border-red-500/20 rounded-xl text-red-600 text-sm">
             {error}
           </div>
         )}
         {successMsg && (
-          <div className="mb-6 p-4 bg-green-500/10 border border-green-500/20 rounded-xl text-green-400 text-sm">
+          <div className="mb-6 p-4 bg-green-500/10 border border-green-500/20 rounded-xl text-green-700 text-sm">
             {successMsg}
           </div>
         )}
@@ -485,8 +485,8 @@ export default function EmployerJobsPage() {
                         <span
                           className={`flex-shrink-0 px-2 py-0.5 text-xs rounded-full ${
                             job.status === 'active'
-                              ? 'bg-green-500/10 text-green-400 border border-green-500/20'
-                              : 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20'
+                              ? 'bg-green-500/10 text-green-700 border border-green-500/20'
+                              : 'bg-yellow-500/10 text-yellow-700 border border-yellow-500/20'
                           }`}
                         >
                           {job.status}
@@ -562,7 +562,7 @@ export default function EmployerJobsPage() {
                       </button>
                       <button
                         onClick={() => handleDelete(job.id, job.title)}
-                        className="p-2 text-brand-muted hover:text-red-400 transition-colors"
+                        className="p-2 text-brand-muted hover:text-red-600 transition-colors"
                         title="Delete job"
                       >
                         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -129,7 +129,7 @@ export function SkillEditor({ initialSkills = [], onChange }: SkillEditorProps) 
               onClick={() => handleToggle(skill)}
               className={`p-2 rounded-lg text-left text-sm font-medium transition-all border ${
                 selected
-                  ? 'bg-purple-900/30 border-brand-purple text-purple-300'
+                  ? 'bg-brand-purple/[0.06] border-brand-purple text-brand-purple'
                   : 'bg-brand-card border-brand-border text-brand-muted hover:border-brand-purple hover:text-brand-text'
               }`}
             >
@@ -161,7 +161,7 @@ export function SkillEditor({ initialSkills = [], onChange }: SkillEditorProps) 
                 </div>
                 <button
                   onClick={() => handleToggle({ id: skill.skillId, name: skill.name, slug: '', category: skill.category })}
-                  className="text-brand-muted hover:text-red-400 transition-colors"
+                  className="text-brand-muted hover:text-red-600 transition-colors"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

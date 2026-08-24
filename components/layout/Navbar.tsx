@@ -256,9 +256,9 @@ export function Navbar() {
                         href={link.href}
                         className={`text-sm transition-colors px-3 py-1.5 rounded-lg hover:bg-brand-card ${
                           (link.href === '/premium' && !isPremium)
-                            ? 'text-amber-400 hover:text-amber-300 font-medium'
+                            ? 'text-amber-700 hover:text-amber-800 font-medium'
                             : link.href === '/verified-partner' && !isPremium
-                            ? 'text-purple-400 hover:text-purple-300 font-medium'
+                            ? 'text-brand-purple hover:text-brand-pink font-medium'
                             : 'text-brand-muted hover:text-brand-text'
                         }`}
                       >
@@ -414,10 +414,10 @@ export function Navbar() {
                         <div className="flex items-center gap-2">
                           <p className="text-sm font-medium text-brand-text truncate">{user?.name || 'User'}</p>
                           {isPremium && user?.role === 'seeker' && (
-                            <span className="text-xs px-1.5 py-0.5 rounded-full bg-amber-500/20 text-amber-400 font-bold flex-shrink-0">{'\u2605'}</span>
+                            <span className="text-xs px-1.5 py-0.5 rounded-full bg-amber-500/20 text-amber-700 font-bold flex-shrink-0">{'\u2605'}</span>
                           )}
                           {isPremium && user?.role === 'employer' && (
-                            <span className="text-xs px-1.5 py-0.5 rounded-full bg-brand-purple/20 text-purple-400 font-bold flex-shrink-0">{'\u{1F6E1}\uFE0F'}</span>
+                            <span className="text-xs px-1.5 py-0.5 rounded-full bg-brand-purple/20 text-brand-purple font-bold flex-shrink-0">{'\u{1F6E1}\uFE0F'}</span>
                           )}
                         </div>
                         <p className="text-xs text-brand-muted truncate">{user?.email}</p>
@@ -430,9 +430,9 @@ export function Navbar() {
                             onClick={() => setDropdownOpen(false)}
                             className={`block px-4 py-2 text-sm hover:bg-brand-border transition-all ${
                               (link.href === '/premium' && !isPremium)
-                                ? 'text-amber-400 hover:text-amber-300'
+                                ? 'text-amber-700 hover:text-amber-800'
                                 : link.href === '/verified-partner' && !isPremium
-                                ? 'text-purple-400 hover:text-purple-300'
+                                ? 'text-brand-purple hover:text-brand-pink'
                                 : 'text-brand-muted hover:text-brand-text'
                             }`}
                           >
@@ -443,7 +443,7 @@ export function Navbar() {
                           <Link
                             href="/premium"
                             onClick={() => setDropdownOpen(false)}
-                            className="flex items-center gap-2 px-4 py-2 text-sm text-amber-400 hover:text-amber-300 hover:bg-brand-border transition-all"
+                            className="flex items-center gap-2 px-4 py-2 text-sm text-amber-700 hover:text-amber-800 hover:bg-brand-border transition-all"
                           >
                             <span>{'\u2605'}</span>
                             <span>Premium</span>
@@ -453,7 +453,7 @@ export function Navbar() {
                           <Link
                             href="/verified-partner"
                             onClick={() => setDropdownOpen(false)}
-                            className="flex items-center gap-2 px-4 py-2 text-sm text-purple-400 hover:text-purple-300 hover:bg-brand-border transition-all"
+                            className="flex items-center gap-2 px-4 py-2 text-sm text-brand-purple hover:text-brand-pink hover:bg-brand-border transition-all"
                           >
                             <span>{'\u{1F6E1}\uFE0F'}</span>
                             <span>Verified Partner</span>
@@ -548,7 +548,7 @@ export function Navbar() {
                         )}
                         <button
                           onClick={() => { signOut(); setDropdownOpen(false) }}
-                          className="block w-full text-left px-4 py-2 text-sm text-red-400 hover:text-red-300 hover:bg-brand-border transition-all"
+                          className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:text-red-700 hover:bg-brand-border transition-all"
                         >
                           Sign Out
                         </button>
@@ -610,7 +610,7 @@ export function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={`block px-4 py-3 text-sm ${
-                  link.href === '/premium' && !isPremium ? 'text-amber-400 font-medium' : 'text-brand-muted'
+                  link.href === '/premium' && !isPremium ? 'text-amber-700 font-medium' : 'text-brand-muted'
                 }`}
                 onClick={() => setMobileOpen(false)}
               >
@@ -620,7 +620,7 @@ export function Navbar() {
             {isPremium && user?.role === 'seeker' && (
               <Link
                 href="/premium"
-                className="block px-4 py-3 text-sm text-amber-400"
+                className="block px-4 py-3 text-sm text-amber-700"
                 onClick={() => setMobileOpen(false)}
               >
                 {'\u2605'} Premium
@@ -674,7 +674,7 @@ export function Navbar() {
             {session && (
               <button
                 onClick={() => { signOut(); setMobileOpen(false) }}
-                className="block w-full text-left px-4 py-3 text-sm text-red-400"
+                className="block w-full text-left px-4 py-3 text-sm text-red-600"
               >
                 Sign Out
               </button>

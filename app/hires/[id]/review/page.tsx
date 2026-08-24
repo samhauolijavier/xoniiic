@@ -105,7 +105,7 @@ export default function ReviewPage() {
             >
               <span className={
                 star <= (hoverRating || rating)
-                  ? 'text-amber-400'
+                  ? 'text-amber-700'
                   : 'text-brand-border'
               }>
                 ★
@@ -139,7 +139,7 @@ export default function ReviewPage() {
       </div>
 
       {error && (
-        <div className="mb-4 p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-sm">
+        <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm">
           {error}
         </div>
       )}

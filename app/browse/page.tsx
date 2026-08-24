@@ -197,7 +197,6 @@ export default async function BrowsePage({
 
           {dbError ? (
             <div className="card p-16 text-center">
-              <div className="text-5xl mb-4">⚡</div>
               <h3 className="text-xl font-semibold text-brand-text mb-2">Temporarily unavailable</h3>
               <p className="text-brand-muted mb-6">We&apos;re having trouble loading profiles right now. Please try again in a moment.</p>
               <Link href="/browse" className="btn-primary">Try Again</Link>
@@ -205,14 +204,12 @@ export default async function BrowsePage({
           ) : profiles.length === 0 ? (
             activeFilters.length > 0 ? (
               <div className="card p-16 text-center">
-                <div className="text-5xl mb-4">🔍</div>
                 <h3 className="text-xl font-semibold text-brand-text mb-2">No results found</h3>
                 <p className="text-brand-muted mb-6">Try adjusting your filters or search term</p>
                 <Link href="/browse" className="btn-primary">Clear Filters</Link>
               </div>
             ) : (
               <div className="card p-16 text-center border-brand-purple/30 bg-brand-purple/[0.04]">
-                <div className="text-5xl mb-4">🚀</div>
                 <h3 className="text-xl font-semibold mb-2">
                   <span className="gradient-text">We&apos;re Just Getting Started!</span>
                 </h3>

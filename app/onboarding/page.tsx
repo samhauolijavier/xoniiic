@@ -60,7 +60,7 @@ export default function OnboardingPage() {
         </div>
 
         {error && (
-          <div className="mb-6 p-3 rounded-lg bg-red-900/30 border border-red-700/40 text-red-400 text-sm text-center">
+          <div className="mb-6 p-3 rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm text-center">
             {error}
           </div>
         )}

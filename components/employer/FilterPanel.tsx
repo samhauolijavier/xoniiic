@@ -62,7 +62,7 @@ export function FilterPanel() {
       <div className="flex items-center justify-between">
         <h3 className="font-semibold text-brand-text">Filters</h3>
         {hasFilters && (
-          <button onClick={clearFilters} className="text-xs text-brand-muted hover:text-red-400 transition-colors">
+          <button onClick={clearFilters} className="text-xs text-brand-muted hover:text-red-600 transition-colors">
             Clear all
           </button>
         )}
@@ -93,7 +93,7 @@ export function FilterPanel() {
           <button
             onClick={() => setCategory('')}
             className={`w-full text-left px-3 py-1.5 rounded-lg text-sm transition-all ${
-              !category ? 'bg-brand-purple/20 text-purple-300 border border-brand-purple/40' : 'text-brand-muted hover:text-brand-text hover:bg-brand-border'
+              !category ? 'bg-brand-purple/20 text-brand-purple border border-brand-purple/40' : 'text-brand-muted hover:text-brand-text hover:bg-brand-border'
             }`}
           >
             All Categories
@@ -104,7 +104,7 @@ export function FilterPanel() {
               onClick={() => setCategory(cat === category ? '' : cat)}
               className={`w-full text-left px-3 py-1.5 rounded-lg text-sm transition-all ${
                 category === cat
-                  ? 'bg-brand-purple/20 text-purple-300 border border-brand-purple/40'
+                  ? 'bg-brand-purple/20 text-brand-purple border border-brand-purple/40'
                   : 'text-brand-muted hover:text-brand-text hover:bg-brand-border'
               }`}
             >
@@ -124,7 +124,7 @@ export function FilterPanel() {
               onClick={() => setAvailability(availability === opt.value ? '' : opt.value)}
               className={`w-full text-left px-3 py-1.5 rounded-lg text-sm transition-all ${
                 availability === opt.value
-                  ? 'bg-brand-purple/20 text-purple-300 border border-brand-purple/40'
+                  ? 'bg-brand-purple/20 text-brand-purple border border-brand-purple/40'
                   : 'text-brand-muted hover:text-brand-text hover:bg-brand-border'
               }`}
             >
@@ -141,7 +141,7 @@ export function FilterPanel() {
           onClick={() => setOnlineNow(!onlineNow)}
           className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-all ${
             onlineNow
-              ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
+              ? 'bg-emerald-500/20 text-emerald-800 border border-emerald-500/40'
               : 'text-brand-muted hover:text-brand-text hover:bg-brand-border border border-transparent'
           }`}
         >

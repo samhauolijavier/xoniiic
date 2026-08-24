@@ -312,7 +312,7 @@ export default function AdminLeadsPage() {
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
                         {isNewUser(u.createdAt) && (
-                          <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-900/40 text-emerald-400 uppercase">New</span>
+                          <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-700 uppercase">New</span>
                         )}
                         <span>{u.employerProfile?.companyName || u.name || '-'}</span>
                       </div>
@@ -327,7 +327,7 @@ export default function AdminLeadsPage() {
                     </td>
                     <td className="px-4 py-3">
                       {u.employerProfile?.verified ? (
-                        <span className="px-2 py-0.5 rounded-full text-xs bg-emerald-900/40 text-emerald-400">Verified</span>
+                        <span className="px-2 py-0.5 rounded-full text-xs bg-emerald-50 text-emerald-700">Verified</span>
                       ) : (
                         <span className="px-2 py-0.5 rounded-full text-xs bg-zinc-800 text-brand-muted">No</span>
                       )}
@@ -336,8 +336,8 @@ export default function AdminLeadsPage() {
                       {u.employerProfile?.verificationTier ? (
                         <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
                           u.employerProfile.verificationTier === 'vf_verified'
-                            ? 'bg-purple-900/40 text-purple-400'
-                            : 'bg-blue-900/40 text-blue-400'
+                            ? 'bg-brand-purple/[0.06] text-brand-purple'
+                            : 'bg-blue-50 text-blue-700'
                         }`}>
                           {u.employerProfile.verificationTier === 'vf_verified' ? 'VF Verified' : 'Partner'}
                         </span>
@@ -350,7 +350,7 @@ export default function AdminLeadsPage() {
                     </td>
                     <td className="px-4 py-3">
                       <span className={`px-2 py-0.5 rounded-full text-xs ${
-                        u.active ? 'bg-emerald-900/40 text-emerald-400' : 'bg-red-900/40 text-red-400'
+                        u.active ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-600'
                       }`}>
                         {u.active ? 'Active' : 'Inactive'}
                       </span>
@@ -389,7 +389,7 @@ export default function AdminLeadsPage() {
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
                         {isNewUser(u.createdAt) && (
-                          <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-900/40 text-emerald-400 uppercase">New</span>
+                          <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-700 uppercase">New</span>
                         )}
                         <span>{u.role === 'employer' ? (u.employerProfile?.companyName || u.name || '-') : (u.name || '-')}</span>
                       </div>
@@ -397,7 +397,7 @@ export default function AdminLeadsPage() {
                     <td className="px-4 py-3 text-brand-muted">{u.email}</td>
                     <td className="px-4 py-3">
                       <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                        u.role === 'employer' ? 'bg-blue-900/40 text-blue-400' : 'bg-purple-900/40 text-purple-400'
+                        u.role === 'employer' ? 'bg-blue-50 text-blue-700' : 'bg-brand-purple/[0.06] text-brand-purple'
                       }`}>
                         {u.role === 'seeker' ? 'Freelancer' : 'Employer'}
                       </span>
@@ -412,7 +412,7 @@ export default function AdminLeadsPage() {
                     </td>
                     <td className="px-4 py-3">
                       <span className={`px-2 py-0.5 rounded-full text-xs ${
-                        u.active ? 'bg-emerald-900/40 text-emerald-400' : 'bg-red-900/40 text-red-400'
+                        u.active ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-600'
                       }`}>
                         {u.active ? 'Active' : 'Inactive'}
                       </span>

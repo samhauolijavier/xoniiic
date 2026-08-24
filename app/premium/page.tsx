@@ -113,7 +113,7 @@ export default function PremiumPage() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
       {/* Header */}
       <div className="text-center mb-12">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-sm font-medium mb-6">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-sm font-medium mb-6">
           <span>★</span> Premium Membership
         </div>
         <h1 className="text-3xl sm:text-5xl font-black text-brand-text mb-4">
@@ -140,7 +140,7 @@ export default function PremiumPage() {
           <div className="w-48 h-14 rounded-xl bg-brand-card animate-pulse" />
         </div>
       ) : isPremium ? (
-        <div className="card p-8 border-amber-500/30 bg-amber-500/5 text-center mb-10">
+        <div className="card p-8 border-amber-200 bg-amber-50 text-center mb-10">
           <div className="text-4xl mb-3">★</div>
           <h2 className="text-2xl font-black text-brand-text mb-2">
             You&apos;re <span className="gradient-text">Premium!</span>
@@ -231,7 +231,7 @@ export default function PremiumPage() {
                 <th className="text-left px-4 sm:px-6 py-4 font-medium">Feature</th>
                 <th className="text-center px-4 sm:px-6 py-4 font-medium w-20 sm:w-28">Free</th>
                 <th className="text-center px-4 sm:px-6 py-4 font-medium w-20 sm:w-28">
-                  <span className="inline-flex items-center gap-1 text-amber-400">
+                  <span className="inline-flex items-center gap-1 text-amber-700">
                     <span>★</span> Premium
                   </span>
                 </th>
@@ -241,19 +241,19 @@ export default function PremiumPage() {
               {features.map((f) => (
                 <tr
                   key={f.label}
-                  className={`hover:bg-brand-border/20 transition-colors ${!f.free && f.premium ? 'bg-amber-500/5' : ''}`}
+                  className={`hover:bg-brand-border/20 transition-colors ${!f.free && f.premium ? 'bg-amber-50' : ''}`}
                 >
                   <td className="px-4 sm:px-6 py-4 text-brand-text font-medium">{f.label}</td>
                   <td className="px-4 sm:px-6 py-4 text-center">
                     {f.free ? (
-                      <span className="text-emerald-400 text-lg">✓</span>
+                      <span className="text-emerald-700 text-lg">✓</span>
                     ) : (
                       <span className="text-brand-border text-lg">🔒</span>
                     )}
                   </td>
                   <td className="px-4 sm:px-6 py-4 text-center">
                     {f.premium ? (
-                      <span className="text-emerald-400 text-lg">✓</span>
+                      <span className="text-emerald-700 text-lg">✓</span>
                     ) : (
                       <span className="text-brand-border">—</span>
                     )}

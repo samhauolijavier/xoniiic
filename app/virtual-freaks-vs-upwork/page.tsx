@@ -95,9 +95,9 @@ export default function VsUpworkPage() {
             <h2 className="text-xl font-bold text-brand-text mb-3">The Bottom Line</h2>
             <p className="text-brand-muted max-w-2xl mx-auto">
               If you hire a freelancer at <span className="text-brand-text font-semibold">$25/hour for 20 hours/week</span>,
-              Upwork&apos;s fees cost you an extra <span className="text-red-400 font-semibold">$100-200/month</span>.
-              On Virtual Freaks, that same hire costs <span className="text-emerald-400 font-semibold">$0 in platform fees</span>.
-              Over a year, that&apos;s <span className="text-emerald-400 font-semibold">$1,200-2,400 saved</span>.
+              Upwork&apos;s fees cost you an extra <span className="text-red-600 font-semibold">$100-200/month</span>.
+              On Virtual Freaks, that same hire costs <span className="text-emerald-700 font-semibold">$0 in platform fees</span>.
+              Over a year, that&apos;s <span className="text-emerald-700 font-semibold">$1,200-2,400 saved</span>.
             </p>
           </div>
         </section>
@@ -121,7 +121,7 @@ export default function VsUpworkPage() {
                   {comparisonRows.map((row, i) => (
                     <tr key={row.feature} className={i % 2 === 0 ? 'bg-brand-border/10' : ''}>
                       <td className="p-4 text-sm font-medium text-brand-text">{row.feature}</td>
-                      <td className="p-4 text-sm text-emerald-400">{row.vf}</td>
+                      <td className="p-4 text-sm text-emerald-700">{row.vf}</td>
                       <td className="p-4 text-sm text-brand-muted">{row.upwork}</td>
                     </tr>
                   ))}
@@ -148,7 +148,7 @@ export default function VsUpworkPage() {
                   'Want freelancers to keep 100% of their pay',
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2 text-sm text-brand-muted">
-                    <span className="text-emerald-400 mt-0.5 shrink-0">
+                    <span className="text-emerald-700 mt-0.5 shrink-0">
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>

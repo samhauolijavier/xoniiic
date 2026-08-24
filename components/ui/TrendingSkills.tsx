@@ -73,20 +73,20 @@ export function TrendingSkills() {
               </span>
               <div className="flex items-center gap-1 flex-shrink-0">
                 {skill.trending === 'new' ? (
-                  <span className="text-xs px-1.5 py-0.5 rounded-full bg-brand-purple/20 text-purple-300 border border-brand-purple/30 font-medium">
+                  <span className="text-xs px-1.5 py-0.5 rounded-full bg-brand-purple/20 text-brand-purple border border-brand-purple/30 font-medium">
                     new
                   </span>
                 ) : skill.trending === 'up' ? (
                   <>
-                    <span className="text-emerald-400 text-xs">↑</span>
-                    <span className="text-xs text-emerald-400 font-medium">
+                    <span className="text-emerald-700 text-xs">↑</span>
+                    <span className="text-xs text-emerald-700 font-medium">
                       {skill.changePercent}%
                     </span>
                   </>
                 ) : (
                   <>
-                    <span className="text-red-400 text-xs">↓</span>
-                    <span className="text-xs text-red-400 font-medium">
+                    <span className="text-red-600 text-xs">↓</span>
+                    <span className="text-xs text-red-600 font-medium">
                       {Math.abs(skill.changePercent)}%
                     </span>
                   </>

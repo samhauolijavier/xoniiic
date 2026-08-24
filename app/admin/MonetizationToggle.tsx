@@ -40,7 +40,7 @@ export function MonetizationToggle({ initialEnabled }: { initialEnabled: boolean
           </p>
           <div className="mt-3">
             {enabled ? (
-              <span className="inline-flex items-center gap-1.5 text-sm font-medium text-emerald-400">
+              <span className="inline-flex items-center gap-1.5 text-sm font-medium text-emerald-700">
                 <span>💰</span> Live — Stripe subscriptions are active
               </span>
             ) : (

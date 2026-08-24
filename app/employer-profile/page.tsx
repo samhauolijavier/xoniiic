@@ -187,12 +187,12 @@ export default function EmployerProfilePage() {
 
       <form onSubmit={handleSave} className="space-y-6">
         {error && (
-          <div className="p-3 rounded-lg bg-red-900/30 border border-red-700/40 text-red-400 text-sm">
+          <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm">
             {error}
           </div>
         )}
         {success && (
-          <div className="p-3 rounded-lg bg-emerald-900/30 border border-emerald-700/40 text-emerald-400 text-sm">
+          <div className="p-3 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm">
             Profile saved successfully!
           </div>
         )}
@@ -251,7 +251,7 @@ export default function EmployerProfilePage() {
               />
               {!isPartner && (
                 <div className="flex items-center justify-between mt-1.5">
-                  <span className={`text-xs ${description.length >= 180 ? 'text-amber-400' : 'text-brand-muted'}`}>
+                  <span className={`text-xs ${description.length >= 180 ? 'text-amber-700' : 'text-brand-muted'}`}>
                     {description.length}/200
                   </span>
                   <span className="text-xs text-brand-muted">
@@ -410,7 +410,7 @@ export default function EmployerProfilePage() {
                     'Unlimited Description Length',
                   ].map((f) => (
                     <div key={f} className="flex items-center gap-2 text-sm">
-                      <span className="text-purple-400 text-xs">🛡️</span>
+                      <span className="text-brand-purple text-xs">🛡️</span>
                       <span className="text-brand-muted">{f}</span>
                     </div>
                   ))}

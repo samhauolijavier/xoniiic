@@ -40,14 +40,14 @@ export function HireActions({ hireId, status, isEmployer, hasReviewed }: HireAct
           <button
             onClick={() => handleStatusChange('completed')}
             disabled={loading}
-            className="text-xs font-medium px-3 py-1.5 rounded-lg bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/30 transition-all disabled:opacity-50"
+            className="text-xs font-medium px-3 py-1.5 rounded-lg bg-emerald-500/20 text-emerald-700 border border-emerald-200 hover:bg-emerald-500/30 transition-all disabled:opacity-50"
           >
             ✓ Complete
           </button>
           <button
             onClick={() => handleStatusChange('cancelled')}
             disabled={loading}
-            className="text-xs font-medium px-3 py-1.5 rounded-lg border border-brand-border text-brand-muted hover:border-red-500/50 hover:text-red-400 transition-all disabled:opacity-50"
+            className="text-xs font-medium px-3 py-1.5 rounded-lg border border-brand-border text-brand-muted hover:border-red-500/50 hover:text-red-600 transition-all disabled:opacity-50"
           >
             Cancel
           </button>
@@ -58,14 +58,14 @@ export function HireActions({ hireId, status, isEmployer, hasReviewed }: HireAct
       {status === 'completed' && !hasReviewed && (
         <Link
           href={`/hires/${hireId}/review`}
-          className="text-xs font-medium px-3 py-1.5 rounded-lg bg-amber-500/20 text-amber-400 border border-amber-500/30 hover:bg-amber-500/30 transition-all text-center"
+          className="text-xs font-medium px-3 py-1.5 rounded-lg bg-amber-500/20 text-amber-700 border border-amber-200 hover:bg-amber-500/30 transition-all text-center"
         >
           ⭐ Review
         </Link>
       )}
 
       {status === 'completed' && hasReviewed && (
-        <span className="text-xs text-emerald-400 px-3 py-1.5">✓ Reviewed</span>
+        <span className="text-xs text-emerald-700 px-3 py-1.5">✓ Reviewed</span>
       )}
     </div>
   )

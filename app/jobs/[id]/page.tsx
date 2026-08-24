@@ -235,7 +235,7 @@ export default async function JobDetailPage({
                   {job.category}
                 </span>
                 {rate && (
-                  <span className="inline-flex items-center px-3 py-1 text-sm rounded-full bg-green-500/10 text-green-400 border border-green-500/20">
+                  <span className="inline-flex items-center px-3 py-1 text-sm rounded-full bg-green-500/10 text-green-700 border border-green-500/20">
                     {rate}
                   </span>
                 )}
@@ -290,7 +290,7 @@ export default async function JobDetailPage({
                   Employer accounts cannot apply to jobs. Switch to a seeker account to apply.
                 </p>
               ) : hasApplied ? (
-                <div className="flex items-center gap-2 text-green-400">
+                <div className="flex items-center gap-2 text-green-700">
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                     <path
                       fillRule="evenodd"
@@ -328,7 +328,7 @@ export default async function JobDetailPage({
                 <div>
                   <h3 className="font-semibold text-brand-text">{companyName}</h3>
                   {profile?.verified && (
-                    <span className="text-xs text-green-400">Verified Employer</span>
+                    <span className="text-xs text-green-700">Verified Employer</span>
                   )}
                 </div>
               </div>

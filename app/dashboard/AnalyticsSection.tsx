@@ -71,12 +71,12 @@ export function AnalyticsSection({ isPremium, hideMonetization }: { isPremium: b
             ))}
           </div>
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="bg-brand-card/95 border border-amber-500/30 rounded-xl px-6 py-4 text-center shadow-xl">
+            <div className="bg-brand-card/95 border border-amber-200 rounded-xl px-6 py-4 text-center shadow-xl">
               <p className="text-brand-text font-bold mb-1">📊 Premium Analytics</p>
               <p className="text-brand-muted text-sm mb-3">See your full performance data</p>
               <Link
                 href="/premium"
-                className="inline-flex items-center gap-1 text-sm font-bold text-amber-400 hover:text-amber-300"
+                className="inline-flex items-center gap-1 text-sm font-bold text-amber-700 hover:text-amber-800"
               >
                 Upgrade → $2.99/mo
               </Link>
@@ -99,7 +99,7 @@ export function AnalyticsSection({ isPremium, hideMonetization }: { isPremium: b
     <div className="card p-6 mb-6">
       <h2 className="text-lg font-semibold text-brand-text mb-5 flex items-center gap-2">
         <span>📊</span> Analytics Dashboard
-        <span className="text-xs px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400 font-bold">Premium</span>
+        <span className="text-xs px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-700 font-bold">Premium</span>
       </h2>
 
       {/* Stats grid */}

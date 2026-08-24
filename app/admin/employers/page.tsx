@@ -62,15 +62,15 @@ export default async function AdminEmployersPage() {
         </div>
         <div className="flex items-center gap-3 flex-wrap">
           {pendingCount > 0 && (
-            <div className="px-3 py-1.5 bg-orange-900/30 border border-orange-700/40 rounded-xl">
-              <span className="text-orange-400 font-semibold text-sm">{pendingCount} pending</span>
+            <div className="px-3 py-1.5 bg-orange-50 border border-orange-200 rounded-xl">
+              <span className="text-orange-700 font-semibold text-sm">{pendingCount} pending</span>
             </div>
           )}
           <div className="px-3 py-1.5 bg-brand-purple/10 border border-brand-purple/30 rounded-xl">
-            <span className="text-purple-400 font-semibold text-sm">{partnerCount} partners</span>
+            <span className="text-brand-purple font-semibold text-sm">{partnerCount} partners</span>
           </div>
-          <div className="px-3 py-1.5 bg-emerald-900/30 border border-emerald-700/40 rounded-xl">
-            <span className="text-emerald-400 font-semibold text-sm">{vfVerifiedCount} VF verified</span>
+          <div className="px-3 py-1.5 bg-emerald-50 border border-emerald-200 rounded-xl">
+            <span className="text-emerald-700 font-semibold text-sm">{vfVerifiedCount} VF verified</span>
           </div>
         </div>
       </div>
@@ -147,12 +147,12 @@ export default async function AdminEmployersPage() {
                         ) : employer.employerProfile?.verified ? (
                           <VerifiedBadge />
                         ) : (
-                          <span className="px-2 py-0.5 rounded-full text-xs bg-yellow-900/30 text-yellow-400 border border-yellow-700/30 inline-flex w-fit">
+                          <span className="px-2 py-0.5 rounded-full text-xs bg-yellow-50 text-yellow-700 border border-yellow-700/30 inline-flex w-fit">
                             Pending
                           </span>
                         )}
                         {employer.premium && (
-                          <span className="text-xs text-purple-400">Paying $12.99/mo</span>
+                          <span className="text-xs text-brand-purple">Paying $12.99/mo</span>
                         )}
                       </div>
                     </td>

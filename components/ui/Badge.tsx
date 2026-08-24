@@ -7,17 +7,17 @@ export function Badge({ status, size = 'md' }: BadgeProps) {
   const configs: Record<string, { label: string; className: string; dot: string }> = {
     open: {
       label: 'Available',
-      className: 'bg-emerald-900/40 text-emerald-400 border border-emerald-700/40',
+      className: 'bg-emerald-50 text-emerald-700 border border-emerald-200',
       dot: 'bg-emerald-400',
     },
     'part-time': {
       label: 'Part-time',
-      className: 'bg-yellow-900/40 text-yellow-400 border border-yellow-700/40',
+      className: 'bg-yellow-50 text-yellow-700 border border-yellow-700/40',
       dot: 'bg-yellow-400',
     },
     unavailable: {
       label: 'Unavailable',
-      className: 'bg-red-900/40 text-red-400 border border-red-700/40',
+      className: 'bg-red-50 text-red-600 border border-red-200',
       dot: 'bg-red-400',
     },
   }
@@ -49,15 +49,15 @@ export function RoleBadge({ role }: RoleBadgeProps) {
   const configs: Record<string, { label: string; className: string }> = {
     seeker: {
       label: 'Seeker',
-      className: 'bg-purple-900/40 text-purple-400 border border-purple-700/40',
+      className: 'bg-brand-purple/[0.06] text-brand-purple border border-brand-purple/30',
     },
     employer: {
       label: 'Employer',
-      className: 'bg-blue-900/40 text-blue-400 border border-blue-700/40',
+      className: 'bg-blue-50 text-blue-700 border border-blue-200',
     },
     admin: {
       label: 'Admin',
-      className: 'bg-orange-900/40 text-orange-400 border border-orange-700/40',
+      className: 'bg-orange-50 text-orange-700 border border-orange-200',
     },
   }
 

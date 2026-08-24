@@ -156,19 +156,19 @@ export default function RegisterPage() {
                     : 'bg-transparent text-brand-muted hover:text-brand-text'
                 }`}
               >
-                {role === 'seeker' ? '👤 I am a Freelancer' : '🏢 I am Hiring'}
+                {role === 'seeker' ? 'I am a Freelancer' : 'I am Hiring'}
               </button>
             ))}
           </div>
 
           {formData.role === 'employer' && (
-            <div className="mb-5 p-3 rounded-lg bg-emerald-900/20 border border-emerald-700/30 text-emerald-400 text-sm">
+            <div className="mb-5 p-3 rounded-lg bg-emerald-50 border border-emerald-700/30 text-emerald-700 text-sm">
               ✓ Employer accounts are 100% free — no subscription needed
             </div>
           )}
 
           {error && (
-            <div className="mb-4 p-3 rounded-lg bg-red-900/30 border border-red-700/40 text-red-400 text-sm">
+            <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm">
               {error}
             </div>
           )}
@@ -270,7 +270,7 @@ export default function RegisterPage() {
           <div className="mt-6 pt-6 border-t border-brand-border text-center">
             <p className="text-sm text-brand-muted">
               Already have an account?{' '}
-              <Link href="/login" className="text-brand-purple hover:text-purple-400 font-medium transition-colors">
+              <Link href="/login" className="text-brand-purple hover:text-brand-pink font-medium transition-colors">
                 Sign in
               </Link>
             </p>

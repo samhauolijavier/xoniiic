@@ -16,10 +16,10 @@ const REASON_LABELS: Record<string, string> = {
 }
 
 const STATUS_STYLES: Record<string, string> = {
-  pending: 'bg-yellow-900/30 text-yellow-400 border-yellow-700/30',
-  reviewed: 'bg-blue-900/30 text-blue-400 border-blue-700/30',
+  pending: 'bg-yellow-50 text-yellow-700 border-yellow-700/30',
+  reviewed: 'bg-blue-50 text-blue-700 border-blue-700/30',
   dismissed: 'bg-brand-border text-brand-muted border-brand-border',
-  actioned: 'bg-emerald-900/30 text-emerald-400 border-emerald-700/30',
+  actioned: 'bg-emerald-50 text-emerald-700 border-emerald-700/30',
 }
 
 export default async function AdminReportsPage() {
@@ -53,8 +53,8 @@ export default async function AdminReportsPage() {
           </p>
         </div>
         {pendingCount > 0 && (
-          <div className="px-3 py-1.5 bg-yellow-900/30 border border-yellow-700/40 rounded-xl">
-            <span className="text-yellow-400 font-semibold">{pendingCount} pending</span>
+          <div className="px-3 py-1.5 bg-yellow-50 border border-yellow-700/40 rounded-xl">
+            <span className="text-yellow-700 font-semibold">{pendingCount} pending</span>
           </div>
         )}
       </div>

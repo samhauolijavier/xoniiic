@@ -58,17 +58,17 @@ export function ContactRequestCard({ contact }: ContactRequestCardProps) {
               {contact.sender.name || contact.senderEmail}
             </span>
             {status === 'pending' && (
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-yellow-500/20 text-yellow-400 font-medium">
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-yellow-500/20 text-yellow-700 font-medium">
                 pending
               </span>
             )}
             {status === 'accepted' && (
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-medium">
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-700 font-medium">
                 accepted
               </span>
             )}
             {status === 'rejected' && (
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-red-500/20 text-red-400 font-medium">
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-red-500/20 text-red-600 font-medium">
                 declined
               </span>
             )}
@@ -90,7 +90,7 @@ export function ContactRequestCard({ contact }: ContactRequestCardProps) {
           <button
             onClick={() => handleAction('reject')}
             disabled={loading !== null}
-            className="text-sm font-medium py-2 px-4 rounded-lg border border-brand-border text-brand-muted hover:border-red-500/50 hover:text-red-400 transition-all disabled:opacity-50"
+            className="text-sm font-medium py-2 px-4 rounded-lg border border-brand-border text-brand-muted hover:border-red-500/50 hover:text-red-600 transition-all disabled:opacity-50"
           >
             {loading === 'reject' ? '...' : 'Decline'}
           </button>

@@ -120,23 +120,23 @@ export default async function AdminPage() {
                   <td className="py-3 text-brand-muted">{u.email}</td>
                   <td className="py-3">
                     <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                      u.role === 'admin' ? 'bg-orange-900/40 text-orange-400' :
-                      u.role === 'employer' ? 'bg-blue-900/40 text-blue-400' :
-                      'bg-purple-900/40 text-purple-400'
+                      u.role === 'admin' ? 'bg-orange-50 text-orange-700' :
+                      u.role === 'employer' ? 'bg-blue-50 text-blue-700' :
+                      'bg-brand-purple/[0.06] text-brand-purple'
                     }`}>
                       {u.role}
                     </span>
                   </td>
                   <td className="py-3">
                     <span className={`px-2 py-0.5 rounded-full text-xs ${
-                      u.active ? 'bg-emerald-900/40 text-emerald-400' : 'bg-red-900/40 text-red-400'
+                      u.active ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-600'
                     }`}>
                       {u.active ? 'Active' : 'Inactive'}
                     </span>
                   </td>
                   <td className="py-3">
                     {u.premium ? (
-                      <span className="px-2 py-0.5 rounded-full text-xs bg-amber-900/40 text-amber-400 font-medium">
+                      <span className="px-2 py-0.5 rounded-full text-xs bg-amber-50 text-amber-700 font-medium">
                         ★ Premium
                       </span>
                     ) : (

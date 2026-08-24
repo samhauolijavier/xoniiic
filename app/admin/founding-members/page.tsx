@@ -186,12 +186,12 @@ export default function FoundingMembersPage() {
 
       {/* Status Messages */}
       {error && (
-        <div className="mb-4 p-3 rounded-xl bg-red-900/30 border border-red-500/30 text-red-400 text-sm">
+        <div className="mb-4 p-3 rounded-xl bg-red-50 border border-red-200 text-red-600 text-sm">
           {error}
         </div>
       )}
       {success && (
-        <div className="mb-4 p-3 rounded-xl bg-emerald-900/30 border border-emerald-500/30 text-emerald-400 text-sm">
+        <div className="mb-4 p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm">
           {success}
         </div>
       )}
@@ -218,16 +218,16 @@ export default function FoundingMembersPage() {
                     <p className="text-xs text-brand-muted">{slot.assigned.email}</p>
                   </div>
                   <span className={`text-xs px-2 py-0.5 rounded-full ${
-                    slot.assigned.role === 'admin' ? 'bg-orange-900/40 text-orange-400' :
-                    slot.assigned.role === 'employer' ? 'bg-blue-900/40 text-blue-400' :
-                    'bg-purple-900/40 text-purple-400'
+                    slot.assigned.role === 'admin' ? 'bg-orange-50 text-orange-700' :
+                    slot.assigned.role === 'employer' ? 'bg-blue-50 text-blue-700' :
+                    'bg-brand-purple/[0.06] text-brand-purple'
                   }`}>
                     {slot.assigned.role}
                   </span>
                   <button
                     onClick={() => handleRevoke(slot.assigned!.id, slot.number)}
                     disabled={actionLoading}
-                    className="text-xs text-red-400 hover:text-red-300 transition-colors disabled:opacity-50"
+                    className="text-xs text-red-600 hover:text-red-700 transition-colors disabled:opacity-50"
                   >
                     Revoke
                   </button>
@@ -307,9 +307,9 @@ export default function FoundingMembersPage() {
                     <td className="py-3 text-brand-muted">{member.email}</td>
                     <td className="py-3">
                       <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                        member.role === 'admin' ? 'bg-orange-900/40 text-orange-400' :
-                        member.role === 'employer' ? 'bg-blue-900/40 text-blue-400' :
-                        'bg-purple-900/40 text-purple-400'
+                        member.role === 'admin' ? 'bg-orange-50 text-orange-700' :
+                        member.role === 'employer' ? 'bg-blue-50 text-blue-700' :
+                        'bg-brand-purple/[0.06] text-brand-purple'
                       }`}>
                         {member.role}
                       </span>
@@ -321,7 +321,7 @@ export default function FoundingMembersPage() {
                       <button
                         onClick={() => handleRevoke(member.userId, member.number)}
                         disabled={actionLoading}
-                        className="text-xs text-red-400 hover:text-red-300 transition-colors disabled:opacity-50"
+                        className="text-xs text-red-600 hover:text-red-700 transition-colors disabled:opacity-50"
                       >
                         Revoke
                       </button>
