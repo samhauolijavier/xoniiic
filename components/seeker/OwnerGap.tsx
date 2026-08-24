@@ -45,20 +45,48 @@ export function OwnerGap({
  * whole page reads as a preview — which is the point: this is the page an
  * employer lands on, and you are looking at exactly what they get.
  */
-export function OwnerViewBanner({ remaining }: { remaining: number }) {
+export function OwnerViewBanner({ remaining, username }: { remaining: number; username: string }) {
   return (
     <div className="rounded-2xl border border-brand-border bg-brand-card p-4 mb-6 flex items-center justify-between gap-4 flex-wrap">
       <div>
-        <p className="font-semibold text-sm">This is your profile, exactly as an employer sees it.</p>
+        {/* It used to say "exactly as an employer sees it" while covered in
+            dashed boxes an employer never sees — a claim the page itself
+            disproved. It says what it is now, and the clean version is a
+            click away. */}
+        <p className="font-semibold text-sm">
+          {remaining === 0
+            ? 'Your profile. Nothing missing.'
+            : 'Your profile, with the gaps marked.'}
+        </p>
         <p className="text-sm text-brand-muted mt-0.5">
           {remaining === 0
-            ? 'Nothing missing. This is the whole page they get.'
+            ? 'This is the whole page an employer gets.'
             : remaining === 1
-              ? 'One dashed box below is a gap they would notice. Only you can see it.'
-              : `${remaining} dashed boxes below are gaps they would notice. Only you can see them.`}
+              ? 'One dashed box below is something an employer would look for. Only you can see it.'
+              : `${remaining} dashed boxes below are things an employer would look for. Only you can see them.`}
         </p>
       </div>
-      <Link href="/profile/edit" className="btn-secondary text-sm">Edit profile</Link>
+      <div className="flex gap-2 flex-wrap">
+        <Link href={`/@${username}?as=employer`} className="btn-secondary text-sm">
+          View as an employer
+        </Link>
+        <Link href="/profile/edit" className="btn-primary text-sm">Edit profile</Link>
+      </div>
+    </div>
+  )
+}
+
+/** The bar shown while previewing the profile the way a visitor gets it. */
+export function EmployerPreviewBanner({ username }: { username: string }) {
+  return (
+    <div className="rounded-2xl border border-brand-purple/40 bg-brand-purple/[0.05] p-4 mb-6 flex items-center justify-between gap-4 flex-wrap">
+      <div>
+        <p className="font-semibold text-sm">This is exactly what an employer sees.</p>
+        <p className="text-sm text-brand-muted mt-0.5">
+          No prompts, no dashed boxes &mdash; just your profile as it stands.
+        </p>
+      </div>
+      <Link href={`/@${username}`} className="btn-secondary text-sm">Back to your view</Link>
     </div>
   )
 }

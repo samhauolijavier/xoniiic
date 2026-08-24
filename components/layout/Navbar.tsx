@@ -466,13 +466,19 @@ export function Navbar() {
                         >
                           Activity
                         </Link>
-                        <Link
-                          href="/hires"
-                          onClick={() => setDropdownOpen(false)}
-                          className="block px-4 py-2 text-sm text-brand-muted hover:text-brand-text hover:bg-brand-border transition-all"
-                        >
-                          Hires
-                        </Link>
+                        {/* Hires belongs to whoever does the hiring. A
+                            freelancer opening it saw three zeroes and a
+                            handshake — a menu item whose only job was to tell
+                            them nothing had happened. */}
+                        {user?.role === 'employer' && (
+                          <Link
+                            href="/hires"
+                            onClick={() => setDropdownOpen(false)}
+                            className="block px-4 py-2 text-sm text-brand-muted hover:text-brand-text hover:bg-brand-border transition-all"
+                          >
+                            Hires
+                          </Link>
+                        )}
                         <Link
                           href="/messages"
                           onClick={() => setDropdownOpen(false)}

@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import { db } from '@/lib/db'
 import Link from 'next/link'
 import { getServerSession } from 'next-auth'
-import { OwnerGap, OwnerViewBanner } from '@/components/seeker/OwnerGap'
+import { OwnerGap, OwnerViewBanner, EmployerPreviewBanner } from '@/components/seeker/OwnerGap'
 import { authOptions } from '@/lib/auth'
 import Image from 'next/image'
 import { Badge } from '@/components/ui/Badge'
@@ -122,7 +122,13 @@ const LEVEL_LABELS: Record<string, string> = {
   native: 'Native',
 }
 
-export default async function TalentProfilePage({ params }: { params: { username: string } }) {
+export default async function TalentProfilePage({
+  params,
+  searchParams,
+}: {
+  params: { username: string }
+  searchParams: { as?: string }
+}) {
   const [profile, session] = await Promise.all([
     getProfile(params.username),
     getServerSession(authOptions),
@@ -176,7 +182,13 @@ export default async function TalentProfilePage({ params }: { params: { username
   const canContact = user && !isOwner
 
   // Only computed for the owner — nobody else is shown any of this.
-  const gaps = isOwner
+  // Previewing the profile the way a visitor gets it. Owner-only prompts are
+  // suppressed entirely, so the claim "this is exactly what an employer sees"
+  // is one the page can actually keep.
+  const previewingAsEmployer = isOwner && searchParams?.as === 'employer'
+  const showGaps = isOwner && !previewingAsEmployer
+
+  const gaps = showGaps
     ? [
         !profile.coverUrl,
         !profile.bio,
@@ -251,9 +263,10 @@ export default async function TalentProfilePage({ params }: { params: { username
           </a>
         </div>
       )}
-      {isOwner && <OwnerViewBanner remaining={gaps} />}
+      {previewingAsEmployer && <EmployerPreviewBanner username={profile.username} />}
+      {showGaps && <OwnerViewBanner remaining={gaps} username={profile.username} />}
 
-      {isOwner && !profile.coverUrl && (
+      {showGaps && !profile.coverUrl && (
         <div className="mb-6">
           <OwnerGap
             title="No banner across the top"
@@ -540,7 +553,7 @@ export default async function TalentProfilePage({ params }: { params: { username
           )}
 
           {/* Video Intro card */}
-          {isOwner && !profile.whatsapp && (
+          {showGaps && !profile.whatsapp && (
             <OwnerGap
               title="No WhatsApp number"
               because="Plenty of clients would rather carry on in WhatsApp than in a platform inbox, and the ones who prefer it will simply move on to somebody who offers it. Only signed-in visitors ever see the number."
@@ -548,7 +561,7 @@ export default async function TalentProfilePage({ params }: { params: { username
               href="/profile/edit"
             />
           )}
-          {isOwner && !profile.videoIntroUrl && (
+          {showGaps && !profile.videoIntroUrl && (
             <OwnerGap
               title="No intro video"
               because="Hiring someone remote means guessing how they communicate. Sixty seconds of you speaking answers that better than a paragraph claiming you are a good communicator."
@@ -612,7 +625,7 @@ export default async function TalentProfilePage({ params }: { params: { username
         {/* Main Content */}
         <div className={`lg:col-span-2 space-y-6 ${!isLoggedIn ? 'relative' : ''}`}>
           {/* Bio */}
-          {isOwner && !profile.bio && (
+          {showGaps && !profile.bio && (
             <OwnerGap
               title="No bio"
               because="This is where somebody decides whether to message you. Without it they have a rate and a list of skills, which every other profile also has."
@@ -628,7 +641,7 @@ export default async function TalentProfilePage({ params }: { params: { username
           )}
 
           {/* Skills by Category */}
-          {isOwner && profile.skills.length < 3 && (
+          {showGaps && profile.skills.length < 3 && (
             <OwnerGap
               title={profile.skills.length === 0 ? 'No skills listed' : 'Only a skill or two listed'}
               because="Skills are how people find you at all — browse and search run on them. Three is the point where you start appearing in searches you would want to be in."
@@ -669,7 +682,7 @@ export default async function TalentProfilePage({ params }: { params: { username
           )}
 
           {/* Portfolio Links */}
-          {isOwner && !profile.portfolioLinks?.length && (
+          {showGaps && !profile.portfolioLinks?.length && (
             <OwnerGap
               title="No work to look at"
               because="Anyone can list a skill. A link to something you actually built is the difference between a claim and evidence — and it is what an employer is scrolling for."
@@ -726,7 +739,7 @@ export default async function TalentProfilePage({ params }: { params: { username
           )}
 
           {/* Certificates */}
-          {isOwner && !profile.certificates?.length && (
+          {showGaps && !profile.certificates?.length && (
             <OwnerGap
               title="No certificates"
               because="Optional, but they settle an argument quickly. A GoHighLevel or Meta certificate tells somebody you were tested on this rather than taught it."

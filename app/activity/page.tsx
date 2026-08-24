@@ -3,6 +3,7 @@
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useState, useEffect, useCallback } from 'react'
+import { AdSlot } from '@/components/ads/AdSlot'
 
 interface ActivityEvent {
   id: string
@@ -103,6 +104,8 @@ export default function ActivityFeedPage() {
         <span className="gradient-text">Activity Feed</span>
       </h1>
       <p className="text-brand-muted mb-8">See what&apos;s happening on the platform</p>
+
+      <AdSlot placement="banner" />
 
       {events.length === 0 ? (
         <div className="card p-12 text-center border-brand-purple/30 bg-brand-purple/[0.04]">
