@@ -122,6 +122,8 @@ model SeekerProfile {
   contactsReceived ContactRequest[] @relation("ReceiverContacts")
   portfolioLinks   PortfolioLink[]
   certificates     Certificate[]
+  experiences      WorkExperience[]
+  education        Education[]
   projectImages    ProjectImage[]
   languages        Language[]
   reviewsReceived  Review[]
@@ -719,4 +721,49 @@ model Testimonial {
 
   @@index([state, createdAt])
   @@index([userId])
+}
+
+// Where somebody has worked.
+//
+// The thing a profile here was missing against a LinkedIn page, and the reason
+// one read as a marketplace listing while the other read as a career. Dates
+// are month-precision because nobody remembers the day they started, and a
+// field demanding one gets guesses.
+model WorkExperience {
+  id          String        @id @default(cuid())
+  profileId   String
+  company     String
+  role        String
+  // "2024-03". Stored as text rather than a date: the day is noise, and a
+  // DateTime forces a precision the person does not have.
+  startMonth  String
+  endMonth    String?
+  current     Boolean       @default(false)
+  location    String?
+  description String?
+  order       Int           @default(0)
+  createdAt   DateTime      @default(now())
+  profile     SeekerProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId, order])
+}
+
+// Where somebody studied.
+//
+// Years only. A degree is a year, not a date, and asking for more invites
+// people to leave it blank rather than work it out.
+model Education {
+  id          String        @id @default(cuid())
+  profileId   String
+  school      String
+  degree      String?
+  field       String?
+  startYear   Int?
+  endYear     Int?
+  description String?
+  order       Int           @default(0)
+  createdAt   DateTime      @default(now())
+  profile     SeekerProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId, order])
 }

@@ -4,6 +4,7 @@ import { db } from '@/lib/db'
 import Link from 'next/link'
 import { getServerSession } from 'next-auth'
 import { OwnerGap, OwnerViewBanner, EmployerPreviewBanner } from '@/components/seeker/OwnerGap'
+import { CareerHistory } from '@/components/seeker/CareerHistory'
 import { authOptions } from '@/lib/auth'
 import Image from 'next/image'
 import { Badge } from '@/components/ui/Badge'
@@ -29,6 +30,8 @@ async function getProfile(username: string) {
       },
       portfolioLinks: { orderBy: { order: 'asc' } },
       certificates: { orderBy: { createdAt: 'asc' } },
+      experiences: { orderBy: [{ current: 'desc' }, { startMonth: 'desc' }] },
+      education: { orderBy: [{ endYear: 'desc' }, { startYear: 'desc' }] },
       projectImages: { orderBy: { order: 'asc' } },
       languages: true,
       reviewsReceived: {
@@ -195,6 +198,7 @@ export default async function TalentProfilePage({
         profile.skills.length < 3,
         !profile.videoIntroUrl,
         !profile.whatsapp,
+        !profile.experiences.length,
         !profile.portfolioLinks?.length,
         !profile.certificates?.length,
       ].filter(Boolean).length
@@ -641,6 +645,17 @@ export default async function TalentProfilePage({
           )}
 
           {/* Skills by Category */}
+          <CareerHistory experiences={profile.experiences} education={profile.education} />
+
+          {showGaps && !profile.experiences.length && (
+            <OwnerGap
+              title="No work history"
+              because="This is the section a hiring manager reads first, and its absence is the loudest thing on a profile without it. Even one role, with what you actually did, changes how the rest of the page is read."
+              cta="Add experience"
+              href="/profile/edit?tab=experience"
+            />
+          )}
+
           {showGaps && profile.skills.length < 3 && (
             <OwnerGap
               title={profile.skills.length === 0 ? 'No skills listed' : 'Only a skill or two listed'}
