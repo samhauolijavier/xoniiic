@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db, withRetry } from '@/lib/db'
 import crypto from 'crypto'
+import { sendPasswordResetEmail, sendGoogleAccountNoticeEmail } from '@/lib/email'
 
 export const dynamic = 'force-dynamic'
 
@@ -15,19 +16,24 @@ export async function POST(req: NextRequest) {
     const normalizedEmail = email.toLowerCase().trim()
     const user = await withRetry(() => db.user.findUnique({ where: { email: normalizedEmail } }))
 
-    if (!user) {
-      // Don't reveal whether email exists — but since email is hibernated,
-      // we need to tell users we can't find the account so they don't wait for nothing
-      return NextResponse.json({ success: true, noEmail: true })
-    }
+    // One answer for every case.
+    //
+    // This used to reply noEmail when an address was unknown and googleOnly
+    // when it signed in with Google — so anybody could learn which addresses
+    // have accounts here and how each one authenticates, just by asking. Both
+    // now look identical to "we have sent you a link".
+    const SAME_ANSWER = NextResponse.json({
+      success: true,
+      message: 'If an account exists for that address, a reset link is on its way.',
+    })
 
-    // Google-only accounts don't have passwords to reset
+    if (!user) return SAME_ANSWER
+
+    // A Google account has no password to reset. They are told what to do
+    // instead — by email, where only the account holder will read it.
     if (!user.password) {
-      return NextResponse.json({
-        success: true,
-        googleOnly: true,
-        message: 'This account uses Google sign-in. Please use the "Continue with Google" button on the login page.'
-      })
+      await sendGoogleAccountNoticeEmail({ email: user.email, name: user.name })
+      return SAME_ANSWER
     }
 
     const token = crypto.randomBytes(32).toString('hex')
@@ -48,11 +54,22 @@ export async function POST(req: NextRequest) {
     const baseUrl = process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL || 'https://virtualfreaks.co'
     const resetUrl = `${baseUrl}/reset-password?token=${token}`
 
-    // TODO: Send email when email service is active
-    // For now, return the reset URL directly since email is hibernated
-    console.log('PASSWORD RESET LINK:', resetUrl)
+    // Sent to the inbox, never returned here.
+    //
+    // This used to respond with { resetUrl }, which meant anybody could post
+    // any email address and be handed a working reset link for that account —
+    // no inbox access required. Account takeover for every user on the
+    // platform, including admins. The link travelling through email is the
+    // only thing proving the person asking owns the address.
+    await sendPasswordResetEmail({
+      email: user.email,
+      name: user.name,
+      resetUrl,
+    })
 
-    return NextResponse.json({ success: true, resetUrl })
+    // The same answer whether or not the address exists, so this cannot be
+    // used to find out who has an account here.
+    return SAME_ANSWER
   } catch (error) {
     console.error('Forgot password error:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })

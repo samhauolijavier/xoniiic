@@ -440,3 +440,89 @@ export async function sendSeatEndingEmail(opts: {
     console.error('[Email] Failed to send seat-ending email:', error)
   }
 }
+
+/**
+ * A password reset link, sent to the address that owns the account.
+ *
+ * This route used to return the link in its own HTTP response, so anybody
+ * could post any email address and be handed a working reset URL for somebody
+ * else's account. The link has to travel through the inbox — that is the only
+ * thing proving the person asking owns the address.
+ */
+export async function sendPasswordResetEmail(opts: {
+  email: string
+  name?: string | null
+  resetUrl: string
+}) {
+  if (!resend) {
+    console.log('[Email] No RESEND_API_KEY set, skipping password reset email')
+    return
+  }
+
+  try {
+    await resend.emails.send({
+      from: 'Virtual Freaks <noreply@virtualfreaks.co>',
+      to: opts.email,
+      subject: 'Reset your Virtual Freaks password',
+      html: `
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 520px; margin: 0 auto; padding: 32px 20px; color: #1a1418;">
+          <h1 style="font-size: 20px; margin: 0 0 20px; color: #a21caf;">Virtual Freaks</h1>
+          <h2 style="font-size: 22px; margin: 0 0 12px;">Reset your password</h2>
+          <p style="color: #4d4549; font-size: 15px; line-height: 1.65;">
+            ${opts.name ? `${opts.name}, s` : 'S'}omebody asked to reset the password on this
+            account. If that was you, use the button below. The link works once and expires in an
+            hour.
+          </p>
+          <p style="margin: 26px 0;">
+            <a href="${opts.resetUrl}"
+               style="background: #a21caf; color: #fff; text-decoration: none; padding: 12px 22px; border-radius: 8px; font-size: 15px; font-weight: 600; display: inline-block;">
+              Set a new password
+            </a>
+          </p>
+          <hr style="border: none; border-top: 1px solid #e6e0e2; margin: 28px 0;" />
+          <p style="color: #837b80; font-size: 13px; line-height: 1.6;">
+            If this was not you, ignore this email &mdash; nothing has changed and your password
+            still works. Nobody can reset it without opening this link.
+          </p>
+        </div>
+      `,
+    })
+  } catch (error) {
+    console.error('[Email] Failed to send password reset:', error)
+  }
+}
+
+/** Somebody asked to reset a password on an account that signs in with Google. */
+export async function sendGoogleAccountNoticeEmail(opts: { email: string; name?: string | null }) {
+  if (!resend) return
+  const site = process.env.NEXT_PUBLIC_APP_URL ?? 'https://virtualfreaks.co'
+  try {
+    await resend.emails.send({
+      from: 'Virtual Freaks <noreply@virtualfreaks.co>',
+      to: opts.email,
+      subject: 'Signing in to Virtual Freaks',
+      html: `
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 520px; margin: 0 auto; padding: 32px 20px; color: #1a1418;">
+          <h1 style="font-size: 20px; margin: 0 0 20px; color: #a21caf;">Virtual Freaks</h1>
+          <h2 style="font-size: 22px; margin: 0 0 12px;">Use Google to sign in</h2>
+          <p style="color: #4d4549; font-size: 15px; line-height: 1.65;">
+            ${opts.name ? `${opts.name}, s` : 'S'}omebody asked to reset the password on this
+            account &mdash; but it has no password. It signs in with Google, so there is nothing to
+            reset: press <strong>Continue with Google</strong> on the sign-in page.
+          </p>
+          <p style="margin: 26px 0;">
+            <a href="${site}/login"
+               style="background: #a21caf; color: #fff; text-decoration: none; padding: 12px 22px; border-radius: 8px; font-size: 15px; font-weight: 600; display: inline-block;">
+              Go to sign in
+            </a>
+          </p>
+          <p style="color: #837b80; font-size: 13px; line-height: 1.6;">
+            If this was not you, nothing has happened and nothing needs doing.
+          </p>
+        </div>
+      `,
+    })
+  } catch (error) {
+    console.error('[Email] Failed to send Google account notice:', error)
+  }
+}

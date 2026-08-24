@@ -8,15 +8,11 @@ export default function ForgotPasswordPage() {
   const [loading, setLoading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState('')
-  const [resetUrl, setResetUrl] = useState('')
-  const [googleOnly, setGoogleOnly] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError('')
-    setResetUrl('')
-    setGoogleOnly(false)
 
     try {
       const res = await fetch('/api/auth/forgot-password', {
@@ -34,16 +30,8 @@ export default function ForgotPasswordPage() {
 
       const data = await res.json()
 
-      if (data.googleOnly) {
-        setGoogleOnly(true)
-        setLoading(false)
-        return
-      }
-
-      if (data.resetUrl) {
-        setResetUrl(data.resetUrl)
-      }
-
+      // Nothing is branched on any more. The server answers identically for
+      // every address, so this page cannot reveal what the server will not.
       setSubmitted(true)
     } catch {
       setError('Something went wrong. Please try again.')
@@ -71,27 +59,7 @@ export default function ForgotPasswordPage() {
         </div>
 
         <div className="card p-8">
-          {googleOnly ? (
-            <div className="text-center space-y-4">
-              <div className="w-16 h-16 rounded-full bg-blue-900/30 border border-blue-700/40 flex items-center justify-center mx-auto">
-                <svg className="w-8 h-8 text-blue-400" viewBox="0 0 24 24">
-                  <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                  <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                </svg>
-              </div>
-              <p className="text-brand-text font-medium">Google Account Detected</p>
-              <p className="text-sm text-brand-muted">
-                The account for <span className="text-brand-text">{email}</span> uses Google sign-in.
-                No password reset is needed.
-              </p>
-              <Link
-                href="/login"
-                className="inline-block btn-primary px-6 py-2.5 text-sm"
-              >
-                Sign in with Google
-              </Link>
-            </div>
-          ) : submitted ? (
+          {submitted ? (
             <div className="text-center space-y-4">
               <div className="w-16 h-16 rounded-full bg-emerald-900/30 border border-emerald-700/40 flex items-center justify-center mx-auto">
                 <svg className="w-8 h-8 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -99,33 +67,17 @@ export default function ForgotPasswordPage() {
                 </svg>
               </div>
 
-              {resetUrl ? (
-                <>
-                  <p className="text-brand-text font-medium">Reset link generated!</p>
-                  <p className="text-sm text-brand-muted">
-                    Click below to reset your password. This link expires in 1 hour.
-                  </p>
-                  <Link
-                    href={resetUrl}
-                    className="inline-block btn-primary px-6 py-2.5 text-sm"
-                  >
-                    Reset My Password
-                  </Link>
-                  <p className="text-xs text-brand-muted mt-2">
-                    Link not working? Copy this URL:
-                  </p>
-                  <div className="bg-brand-border/30 border border-brand-border rounded-lg p-3 text-xs text-brand-muted break-all select-all">
-                    {resetUrl}
-                  </div>
-                </>
-              ) : (
-                <>
-                  <p className="text-brand-text font-medium">Request received</p>
-                  <p className="text-sm text-brand-muted">
-                    If an account exists for <span className="text-brand-text">{email}</span>, a reset link will be available shortly.
-                  </p>
-                </>
-              )}
+              {/* One message, whatever happened. Rendering the link here was
+                  handing a reset URL to whoever typed the address — the whole
+                  hole this closed. */}
+              <p className="text-brand-text font-medium">Check your email</p>
+              <p className="text-sm text-brand-muted">
+                If an account exists for <span className="text-brand-text">{email}</span>, a reset
+                link is on its way. It works once and expires in an hour.
+              </p>
+              <p className="text-xs text-brand-muted">
+                Nothing arrived? Check spam, and make sure that is the address you signed up with.
+              </p>
 
               <Link
                 href="/login"
