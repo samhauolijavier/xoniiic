@@ -13,6 +13,8 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import { useToast } from '@/components/ui/Toast'
+import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
 
 interface Experience {
   id: string
@@ -36,6 +38,9 @@ export function ExperienceEditor() {
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
   const [note, setNote] = useState('')
+  // What is about to be removed, or null when nothing is being asked.
+  const [pendingRemove, setPendingRemove] = useState<{ id: string; label: string } | null>(null)
+  const toast = useToast()
 
   const load = useCallback(async () => {
     try {
@@ -59,9 +64,9 @@ export function ExperienceEditor() {
         body: JSON.stringify(form),
       })
       const data = await res.json()
-      if (!res.ok) { setError(data.error ?? 'Could not save that.'); return }
+      if (!res.ok) { setError(data.error ?? 'Could not save that.'); toast.error(data.error ?? 'Could not save that.'); return }
       setForm(EMPTY)
-      setNote('Added.')
+      toast.success('Added to your profile.')
       await load()
     } catch {
       setError('Could not reach the server.')
@@ -70,14 +75,18 @@ export function ExperienceEditor() {
     }
   }
 
-  async function remove(id: string, role: string) {
-    if (!window.confirm(`Remove "${role}" from your profile?`)) return
+  async function remove(id: string) {
     setBusy(true)
     try {
-      await fetch(`/api/profile/experience?id=${encodeURIComponent(id)}`, { method: 'DELETE' })
+      const res = await fetch(`/api/profile/experience?id=${encodeURIComponent(id)}`, { method: 'DELETE' })
+      if (!res.ok) { toast.error('Could not remove that. Try again in a moment.'); return }
+      toast.success('Removed.')
       await load()
+    } catch {
+      toast.error('Could not reach the server.')
     } finally {
       setBusy(false)
+      setPendingRemove(null)
     }
   }
 
@@ -191,7 +200,7 @@ export function ExperienceEditor() {
                 </div>
                 <button
                   className="text-sm text-red-600 hover:underline flex-none"
-                  onClick={() => remove(x.id, x.role)}
+                  onClick={() => setPendingRemove({ id: x.id, label: x.role })}
                   disabled={busy}
                 >
                   Remove
@@ -201,6 +210,15 @@ export function ExperienceEditor() {
           </div>
         </div>
       )}
+      <ConfirmDialog
+        open={pendingRemove !== null}
+        title="Remove role?"
+        body={pendingRemove ? `"${pendingRemove.label}" comes off your public profile. You can add it again later.` : undefined}
+        confirmLabel="Remove role"
+        destructive
+        onConfirm={() => pendingRemove && remove(pendingRemove.id)}
+        onCancel={() => setPendingRemove(null)}
+      />
     </div>
   )
 }

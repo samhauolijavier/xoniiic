@@ -5,6 +5,7 @@ import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { AnnouncementBanner } from '@/components/layout/AnnouncementBanner'
 import { SessionProvider } from '@/components/providers/SessionProvider'
+import { ToastProvider } from '@/components/ui/Toast'
 import { ActiveTracker } from '@/components/providers/ActiveTracker'
 import { ChatBubble } from '@/components/ui/ChatBubble'
 import { CookieBanner } from '@/components/ui/CookieBanner'
@@ -116,6 +117,7 @@ export default async function RootLayout({
           }}
         />
         <SessionProvider>
+          <ToastProvider>
           <ActiveTracker />
           <div className="flex flex-col min-h-screen">
             <AnnouncementBanner />
@@ -128,6 +130,7 @@ export default async function RootLayout({
           <ChatBubble />
           <CookieBanner />
           <CcpaModal />
+                  </ToastProvider>
         </SessionProvider>
       </body>
     </html>

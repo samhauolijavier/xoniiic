@@ -338,3 +338,105 @@ select.input-field option {
     align-items: center;
   }
 }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   The parts that read as "expensive" without anyone naming them.
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* 1. One spacing scale.
+   Sections were using mb-6, mb-8, py-10, py-14 and py-16 with nothing
+   deciding between them. Nobody spots the inconsistency, everybody feels it —
+   the page reads as assembled rather than composed. */
+:root {
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2rem;
+  --space-5: 3rem;
+  --space-6: 4rem;
+
+  /* 2. Three elevations rather than one.
+     Every card carried the same border and shadow, so nothing on a dense page
+     advanced or receded and scanning it was flat work. */
+  --elev-sunken: inset 0 1px 2px rgba(26, 20, 24, 0.04);
+  --elev-flat: 0 1px 2px rgba(26, 20, 24, 0.04);
+  --elev-raised: 0 1px 2px rgba(26, 20, 24, 0.04), 0 4px 14px rgba(26, 20, 24, 0.05);
+  --elev-floating: 0 4px 8px rgba(26, 20, 24, 0.05), 0 12px 32px rgba(26, 20, 24, 0.09);
+
+  /* 3. One motion curve, one duration.
+     Nothing moved at all before. A considered 160ms is most of what separates
+     an interface that feels built from one that feels generated. */
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --dur: 160ms;
+}
+
+/* Cards sit flat and lift on hover — the smallest possible signal that a thing
+   is interactive, and it costs nothing to read. */
+.card {
+  box-shadow: var(--elev-flat);
+  transition: box-shadow var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.card:hover {
+  box-shadow: var(--elev-raised);
+}
+/* A card that is only a container should not pretend to be a button. */
+.card--static:hover {
+  box-shadow: var(--elev-flat);
+}
+
+/* Sunken surfaces: the pre-filled boxes, code blocks and read-only panels that
+   should sit behind the page rather than on it. */
+.surface-sunken {
+  background: var(--brand-bg);
+  border: 1px solid var(--brand-border);
+  box-shadow: var(--elev-sunken);
+  border-radius: 0.75rem;
+}
+
+/* 4. A middle weight.
+   Type ran bold for headings and regular for body with nothing between, so
+   sub-headings and labels had to borrow one or the other. */
+.text-medium {
+  font-weight: 540;
+  letter-spacing: -0.005em;
+}
+
+/* 5. Motion, applied narrowly.
+   Buttons and links only — enough to feel responsive, not enough to notice. */
+.btn-primary,
+.btn-secondary,
+a,
+button {
+  transition: background-color var(--dur) var(--ease),
+              border-color var(--dur) var(--ease),
+              color var(--dur) var(--ease),
+              opacity var(--dur) var(--ease),
+              box-shadow var(--dur) var(--ease);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0 }
+  to { opacity: 1 }
+}
+
+/* Focus you can actually see.
+   Keyboard users had the browser default, which on some elements is nothing at
+   all. Two pixels of brand colour, offset so it never sits on top of the thing
+   it is marking. */
+:focus-visible {
+  outline: 2px solid var(--brand-purple);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Anybody who has asked their system to reduce motion gets none of it. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

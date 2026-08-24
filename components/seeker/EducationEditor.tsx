@@ -9,6 +9,8 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import { useToast } from '@/components/ui/Toast'
+import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
 
 interface Education {
   id: string
@@ -28,6 +30,9 @@ export function EducationEditor() {
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
   const [note, setNote] = useState('')
+  // What is about to be removed, or null when nothing is being asked.
+  const [pendingRemove, setPendingRemove] = useState<{ id: string; label: string } | null>(null)
+  const toast = useToast()
 
   const load = useCallback(async () => {
     try {
@@ -55,9 +60,9 @@ export function EducationEditor() {
         }),
       })
       const data = await res.json()
-      if (!res.ok) { setError(data.error ?? 'Could not save that.'); return }
+      if (!res.ok) { setError(data.error ?? 'Could not save that.'); toast.error(data.error ?? 'Could not save that.'); return }
       setForm(EMPTY)
-      setNote('Added.')
+      toast.success('Added to your profile.')
       await load()
     } catch {
       setError('Could not reach the server.')
@@ -66,14 +71,18 @@ export function EducationEditor() {
     }
   }
 
-  async function remove(id: string, school: string) {
-    if (!window.confirm(`Remove "${school}" from your profile?`)) return
+  async function remove(id: string) {
     setBusy(true)
     try {
-      await fetch(`/api/profile/education?id=${encodeURIComponent(id)}`, { method: 'DELETE' })
+      const res = await fetch(`/api/profile/education?id=${encodeURIComponent(id)}`, { method: 'DELETE' })
+      if (!res.ok) { toast.error('Could not remove that. Try again in a moment.'); return }
+      toast.success('Removed.')
       await load()
+    } catch {
+      toast.error('Could not reach the server.')
     } finally {
       setBusy(false)
+      setPendingRemove(null)
     }
   }
 
@@ -182,7 +191,7 @@ export function EducationEditor() {
                 </div>
                 <button
                   className="text-sm text-red-600 hover:underline flex-none"
-                  onClick={() => remove(x.id, x.school)}
+                  onClick={() => setPendingRemove({ id: x.id, label: x.school })}
                   disabled={busy}
                 >
                   Remove
@@ -192,6 +201,15 @@ export function EducationEditor() {
           </div>
         </div>
       )}
+      <ConfirmDialog
+        open={pendingRemove !== null}
+        title="Remove school?"
+        body={pendingRemove ? `"${pendingRemove.label}" comes off your public profile. You can add it again later.` : undefined}
+        confirmLabel="Remove school"
+        destructive
+        onConfirm={() => pendingRemove && remove(pendingRemove.id)}
+        onCancel={() => setPendingRemove(null)}
+      />
     </div>
   )
 }

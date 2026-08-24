@@ -53,6 +53,16 @@ export function Navbar() {
   // is a door they have already walked through — it tells them nothing and
   // offers no way back. So the door always points at the side they are not on.
   const onBusinessSide = pathname?.startsWith('/hire') || pathname?.startsWith('/post-a-need')
+
+  /** Marks the page you are on. Exact for the homepage, prefix for the rest. */
+  const isHere = (href: string) =>
+    href === '/' ? pathname === '/' : Boolean(pathname?.startsWith(href))
+  const navLink = (href: string) =>
+    `hidden md:block text-sm px-3 py-1.5 rounded-lg transition-colors ${
+      isHere(href)
+        ? 'text-brand-text font-medium bg-brand-purple/[0.06]'
+        : 'text-brand-muted hover:text-brand-text'
+    }`
   const door = onBusinessSide
     ? { href: '/', label: 'For freelancers' }
     : { href: '/hire', label: 'For businesses' }
@@ -565,10 +575,10 @@ export function Navbar() {
                 >
                   {door.label}
                 </Link>
-                <Link href="/jobs" className="hidden md:block text-sm text-brand-muted hover:text-brand-text transition-colors px-3 py-1.5">
+                <Link href="/jobs" className={navLink('/jobs')}>
                   Jobs
                 </Link>
-                <Link href="/leaderboard" className="hidden md:block text-sm text-brand-muted hover:text-brand-text transition-colors px-3 py-1.5">
+                <Link href="/leaderboard" className={navLink('/leaderboard')}>
                   Leaderboard
                 </Link>
                 <Link href="/login" className="text-sm text-brand-muted hover:text-brand-text transition-colors px-3 py-1.5">
