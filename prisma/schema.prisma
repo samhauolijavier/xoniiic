@@ -707,6 +707,10 @@ model Testimonial {
   // duration is harder to fake and means more to somebody deciding to hire.
   placedSince  DateTime?
   consentPublic Boolean         @default(true)
+  // A phone selfie saying the same words carries more than the words do. Held
+  // as a public Supabase URL: the file is uploaded straight from the browser,
+  // because a serverless request body cannot carry a minute of video.
+  videoUrl     String?
   state        TestimonialState @default(pending)
   featured     Boolean          @default(false)
   reviewNote   String?

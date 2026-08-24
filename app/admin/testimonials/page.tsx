@@ -17,6 +17,7 @@ interface Testimonial {
   body: string
   roleTitle: string | null
   company: string | null
+  videoUrl: string | null
   state: 'pending' | 'approved' | 'rejected'
   featured: boolean
   reviewNote: string | null
@@ -163,6 +164,16 @@ export default function AdminTestimonialsPage() {
               </span>
             </div>
             <p className="text-sm leading-relaxed whitespace-pre-wrap mb-4">{t.body}</p>
+            {t.videoUrl && (
+              <div className="mb-4">
+                {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+                <video src={t.videoUrl} controls playsInline preload="metadata"
+                  className="w-full max-w-sm rounded-lg bg-black" />
+                <p className="text-xs text-brand-muted mt-1.5">
+                  Watch it before approving — this goes on the homepage.
+                </p>
+              </div>
+            )}
             <div className="flex gap-2 flex-wrap">
               <button className="btn-primary text-sm" disabled={busyId === t.id}
                 onClick={() => act({ action: 'approve', id: t.id }, t.id)}>

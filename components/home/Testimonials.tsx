@@ -17,6 +17,7 @@ export async function Testimonials({ limit = 3 }: { limit?: number }) {
     body: string
     roleTitle: string | null
     company: string | null
+    videoUrl: string | null
     user: { name: string | null; seekerProfile: { username: string; avatarUrl: string | null } | null }
   }[] = []
 
@@ -26,7 +27,7 @@ export async function Testimonials({ limit = 3 }: { limit?: number }) {
       orderBy: [{ featured: 'desc' }, { reviewedAt: 'desc' }],
       take: limit,
       select: {
-        id: true, body: true, roleTitle: true, company: true,
+        id: true, body: true, roleTitle: true, company: true, videoUrl: true,
         user: {
           select: {
             name: true,
@@ -53,6 +54,19 @@ export async function Testimonials({ limit = 3 }: { limit?: number }) {
       <div className="grid md:grid-cols-3 gap-5">
         {items.map(t => (
           <blockquote key={t.id} className="card p-6 flex flex-col">
+            {t.videoUrl && (
+              /* Never autoplays. A page that starts talking at you is a page
+                 people close. preload="metadata" fetches a few kilobytes for
+                 the poster frame rather than the whole file. */
+              /* eslint-disable-next-line jsx-a11y/media-has-caption */
+              <video
+                src={t.videoUrl}
+                controls
+                playsInline
+                preload="metadata"
+                className="w-full rounded-lg bg-black mb-4 aspect-video object-cover"
+              />
+            )}
             <p className="text-sm leading-relaxed text-brand-text flex-1 whitespace-pre-wrap">
               {t.body}
             </p>

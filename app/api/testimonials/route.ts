@@ -30,6 +30,33 @@ export async function GET() {
   }
 }
 
+/**
+ * Accepts a video URL only if it points at our own storage.
+ *
+ * The field is written by the client, and a testimonial is rendered in a video
+ * element on the homepage — so an unchecked value here is a way to have us host
+ * somebody else's content under our name. It has to look like the public URL
+ * Supabase just handed out for this bucket, or it does not count.
+ */
+function acceptOwnVideoUrl(raw: unknown): string | null {
+  const value = String(raw ?? '').trim()
+  if (!value) return null
+
+  const base = process.env.NEXT_PUBLIC_SUPABASE_URL
+  if (!base) return null
+
+  try {
+    const url = new URL(value)
+    const expected = new URL(base)
+    if (url.protocol !== 'https:') return null
+    if (url.host !== expected.host) return null
+    if (!url.pathname.includes('/testimonials/')) return null
+    return value
+  } catch {
+    return null
+  }
+}
+
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions)
   if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -40,6 +67,10 @@ export async function POST(req: NextRequest) {
   const roleTitle = String(raw.roleTitle ?? '').trim() || null
   const company = String(raw.company ?? '').trim() || null
   const consentPublic = raw.consentPublic !== false
+  // Only ever a URL in our own Supabase bucket. The client sends back what the
+  // signed-upload route told it to use, and anything else is discarded —
+  // otherwise this field is an open invitation to embed a video from anywhere.
+  const videoUrl = acceptOwnVideoUrl(raw.videoUrl)
 
   if (body.length < MIN_BODY) {
     return NextResponse.json({
@@ -73,10 +104,10 @@ export async function POST(req: NextRequest) {
     const saved = existing
       ? await withRetry(() => db.testimonial.update({
           where: { id: existing.id },
-          data: { body, roleTitle, company, consentPublic, state: 'pending', reviewNote: null },
+          data: { body, roleTitle, company, consentPublic, videoUrl, state: 'pending', reviewNote: null },
         }))
       : await withRetry(() => db.testimonial.create({
-          data: { userId: me.id, body, roleTitle, company, consentPublic },
+          data: { userId: me.id, body, roleTitle, company, consentPublic, videoUrl },
         }))
 
     const person = await withRetry(() => db.user.findUnique({
@@ -92,6 +123,7 @@ export async function POST(req: NextRequest) {
         { name: 'Who', value: person?.name || 'No name yet', inline: true },
         { name: 'Role', value: roleTitle || '—', inline: true },
         { name: 'Company', value: company || '—', inline: true },
+        { name: 'Video', value: videoUrl ? 'Yes — watch before approving' : 'Text only', inline: true },
       ],
     })
 

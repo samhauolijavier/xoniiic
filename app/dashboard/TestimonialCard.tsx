@@ -10,6 +10,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useToast } from '@/components/ui/Toast'
 import {
   PROMPT_GROUPS,
   PROMPTS_TO_ANSWER,
@@ -23,9 +24,13 @@ interface Testimonial {
   body: string
   roleTitle: string | null
   company: string | null
+  videoUrl: string | null
   state: 'pending' | 'approved' | 'rejected'
   reviewNote: string | null
 }
+
+const VIDEO_TYPES = ['video/mp4', 'video/quicktime', 'video/webm']
+const VIDEO_MAX_MB = 100
 
 const MIN_BODY = 80
 
@@ -41,6 +46,13 @@ export function TestimonialCard({ alwaysOpen = false }: { alwaysOpen?: boolean }
   const [roleTitle, setRoleTitle] = useState('')
   const [company, setCompany] = useState('')
   const [consent, setConsent] = useState(true)
+  const [videoUrl, setVideoUrl] = useState<string | null>(null)
+  // Null when nothing is uploading; 0-100 while it is. Philippine mobile data
+  // makes a 100MB upload a genuinely long wait, and a form that looks frozen
+  // for four minutes gets abandoned or submitted twice.
+  const [videoPct, setVideoPct] = useState<number | null>(null)
+  const [videoError, setVideoError] = useState('')
+  const toast = useToast()
   // The email carrying these questions is long gone by the time somebody sits
   // down to write. Closed by default so the card stays a card.
   const [showPrompts, setShowPrompts] = useState(false)
@@ -51,6 +63,7 @@ export function TestimonialCard({ alwaysOpen = false }: { alwaysOpen?: boolean }
       .then(d => {
         if (d.testimonial) {
           setExisting(d.testimonial)
+          setVideoUrl(d.testimonial.videoUrl ?? null)
           if (d.testimonial.state === 'rejected') {
             setBody(d.testimonial.body)
             setRoleTitle(d.testimonial.roleTitle ?? '')
@@ -69,7 +82,7 @@ export function TestimonialCard({ alwaysOpen = false }: { alwaysOpen?: boolean }
       const res = await fetch('/api/testimonials', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ body, roleTitle, company, consentPublic: consent }),
+        body: JSON.stringify({ body, roleTitle, company, consentPublic: consent, videoUrl }),
       })
       const data = await res.json()
       if (!res.ok) { setError(data.error ?? 'That did not send.'); return }
@@ -80,6 +93,58 @@ export function TestimonialCard({ alwaysOpen = false }: { alwaysOpen?: boolean }
       setError('Could not reach the server.')
     } finally {
       setBusy(false)
+    }
+  }
+
+  async function pickVideo(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    e.target.value = '' // so choosing the same file twice still fires
+    if (!file) return
+
+    setVideoError('')
+
+    if (!VIDEO_TYPES.includes(file.type)) {
+      setVideoError('That is not a video we can play. Most phones record MP4 or MOV, and both work.')
+      return
+    }
+    if (file.size > VIDEO_MAX_MB * 1024 * 1024) {
+      setVideoError(
+        `That file is ${(file.size / 1024 / 1024).toFixed(0)}MB. Keep it under ${VIDEO_MAX_MB}MB — record a shorter one rather than compressing it.`
+      )
+      return
+    }
+
+    setVideoPct(0)
+    try {
+      // We ask for permission to write to one path, then send the file
+      // straight to storage. It never passes through our server, which is the
+      // only way a file this size gets uploaded at all.
+      const res = await fetch('/api/testimonials/video', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contentType: file.type, size: file.size }),
+      })
+      const data = await res.json()
+      if (!res.ok) { setVideoError(data.error ?? 'Could not start the upload.'); setVideoPct(null); return }
+
+      await new Promise<void>((resolve, reject) => {
+        const xhr = new XMLHttpRequest()
+        xhr.open('PUT', data.uploadUrl)
+        xhr.setRequestHeader('Content-Type', file.type)
+        xhr.upload.onprogress = ev => {
+          if (ev.lengthComputable) setVideoPct(Math.round((ev.loaded / ev.total) * 100))
+        }
+        xhr.onload = () => (xhr.status >= 200 && xhr.status < 300 ? resolve() : reject(new Error(`HTTP ${xhr.status}`)))
+        xhr.onerror = () => reject(new Error('network'))
+        xhr.send(file)
+      })
+
+      setVideoUrl(data.publicUrl)
+      toast.success('Video uploaded.')
+    } catch {
+      setVideoError('The upload did not finish. A stronger connection usually fixes it.')
+    } finally {
+      setVideoPct(null)
     }
   }
 
@@ -216,6 +281,54 @@ export function TestimonialCard({ alwaysOpen = false }: { alwaysOpen?: boolean }
             </label>
           </div>
 
+          <div className="rounded-lg border border-brand-border p-3.5">
+            <p className="text-sm font-medium text-brand-text">
+              Add a video <span className="text-brand-muted font-normal">— optional, and worth it</span>
+            </p>
+            <p className="text-xs text-brand-muted leading-relaxed mt-1 mb-3">
+              Sixty seconds on your phone, saying the same thing in your own voice. A face and a
+              real accent do more than any paragraph — and it does not need to be polished.
+            </p>
+
+            {videoUrl ? (
+              <div className="grid gap-2">
+                {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+                <video src={videoUrl} controls playsInline className="w-full max-w-sm rounded-lg bg-black" />
+                <button
+                  type="button"
+                  onClick={() => setVideoUrl(null)}
+                  className="text-sm text-red-600 hover:underline justify-self-start"
+                >
+                  Remove video
+                </button>
+              </div>
+            ) : videoPct !== null ? (
+              <div>
+                <div className="h-1.5 rounded-full bg-brand-border overflow-hidden">
+                  <div
+                    className="h-full bg-brand-purple transition-[width] duration-200"
+                    style={{ width: `${videoPct}%` }}
+                  />
+                </div>
+                <p className="text-xs text-brand-muted mt-1.5 tabular-nums">
+                  Uploading… {videoPct}%. Keep this page open.
+                </p>
+              </div>
+            ) : (
+              <label className="btn-secondary text-sm inline-block cursor-pointer">
+                Choose a video
+                <input
+                  type="file"
+                  accept="video/mp4,video/quicktime,video/webm"
+                  className="sr-only"
+                  onChange={pickVideo}
+                />
+              </label>
+            )}
+
+            {videoError && <p className="text-sm text-red-600 mt-2 leading-relaxed">{videoError}</p>}
+          </div>
+
           <label className="flex items-start gap-2.5 text-sm text-brand-muted leading-relaxed">
             <input type="checkbox" className="mt-1" checked={consent}
               onChange={e => setConsent(e.target.checked)} />
@@ -228,8 +341,12 @@ export function TestimonialCard({ alwaysOpen = false }: { alwaysOpen?: boolean }
           {error && <p className="text-sm text-red-600">{error}</p>}
 
           <div className="flex gap-2">
-            <button className="btn-primary" type="submit" disabled={busy || body.trim().length < MIN_BODY}>
-              {busy ? 'Sending…' : 'Send it'}
+            <button
+              className="btn-primary"
+              type="submit"
+              disabled={busy || videoPct !== null || body.trim().length < MIN_BODY}
+            >
+              {busy ? 'Sending…' : videoPct !== null ? 'Waiting for the video…' : 'Send it'}
             </button>
             {!alwaysOpen && (
               <button className="btn-secondary" type="button" onClick={() => setOpen(false)}>Cancel</button>
