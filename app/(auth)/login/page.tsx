@@ -128,6 +128,21 @@ export default function LoginPage() {
             </button>
           </form>
 
+          {/* Quiet on purpose. Somebody returning to a site they already use
+              does not need a legal notice competing with the sign-in button —
+              but the links have to be there and reachable, because a policy
+              nobody can find is a policy nobody agreed to. */}
+          <p className="text-[11px] text-brand-muted/80 text-center mt-4 leading-relaxed">
+            By signing in you agree to our{' '}
+            <Link href="/terms" className="underline underline-offset-2 hover:text-brand-muted">
+              Terms of Service
+            </Link>
+            {' '}and{' '}
+            <Link href="/privacy" className="underline underline-offset-2 hover:text-brand-muted">
+              Privacy Policy
+            </Link>.
+          </p>
+
           <div className="mt-6 pt-6 border-t border-brand-border text-center">
             <p className="text-sm text-brand-muted">
               Don&apos;t have an account?{' '}
