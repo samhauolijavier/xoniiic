@@ -35,6 +35,26 @@ export default function AdminTestimonialsPage() {
   const [busyId, setBusyId] = useState<string | null>(null)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
+  const [askEmail, setAskEmail] = useState('')
+
+  async function requestFrom() {
+    setBusyId('ask'); setError(''); setSuccess('')
+    try {
+      const res = await fetch('/api/admin/testimonials', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'request', email: askEmail.trim() }),
+      })
+      const data = await res.json()
+      if (!res.ok) { setError(data.error ?? 'Could not ask them.'); return }
+      setSuccess(data.message)
+      setAskEmail('')
+    } catch {
+      setError('Could not reach the server.')
+    } finally {
+      setBusyId(null)
+    }
+  }
 
   useEffect(() => {
     if (status === 'unauthenticated') router.push('/login')
@@ -97,6 +117,36 @@ export default function AdminTestimonialsPage() {
 
       {error && <p className="mb-4 px-4 py-3 rounded-xl text-sm bg-red-500/10 border border-red-500/30 text-red-700">{error}</p>}
       {success && <p className="mb-4 px-4 py-3 rounded-xl text-sm bg-brand-purple/[0.06] border border-brand-purple/30 text-brand-purple">{success}</p>}
+
+      {/* The prompt no longer shows to every freelancer, so there has to be a
+          way to ask the people Spencer placed himself. */}
+      <section className="mb-10">
+        <h2 className="text-sm font-semibold uppercase tracking-wider text-brand-muted mb-3">
+          Ask someone
+        </h2>
+        <div className="card p-5">
+          <p className="text-brand-muted text-sm leading-relaxed mb-3">
+            The &ldquo;Share your story&rdquo; card only appears for people hired through the
+            platform, or who already carry the badge. If you placed somebody yourself, paste their
+            email here and it appears on their dashboard.
+          </p>
+          <form
+            className="flex gap-2 flex-wrap"
+            onSubmit={e => { e.preventDefault(); requestFrom() }}
+          >
+            <input
+              value={askEmail}
+              onChange={e => setAskEmail(e.target.value)}
+              placeholder="their@email.com"
+              type="email"
+              className="input-field flex-1 min-w-[220px]"
+            />
+            <button className="btn-primary text-sm" type="submit" disabled={busyId === 'ask' || !askEmail.trim()}>
+              {busyId === 'ask' ? '…' : 'Ask them'}
+            </button>
+          </form>
+        </div>
+      </section>
 
       <section className="mb-10">
         <h2 className="text-sm font-semibold uppercase tracking-wider text-brand-muted mb-3">

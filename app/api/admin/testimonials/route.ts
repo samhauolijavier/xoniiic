@@ -48,7 +48,14 @@ export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => ({}))
   const action = String(body.action ?? '')
   const id = String(body.id ?? '')
-  if (!id) return NextResponse.json({ error: 'id is required' }, { status: 400 })
+
+  // Checked per action rather than up front. "request" identifies somebody by
+  // email and carries no testimonial id, and the blanket guard was rejecting
+  // it before it ran.
+  const needsId = ['approve', 'reject', 'feature', 'unfeature', 'unpublish']
+  if (needsId.includes(action) && !id) {
+    return NextResponse.json({ error: 'id is required' }, { status: 400 })
+  }
 
   try {
     if (action === 'approve') {
@@ -123,6 +130,37 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: 'That one has already been handled.' }, { status: 409 })
       }
       return NextResponse.json({ message: 'Sent back with your note.' })
+    }
+
+    if (action === 'request') {
+      // Opens the prompt on somebody's dashboard.
+      //
+      // The third route in, alongside having been hired here and already
+      // holding the badge. It exists because Spencer knows who he has placed
+      // outside the platform, and the database does not.
+      // By email, because that is what Spencer has to hand — he knows who he
+      // placed, not their internal id.
+      const email = String(body.email ?? '').trim().toLowerCase()
+      if (!email) return NextResponse.json({ error: 'Enter their email address.' }, { status: 400 })
+
+      const person = await withRetry(() => db.user.findUnique({
+        where: { email },
+        select: { id: true, name: true, email: true },
+      }))
+      if (!person) {
+        return NextResponse.json({
+          error: 'Nobody here has that email address. They need an account first.',
+        }, { status: 404 })
+      }
+
+      await withRetry(() => db.user.update({
+        where: { id: person.id },
+        data: { testimonialRequestedAt: new Date() },
+      }))
+
+      return NextResponse.json({
+        message: `Asked ${person.name ?? person.email}. The prompt is on their dashboard now.`,
+      })
     }
 
     if (action === 'feature' || action === 'unfeature') {

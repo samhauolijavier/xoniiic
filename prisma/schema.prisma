@@ -36,6 +36,13 @@ model User {
   // once per real change, and there is a record of who agreed to what.
   termsVersion             String?
   termsAcceptedAt          DateTime?
+  // When Spencer asked this person for a testimonial.
+  //
+  // The prompt used to show to every freelancer, including people who have
+  // never been hired through the platform — asking them for a story about a
+  // placement that never happened. It now appears only for somebody who has
+  // actually been placed, or who has been asked directly.
+  testimonialRequestedAt   DateTime?
   premium                  Boolean                   @default(false)
   premiumSince             DateTime?
   premiumUntil             DateTime?

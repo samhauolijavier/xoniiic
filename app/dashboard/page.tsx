@@ -32,8 +32,20 @@ export default async function DashboardPage() {
 
   const dbUser = await db.user.findUnique({
     where: { id: user.id },
-    select: { premium: true, premiumUntil: true, foundingMemberNumber: true, emailVerified: true, email: true, termsVersion: true },
+    select: { premium: true, premiumUntil: true, foundingMemberNumber: true, emailVerified: true, email: true, termsVersion: true, placedBadgeAt: true, testimonialRequestedAt: true },
   })
+
+  // Who may be asked for a testimonial.
+  //
+  // Somebody actually hired through the platform has a story to tell. Somebody
+  // who already carries the badge has told it. Anybody else has to be asked
+  // directly — the prompt used to appear for every freelancer, which meant
+  // asking people who had never been placed to describe a placement.
+  const hiredHere = await db.hire.count({ where: { seekerId: user.id } })
+  const canBeAskedForTestimonial =
+    hiredHere > 0 ||
+    Boolean(dbUser?.placedBadgeAt) ||
+    Boolean(dbUser?.testimonialRequestedAt)
 
   const profile = await db.seekerProfile.findUnique({
     where: { userId: user.id },
@@ -71,20 +83,11 @@ export default async function DashboardPage() {
       {/* Only when the version has actually moved. */}
       {needsAcceptance(dbUser?.termsVersion) && <AcceptTerms />}
 
-      <TestimonialCard />
-
-      {profile && (
-        <ShareProfileCard
-          username={profile.username}
-          name={user.name ?? null}
-          headline={profile.title ?? null}
-        />
-      )}
-
-      <CoverUpload initialUrl={profile?.coverUrl ?? null} />
-
-      {/* Renders nothing unless something is booked. */}
-      <AdSlot placement="banner" />
+      {/* Only for somebody who has actually been hired through the platform,
+          already carries the badge, or has been asked directly. Showing it to
+          everybody was asking people who had never been placed for a story
+          about being placed. */}
+      {canBeAskedForTestimonial && <TestimonialCard />}
 
       {/* Header */}
       <div className="flex items-start justify-between mb-8 flex-wrap gap-4">
@@ -229,6 +232,28 @@ export default async function DashboardPage() {
           </div>
         ))}
       </div>
+
+      {/* Growing your profile — below what you came here to see, not in front
+          of it. Three cards asking for something before the page has told you
+          anything is a dashboard that serves us rather than the person. */}
+      <div className="mt-8 mb-2">
+        <h2 className="text-sm font-semibold uppercase tracking-wider text-brand-muted mb-3">
+          Get more out of your profile
+        </h2>
+      </div>
+
+      {profile && (
+        <ShareProfileCard
+          username={profile.username}
+          name={user.name ?? null}
+          headline={profile.title ?? null}
+        />
+      )}
+
+      <CoverUpload initialUrl={profile?.coverUrl ?? null} />
+
+      {/* Renders nothing unless something is booked. */}
+      <AdSlot placement="banner" />
 
       {/* Who Viewed Your Profile */}
       <WhoViewedSection isPremium={isPremium} hideMonetization={!monetizationOn} />
