@@ -75,6 +75,20 @@ const nextConfig = {
   async redirects() {
     return [
       { source: '/home', destination: '/', permanent: true },
+
+      // Two pages advertising products that do not exist.
+      //
+      // /verified-partner said "coming soon! Stay tuned" and /premium sold a
+      // subscription nobody can buy. A business owner evaluating the platform
+      // finds one of them and learns the place is unfinished — which is a
+      // worse outcome than the page simply not being there.
+      //
+      // Temporary, not permanent: these come back the day either product is
+      // real. Delete the two lines below to restore them.
+      { source: '/verified-partner', destination: '/hire', permanent: false },
+      { source: '/verified-partner/success', destination: '/hire', permanent: false },
+      { source: '/premium', destination: '/dashboard', permanent: false },
+      { source: '/premium/success', destination: '/dashboard', permanent: false },
       // Profiles moved to /@username. Kept permanently so anything already
       // shared or indexed still arrives. Listed before the bare /talent rule
       // because the first match wins and this one is the specific case.

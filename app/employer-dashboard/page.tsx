@@ -118,7 +118,7 @@ export default async function EmployerDashboardPage() {
               <FoundingMemberBadge number={dbUser.foundingMemberNumber} size="md" />
             )}
           </div>
-          <p className="text-brand-muted mt-1">Your hiring command center</p>
+          <p className="text-brand-muted mt-1">Everything waiting on you, and everyone you have shortlisted.</p>
         </div>
         <div className="flex gap-3 flex-wrap">
           {!isPartner && monetizationOn && (
@@ -126,7 +126,7 @@ export default async function EmployerDashboardPage() {
               href="/verified-partner"
               className="px-4 py-2 rounded-xl text-sm font-bold bg-brand-purple text-white hover:opacity-90 transition-all"
             >
-              🛡️ Become a Verified Partner
+              Become a Verified Partner
             </Link>
           )}
           <Link href="/employer-profile" className="btn-secondary text-sm">
@@ -137,7 +137,7 @@ export default async function EmployerDashboardPage() {
 
       {/* Profile completion nudge */}
       {!profileComplete && (
-        <div className="card p-5 border-amber-500/30 bg-amber-500/5 mb-8">
+        <div className="card p-5 border-brand-purple/30 bg-brand-purple/[0.04] mb-8">
           <div className="flex items-center justify-between flex-wrap gap-3">
             <div>
               <p className="text-sm font-medium text-brand-text">Complete your company profile</p>
@@ -240,11 +240,14 @@ export default async function EmployerDashboardPage() {
             </Link>
           </div>
           {activeNeeds.length === 0 ? (
-            <div className="text-center py-8">
-              <div className="text-4xl mb-3">📋</div>
-              <p className="text-brand-muted text-sm">No active job posts</p>
-              <Link href="/post-a-need" className="btn-primary text-sm mt-3 inline-flex">
-                Post Your First Need
+            <div className="py-6">
+              <p className="font-medium text-sm mb-1">No job posts yet</p>
+              <p className="text-brand-muted text-sm leading-relaxed mb-4 max-w-md">
+                Posting what you need lets people come to you instead of you searching. It takes a
+                minute, costs nothing, and there is no commission on whatever you agree.
+              </p>
+              <Link href="/post-a-need" className="btn-primary text-sm inline-flex">
+                Post what you need
               </Link>
             </div>
           ) : (
@@ -279,11 +282,15 @@ export default async function EmployerDashboardPage() {
             </Link>
           </div>
           {recentContacts.length === 0 ? (
-            <div className="text-center py-8">
-              <div className="text-4xl mb-3">💬</div>
-              <p className="text-brand-muted text-sm">No contacts sent yet</p>
-              <Link href="/browse" className="btn-primary text-sm mt-3 inline-flex">
-                Browse Talent
+            <div className="py-6">
+              <p className="font-medium text-sm mb-1">You have not messaged anyone yet</p>
+              <p className="text-brand-muted text-sm leading-relaxed mb-4 max-w-md">
+                You can message anyone here directly — no introduction fee, no account manager, and
+                nothing taken out of what you agree with them. Starting small with somebody new is
+                the usual way in.
+              </p>
+              <Link href="/browse" className="btn-primary text-sm inline-flex">
+                Browse talent
               </Link>
             </div>
           ) : (

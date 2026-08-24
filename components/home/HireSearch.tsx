@@ -40,7 +40,7 @@ export function HireSearch() {
           onChange={e => setQ(e.target.value)}
           placeholder="What do you need done?"
           aria-label="What do you need done?"
-          className="flex-1 min-w-[220px]"
+          className="input-field flex-1 min-w-[220px]"
         />
         <button className="btn-primary" type="submit">Find someone</button>
       </form>

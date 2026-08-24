@@ -466,10 +466,28 @@ export function Navbar() {
                         >
                           Activity
                         </Link>
-                        {/* Hires belongs to whoever does the hiring. A
-                            freelancer opening it saw three zeroes and a
-                            handshake — a menu item whose only job was to tell
-                            them nothing had happened. */}
+                        {/* Saved was reachable only by typing the URL.
+                            Shortlisting somebody and then having no way back to
+                            them makes the feature worse than not having it —
+                            people use it once, lose the list, and stop. */}
+                        {user?.role === 'employer' && (
+                          <Link
+                            href="/saved"
+                            onClick={() => setDropdownOpen(false)}
+                            className="block px-4 py-2 text-sm text-brand-muted hover:text-brand-text hover:bg-brand-border transition-all"
+                          >
+                            Saved talent
+                          </Link>
+                        )}
+                        {user?.role === 'employer' && (
+                          <Link
+                            href="/saved-searches"
+                            onClick={() => setDropdownOpen(false)}
+                            className="block px-4 py-2 text-sm text-brand-muted hover:text-brand-text hover:bg-brand-border transition-all"
+                          >
+                            Saved searches
+                          </Link>
+                        )}
                         {user?.role === 'employer' && (
                           <Link
                             href="/hires"
