@@ -16,6 +16,17 @@ async function ownProfile() {
 // rendered as nonsense later.
 const MONTH = /^\d{4}-(0[1-9]|1[0-2])$/
 
+export async function GET() {
+  const profile = await ownProfile()
+  if (!profile) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+
+  const items = await db.workExperience.findMany({
+    where: { profileId: profile.id },
+    orderBy: [{ current: 'desc' }, { startMonth: 'desc' }],
+  })
+  return NextResponse.json({ experiences: items })
+}
+
 export async function POST(req: NextRequest) {
   try {
     const profile = await ownProfile()

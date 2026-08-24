@@ -20,6 +20,17 @@ function year(value: unknown): number | null {
   return n
 }
 
+export async function GET() {
+  const profile = await ownProfile()
+  if (!profile) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+
+  const items = await db.education.findMany({
+    where: { profileId: profile.id },
+    orderBy: [{ endYear: 'desc' }, { startYear: 'desc' }],
+  })
+  return NextResponse.json({ education: items })
+}
+
 export async function POST(req: NextRequest) {
   try {
     const profile = await ownProfile()

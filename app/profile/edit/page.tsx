@@ -8,6 +8,8 @@ import { SkillEditor } from '@/components/seeker/SkillEditor'
 import { getCompletionScore } from '@/lib/completionScore'
 import { ShareProfileLink } from '@/components/seeker/ShareProfileLink'
 import { FoundingMemberBadge } from '@/components/ui/FoundingMemberBadge'
+import { ExperienceEditor } from '@/components/seeker/ExperienceEditor'
+import { EducationEditor } from '@/components/seeker/EducationEditor'
 
 interface SelectedSkill {
   skillId: string
@@ -96,7 +98,7 @@ const TIMEZONES = [
 
 const LANGUAGE_LEVELS = ['basic', 'conversational', 'fluent', 'native']
 
-type ActiveTab = 'profile' | 'skills' | 'portfolio' | 'projects' | 'certificates'
+type ActiveTab = 'profile' | 'experience' | 'education' | 'skills' | 'portfolio' | 'projects' | 'certificates'
 
 export default function ProfileEditPage() {
   const { data: session, status } = useSession()
@@ -145,7 +147,7 @@ export default function ProfileEditPage() {
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
 
   const tabParam = searchParams.get('tab') as ActiveTab | null
-  const validTabs: ActiveTab[] = ['profile', 'skills', 'portfolio', 'projects', 'certificates']
+  const validTabs: ActiveTab[] = ['profile', 'experience', 'education', 'skills', 'portfolio', 'projects', 'certificates']
   const [activeTab, setActiveTab] = useState<ActiveTab>(
     tabParam && validTabs.includes(tabParam) ? tabParam : 'profile'
   )
@@ -483,6 +485,8 @@ export default function ProfileEditPage() {
 
   const tabs: { key: ActiveTab; label: string }[] = [
     { key: 'profile', label: '👤 Profile' },
+    { key: 'experience', label: '💼 Experience' },
+    { key: 'education', label: '🎓 Education' },
     { key: 'skills', label: '⚡ Skills' },
     { key: 'portfolio', label: '🔗 Portfolio' },
     { key: 'projects', label: '🖼️ Projects' },
@@ -878,6 +882,10 @@ export default function ProfileEditPage() {
       )}
 
       {/* ─── TAB: Skills ─── */}
+      {activeTab === 'experience' && <ExperienceEditor />}
+
+      {activeTab === 'education' && <EducationEditor />}
+
       {activeTab === 'skills' && (
         <div className="space-y-6">
           <div className="card p-6">
