@@ -16,6 +16,8 @@ import { isMonetizationEnabled } from '@/lib/monetization'
 import { ContactRequestCard } from './ContactRequestCard'
 import { TestimonialCard } from './TestimonialCard'
 import { CoverUpload } from './CoverUpload'
+import { AcceptTerms } from '@/components/legal/AcceptTerms'
+import { needsAcceptance } from '@/lib/legal'
 import { AdSlot } from '@/components/ads/AdSlot'
 import { VerifyBanner } from './VerifyBanner'
 
@@ -30,7 +32,7 @@ export default async function DashboardPage() {
 
   const dbUser = await db.user.findUnique({
     where: { id: user.id },
-    select: { premium: true, premiumUntil: true, foundingMemberNumber: true, emailVerified: true, email: true },
+    select: { premium: true, premiumUntil: true, foundingMemberNumber: true, emailVerified: true, email: true, termsVersion: true },
   })
 
   const profile = await db.seekerProfile.findUnique({
@@ -65,6 +67,9 @@ export default async function DashboardPage() {
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       {/* Live now that Resend is verified. */}
       {dbUser && !dbUser.emailVerified && <VerifyBanner email={dbUser.email} />}
+
+      {/* Only when the version has actually moved. */}
+      {needsAcceptance(dbUser?.termsVersion) && <AcceptTerms />}
 
       <TestimonialCard />
 

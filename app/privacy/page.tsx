@@ -10,7 +10,7 @@ export default function PrivacyPolicyPage() {
     <div className="max-w-4xl mx-auto px-4 py-12">
       <div className="mb-10">
         <h1 className="text-4xl font-black gradient-text mb-3">Privacy Policy</h1>
-        <p className="text-brand-muted text-sm">Effective date: March 1, 2026</p>
+        <p className="text-brand-muted text-sm">Effective date: 25 August 2026</p>
       </div>
 
       <div className="space-y-10">
@@ -91,6 +91,69 @@ export default function PrivacyPolicyPage() {
           </ul>
         </section>
 
+        <section>
+          <h2 className="text-xl font-bold text-brand-text mb-3">4a. Practice Accounts and GoHighLevel</h2>
+          <p className="text-brand-muted leading-relaxed mb-3">
+            If you take a practice account, we create a user for you inside a GoHighLevel sandbox
+            sub-account that we control. To do that we pass your name and email address to
+            GoHighLevel, who send you their own invitation to set a password. We never see or
+            store that password.
+          </p>
+          <p className="text-brand-muted leading-relaxed mb-3">
+            Anything you build inside that sandbox is held by GoHighLevel under their terms and
+            privacy policy, not ours. The sandbox is shared with other members, so treat it as a
+            practice environment and do not put real client data, personal records, or anything
+            confidential into it.
+          </p>
+          <p className="text-brand-muted leading-relaxed">
+            When your access period ends we remove your GoHighLevel user. Work left in the
+            sandbox may be deleted or overwritten, so keep your own copies of anything you want.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="text-xl font-bold text-brand-text mb-3">4b. Payments by GCash</h2>
+          <p className="text-brand-muted leading-relaxed mb-3">
+            Practice account payments are made by GCash directly to us. We record the reference
+            number you enter, the amount, and the date, so a payment can be matched to your
+            account. We never see your GCash login, PIN, balance, or transaction history, and we
+            cannot take money from your account &mdash; you send it, we match it.
+          </p>
+          <p className="text-brand-muted leading-relaxed">
+            If you upload a receipt screenshot, it is stored privately and is visible only to us
+            while we confirm the payment.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="text-xl font-bold text-brand-text mb-3">4c. Advertising</h2>
+          <p className="text-brand-muted leading-relaxed mb-3">
+            We show advertising to signed-in members on pages such as your dashboard, browse,
+            jobs and the leaderboard. Adverts are labelled &ldquo;Sponsored&rdquo;. We do not show
+            adverts on public profile pages, on payment pages, in messages, or to visitors who are
+            not signed in.
+          </p>
+          <p className="text-brand-muted leading-relaxed mb-3">
+            <strong className="text-brand-text">We record which adverts you view and click.</strong>{' '}
+            We use this to understand what is worth showing, to report performance to advertisers,
+            and to follow up with you ourselves about offers you showed interest in &mdash; but we
+            will only email you about that if you agreed to marketing when you signed up. You can
+            change that at any time in your settings.
+          </p>
+          <p className="text-brand-muted leading-relaxed mb-3">
+            <strong className="text-brand-text">We do not tell advertisers who you are.</strong>{' '}
+            Advertisers receive counts only: how many people saw an advert, how many clicked, and
+            whether they were freelancers or businesses. Your name, email address and profile are
+            never shared with an advertiser, and we do not sell your personal information to
+            anybody.
+          </p>
+          <p className="text-brand-muted leading-relaxed">
+            Adverts may link to third-party sites, including ones where we earn an affiliate
+            commission. Those sites have their own privacy policies and we are not responsible for
+            them. Clicking an advert does not send your details to the destination.
+          </p>
+        </section>
+
         {/* 5 */}
         <section>
           <h2 className="text-xl font-bold text-brand-text mb-3">5. Cookies and Tracking Technologies</h2>
@@ -140,6 +203,44 @@ export default function PrivacyPolicyPage() {
           </ul>
           <p className="text-brand-muted leading-relaxed mt-3">
             No method of transmission over the internet or electronic storage is completely secure. While we strive to protect your personal information, we cannot guarantee its absolute security.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="text-xl font-bold text-brand-text mb-3">7a. Who Processes Your Data</h2>
+          <p className="text-brand-muted leading-relaxed mb-3">
+            We use a small number of services to run the platform. Each holds only what it needs
+            to do its job:
+          </p>
+          <ul className="list-disc list-inside space-y-2 text-brand-muted mb-3">
+            <li><strong className="text-brand-text">Supabase</strong> &mdash; our database and file storage. Holds your account, profile, uploads, and messages.</li>
+            <li><strong className="text-brand-text">Vercel</strong> &mdash; hosting. Handles requests and keeps short-lived server logs.</li>
+            <li><strong className="text-brand-text">Resend</strong> &mdash; sends our email. Receives your email address and the contents of what we send you.</li>
+            <li><strong className="text-brand-text">Google</strong> &mdash; if you sign in with Google, we receive your name, email address, and profile picture.</li>
+            <li><strong className="text-brand-text">GoHighLevel</strong> &mdash; only if you take a practice account. Receives your name and email to create your sandbox user.</li>
+            <li><strong className="text-brand-text">Stripe</strong> &mdash; card payments, where used. Card details go to Stripe and never reach our servers.</li>
+            <li><strong className="text-brand-text">Sightengine</strong> &mdash; checks uploaded images for inappropriate content. Receives the image, not your identity.</li>
+          </ul>
+          <p className="text-brand-muted leading-relaxed">
+            We do not sell your personal information, and we do not share it with advertisers.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="text-xl font-bold text-brand-text mb-3">7b. Philippine Data Privacy Act</h2>
+          <p className="text-brand-muted leading-relaxed mb-3">
+            Virtual Freaks operates from the Philippines and processes personal information under
+            the Data Privacy Act of 2012 (RA 10173). Under that Act you have the right to be
+            informed, to object, to access your data, to have it corrected, to have it erased or
+            blocked, to damages, to data portability, and to complain to the National Privacy
+            Commission.
+          </p>
+          <p className="text-brand-muted leading-relaxed">
+            Our lawful bases are: performing our agreement with you (running your account and
+            profile), our legitimate interests (keeping the platform working, secure and
+            improving), and your consent (marketing email, and anything you choose to publish).
+            Where we rely on consent you may withdraw it at any time without affecting your
+            account.
           </p>
         </section>
 

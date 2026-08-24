@@ -27,6 +27,15 @@ model User {
   // will not all be in one country. The timestamp is the evidence it was given.
   marketingOptIn           Boolean                   @default(false)
   marketingOptInAt         DateTime?
+  // Which version of the terms they agreed to, and when.
+  //
+  // Versioned rather than re-asked on a timer. Making people re-accept
+  // unchanged terms every month teaches them to click through without reading,
+  // which is the opposite of what consent is for — and it interrupts somebody
+  // who has already agreed. Storing the version means a prompt appears exactly
+  // once per real change, and there is a record of who agreed to what.
+  termsVersion             String?
+  termsAcceptedAt          DateTime?
   premium                  Boolean                   @default(false)
   premiumSince             DateTime?
   premiumUntil             DateTime?

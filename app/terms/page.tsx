@@ -10,7 +10,7 @@ export default function TermsOfServicePage() {
     <div className="max-w-4xl mx-auto px-4 py-12">
       <div className="mb-10">
         <h1 className="text-4xl font-black gradient-text mb-3">Terms of Service</h1>
-        <p className="text-brand-muted text-sm">Effective date: March 1, 2026</p>
+        <p className="text-brand-muted text-sm">Effective date: 25 August 2026</p>
       </div>
 
       <div className="space-y-10">
@@ -102,6 +102,49 @@ export default function TermsOfServicePage() {
             <li>You may cancel your subscription at any time through your account settings. Cancellation takes effect at the end of the current billing period. No prorated refunds are provided for partial months.</li>
             <li>If your payment fails, we may suspend access to premium features until the payment issue is resolved. We will attempt to notify you before suspension.</li>
             <li>We reserve the right to modify, discontinue, or restructure subscription plans at any time with reasonable notice.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 className="text-xl font-bold text-brand-text mb-3">6a. Practice Accounts</h2>
+          <ul className="list-disc list-inside space-y-2 text-brand-muted">
+            <li>A practice account gives you a user inside a shared GoHighLevel sandbox that we control, for a fixed period. It is for learning. It is not a licence to GoHighLevel and it is not a business account.</li>
+            <li><strong className="text-brand-text">Nothing renews automatically.</strong> No card is stored and no subscription is created. When the period ends, access simply stops unless you take another.</li>
+            <li>Your period begins when we confirm your sandbox is ready, not when you pay. If setting it up takes us a day, that day is not taken out of your time.</li>
+            <li>Access can also be earned rather than paid for. Earned time is worth the same as paid time and carries no different conditions.</li>
+            <li>The sandbox is shared with other members. Do not put real client data, personal records, or anything confidential into it. Treat everything in there as visible to others and impermanent.</li>
+            <li>We may remove your sandbox user without refund if you use it to harm other members&apos; work, to send unsolicited messages, or in breach of GoHighLevel&apos;s own terms.</li>
+            <li>Payments are made by GCash directly to us. Because access is granted immediately on confirmation, payments are not generally refundable &mdash; but if something goes wrong on our side, tell us and we will make it right.</li>
+            <li>Your Virtual Freaks profile, badges and messages are free and are not affected when a practice account ends.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 className="text-xl font-bold text-brand-text mb-3">6b. Advertising</h2>
+          <ul className="list-disc list-inside space-y-2 text-brand-muted">
+            <li>We show advertising to signed-in members, labelled &ldquo;Sponsored&rdquo;. We record which adverts are viewed and clicked, as described in our Privacy Policy.</li>
+            <li>Some adverts link to services where we earn an affiliate commission. We are not responsible for those services, their claims, or anything you buy from them, and you deal with them on their terms.</li>
+            <li>An advert on this site is not an endorsement or a recommendation.</li>
+            <li>We do not show advertising on public profile pages, on payment pages, in messages, or to people who are not signed in.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 className="text-xl font-bold text-brand-text mb-3">6c. Testimonials and Badges</h2>
+          <ul className="list-disc list-inside space-y-2 text-brand-muted">
+            <li>If you submit a testimonial, you confirm it is your own honest experience and you agree for it to appear publicly with your name and profile photo.</li>
+            <li>Nothing is published without your explicit consent, and you may ask for it to be removed at any time. Any badge or access you were given for it is yours to keep either way.</li>
+            <li>We may decline a testimonial, or edit it for length or clarity &mdash; never to change its meaning. If we send one back we will tell you why.</li>
+            <li>Badges reflect something you actually did. We may withdraw one if it turns out it was awarded on a false basis.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 className="text-xl font-bold text-brand-text mb-3">6d. Our Fees</h2>
+          <ul className="list-disc list-inside space-y-2 text-brand-muted">
+            <li><strong className="text-brand-text">We take no commission on what you earn.</strong> Rates are agreed directly between you and the person hiring, and paid directly. We are not a party to that agreement.</li>
+            <li>Because we do not handle the money, we do not hold funds in escrow, guarantee payment, or mediate a payment dispute. Agree terms you are comfortable with, and start small with somebody new.</li>
+            <li>Browsing, messaging, and hiring are free. The only thing we charge for is the practice account.</li>
           </ul>
         </section>
 

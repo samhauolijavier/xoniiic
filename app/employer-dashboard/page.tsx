@@ -12,6 +12,8 @@ import { ActivityFeedWidget } from '@/components/ui/ActivityFeedWidget'
 import { FoundingMemberBadge } from '@/components/ui/FoundingMemberBadge'
 import { isMonetizationEnabled } from '@/lib/monetization'
 import { AdSlot } from '@/components/ads/AdSlot'
+import { AcceptTerms } from '@/components/legal/AcceptTerms'
+import { needsAcceptance } from '@/lib/legal'
 
 export default async function EmployerDashboardPage() {
   const session = await getServerSession(authOptions)
@@ -22,7 +24,7 @@ export default async function EmployerDashboardPage() {
 
   const dbUser = await db.user.findUnique({
     where: { id: user.id },
-    select: { premium: true, premiumUntil: true, createdAt: true, foundingMemberNumber: true, emailVerified: true, email: true },
+    select: { premium: true, premiumUntil: true, createdAt: true, foundingMemberNumber: true, emailVerified: true, email: true, termsVersion: true },
   })
 
   const profile = await db.employerProfile.findUnique({
@@ -93,6 +95,8 @@ export default async function EmployerDashboardPage() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      {needsAcceptance(dbUser?.termsVersion) && <AcceptTerms />}
+
       <AdSlot placement="banner" />
       {/* Email Verification Banner — hibernated, enable when SES is ready */}
 

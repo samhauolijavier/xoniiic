@@ -257,8 +257,14 @@ export default function RegisterPage() {
             </button>
           </form>
 
-          <p className="text-xs text-brand-muted text-center mt-4">
-            By registering you agree to our Terms of Service and Privacy Policy.
+          {/* Links, not a claim. "You agree to our terms" with nothing to click
+              is an agreement to something nobody was shown. */}
+          <p className="text-xs text-brand-muted text-center mt-4 leading-relaxed">
+            By creating an account you agree to our{' '}
+            <Link href="/terms" className="text-brand-purple underline underline-offset-2">Terms of Service</Link>
+            {' '}and{' '}
+            <Link href="/privacy" className="text-brand-purple underline underline-offset-2">Privacy Policy</Link>,
+            including how we handle your data, practice accounts, and advertising on the platform.
           </p>
 
           <div className="mt-6 pt-6 border-t border-brand-border text-center">

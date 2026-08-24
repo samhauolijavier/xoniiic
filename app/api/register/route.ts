@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
 import { db } from '@/lib/db'
 import { logActivity } from '@/lib/activity'
+import { TERMS_VERSION } from '@/lib/legal'
 import { sendVerificationEmail } from '@/lib/email'
 
 export const dynamic = 'force-dynamic'
@@ -63,6 +64,11 @@ export async function POST(req: NextRequest) {
         // anybody ever asks.
         marketingOptIn: marketingOptIn === true,
         marketingOptInAt: marketingOptIn === true ? new Date() : null,
+        // Recorded at the moment of agreement, with the version they saw.
+        // "They ticked a box once" is worth little; "they agreed to this exact
+        // text on this date" is a record.
+        termsVersion: TERMS_VERSION,
+        termsAcceptedAt: new Date(),
       },
     })
 
