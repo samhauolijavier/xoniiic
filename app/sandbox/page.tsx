@@ -28,8 +28,8 @@ import { CopyLink } from './CopyLink'
 import './sandbox.css'
 
 export const metadata: Metadata = {
-  title: 'Practice account',
-  description: 'Your GoHighLevel practice account and how long is left on it.',
+  title: 'Practice on real systems',
+  description: 'Real accounts to build in and break, so the work on your profile is work you have actually done. GoHighLevel is open now.',
   robots: { index: false, follow: false },
 }
 
@@ -61,10 +61,15 @@ export default async function SandboxPage() {
 
   return (
     <div className="seatpage">
-      <h1>Practice Account</h1>
+      <h1>Practice on real systems</h1>
       <p className="lede">
-        A real GoHighLevel sub-account to build in, break, and rebuild — so the work on your
-        profile is work you have actually done.
+        Reading about a tool is not the same as having used one. These are real accounts rather
+        than demos — build in them, break them, put them back — so the work on your profile is
+        work you have actually done.
+      </p>
+      <p className="lede-note">
+        <strong>GoHighLevel is open now.</strong> More systems are added as we bring on partners
+        &mdash; bookkeeping and ad accounts are next.
       </p>
 
       <article className={`seat ${status.urgency}${!status.active && (status.pendingReference || status.awaitingSandbox) ? ' paid' : ''}`}>

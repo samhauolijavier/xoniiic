@@ -11,7 +11,11 @@ function formatEvent(event: {
   actor: { name: string | null; role: string; seekerProfile: { avatarUrl: string | null } | null; employerProfile: { companyName: string | null; logoUrl: string | null } | null } | null
 }) {
   const meta = event.metadata ? JSON.parse(event.metadata) : {}
-  const actorName = event.actor?.name || 'Someone'
+  // First name only. The feed's job is to show the place is busy, not to
+  // publish a directory of who joined — and it is visible to everyone.
+  const fullName = event.actor?.name?.trim()
+  const actorName = fullName ? fullName.split(/\s+/)[0] : 'Someone'
+  // A company name is a business, not a person, so it stays whole.
   const companyName = event.actor?.employerProfile?.companyName || actorName
 
   const iconMap: Record<string, string> = {

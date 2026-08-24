@@ -70,12 +70,15 @@ export default function RegisterPage() {
         return
       }
 
-      // Email verification hibernated — skip straight to sign in
-      // When ready to enable: uncomment the block below
-      // if (data.requiresVerification) {
-      //   router.push(`/verify-email?email=${encodeURIComponent(formData.email)}`)
-      //   return
-      // }
+      // The server decides, from one env flag, whether a code is required —
+      // the same flag that decides whether an unconfirmed profile is listable.
+      // Hard-coding it here is what let the two halves drift apart before.
+      if (data.requiresVerification) {
+        const query = new URLSearchParams({ email: formData.email })
+        if (data.emailSent === false) query.set('mail', 'failed')
+        router.push(`/verify-email?${query.toString()}`)
+        return
+      }
 
       // Auto sign in
       const signInResult = await signIn('credentials', {

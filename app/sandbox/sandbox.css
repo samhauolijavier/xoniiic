@@ -21,7 +21,13 @@
   color: var(--ink);
 }
 .seatpage h1 { font-size: 24px; font-weight: 640; letter-spacing: -.02em; margin: 0 0 4px; color: var(--ink); }
-.seatpage .lede { font-size: 14px; color: var(--ink-2); margin: 0 0 24px; }
+.seatpage .lede { font-size: 14px; color: var(--ink-2); margin: 0 0 10px; }
+.seatpage .lede-note {
+  font-size: 13px; color: var(--ink-2); margin: 0 0 24px;
+  padding: 8px 12px; border-radius: var(--r);
+  background: var(--sunken); border: 1px solid var(--rule);
+}
+.seatpage .lede-note strong { color: var(--ink); font-weight: 600; }
 
 .seat { background: var(--surface); border: 1px solid var(--rule); border-radius: var(--r-lg); padding: 20px; }
 .seat.soon { border-color: var(--warn); }

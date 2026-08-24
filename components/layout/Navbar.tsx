@@ -547,6 +547,15 @@ export function Navbar() {
                             Practice Account
                           </Link>
                         )}
+                        {user?.role === 'seeker' && (
+                          <Link
+                            href="/testimonial"
+                            onClick={() => setDropdownOpen(false)}
+                            className="block px-4 py-2 text-sm text-brand-muted hover:text-brand-text hover:bg-brand-border transition-all"
+                          >
+                            Share Your Story
+                          </Link>
+                        )}
                         {user?.role === 'seeker' && user?.username && (
                           <Link
                             href={`/@${user.username}`}

@@ -1,17 +1,47 @@
 import { Resend } from 'resend'
+import { notifyDiscord } from '@/lib/discord'
+import {
+  PROMPT_GROUPS,
+  PROMPTS_TO_ANSWER,
+  NO_NAMES_RULE,
+  EXAMPLE_WEAK,
+  EXAMPLE_STRONG,
+  LENGTH_GUIDE,
+} from '@/lib/testimonial-prompts'
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null
 
-export async function sendVerificationEmail(email: string, code: string, name?: string) {
+/**
+ * The one email nobody can finish signing up without.
+ *
+ * It used to swallow its own failure and return as though it had worked, and
+ * the caller caught again on top of that. So a send that failed — an expired
+ * key, a provider outage, or simply the daily quota running out — produced an
+ * account, a code sitting in the database, a person told to check their inbox,
+ * and no signal anywhere except a line in the Vercel logs nobody reads.
+ *
+ * That is the worst shape a failure can take, because it looks like success to
+ * everyone involved and it fails hardest on the best day: the quota runs out
+ * precisely when a post has landed and people are arriving.
+ *
+ * So it reports now. The caller decides what to tell the person, and the
+ * Discord channel finds out the same minute rather than whenever somebody
+ * thinks to ask why signups went quiet.
+ */
+export async function sendVerificationEmail(
+  email: string,
+  code: string,
+  name?: string,
+): Promise<{ ok: boolean; reason?: string }> {
   console.log(`[Verification] Code for ${email}: ${code}`)
 
   if (!resend) {
     console.log('[Email] No RESEND_API_KEY set, skipping email send')
-    return
+    return { ok: false, reason: 'No RESEND_API_KEY configured' }
   }
 
   try {
-    await resend.emails.send({
+    const { error } = await resend.emails.send({
       from: 'Virtual Freaks <noreply@virtualfreaks.co>',
       to: email,
       subject: 'Verify your Virtual Freaks account',
@@ -31,8 +61,45 @@ export async function sendVerificationEmail(email: string, code: string, name?: 
         </div>
       `
     })
+
+    // Resend reports quota and validation problems in the body rather than by
+    // throwing, so the thrown-error path alone would miss the exact failure
+    // this function exists to catch.
+    if (error) {
+      const reason = `${error.name ?? 'Error'}: ${error.message ?? 'unknown'}`
+      console.error('[Email] Verification send rejected:', reason)
+      await notifyVerificationFailure(email, reason)
+      return { ok: false, reason }
+    }
+
+    return { ok: true }
   } catch (error) {
+    const reason = error instanceof Error ? error.message : 'Unknown mail error'
     console.error('[Email] Failed to send verification email:', error)
+    await notifyVerificationFailure(email, reason)
+    return { ok: false, reason }
+  }
+}
+
+/**
+ * Never allowed to be the reason a registration fails — it is the alarm, not
+ * the machinery. Wrapped so a Discord outage cannot turn a mail problem into a
+ * five hundred.
+ */
+async function notifyVerificationFailure(email: string, reason: string) {
+  try {
+    await notifyDiscord({
+      title: 'Signup email did not send',
+      description:
+        'Someone just registered and their verification code never left the building. They are sitting on the "check your email" screen. If this repeats within minutes it is usually the daily sending quota.',
+      tone: 'warn',
+      fields: [
+        { name: 'Who', value: email, inline: true },
+        { name: 'Why', value: reason.slice(0, 300), inline: false },
+      ],
+    })
+  } catch {
+    // Logged upstream. Nothing further to do.
   }
 }
 
@@ -129,46 +196,85 @@ export async function sendTestimonialInviteEmail(opts: {
   // Two doors, because half of them have an account and half do not, and
   // sending someone to a signup page they do not need is how you lose them.
   const primary = opts.hasAccount
-    ? { href: `${site}/login?callbackUrl=/dashboard`, label: 'Sign in and write it' }
-    : { href: `${site}/register?role=seeker`, label: 'Make an account' }
+    ? { href: `${site}/login?callbackUrl=/testimonial`, label: 'Sign in and write it' }
+    : { href: `${site}/register?role=seeker&redirect=/testimonial`, label: 'Make an account' }
   const secondary = opts.hasAccount
-    ? { href: `${site}/register?role=seeker`, label: 'Make an account' }
-    : { href: `${site}/login?callbackUrl=/dashboard`, label: 'Sign in' }
+    ? { href: `${site}/register?role=seeker&redirect=/testimonial`, label: 'Make an account' }
+    : { href: `${site}/login?callbackUrl=/testimonial`, label: 'Sign in' }
+
+  // Rendered from the same source the dashboard form uses, so the questions
+  // somebody reads in the email are the questions waiting when they arrive.
+  const groupsHtml = PROMPT_GROUPS.map(g => `
+    <div style="margin: 0 0 18px;">
+      <p style="font-size: 14px; font-weight: 600; margin: 0 0 2px; color: #1a1418;">${g.title}</p>
+      <p style="font-size: 13px; color: #6f676c; margin: 0 0 7px; font-style: italic;">${g.hint}</p>
+      <ul style="font-size: 14px; line-height: 1.6; padding-left: 20px; margin: 0; color: #4d4549;">
+        ${g.questions.map(q => `<li style="margin-bottom: 4px;">${q}</li>`).join('')}
+      </ul>
+    </div>`).join('')
 
   try {
     await resend.emails.send({
       from: 'Spencer at Virtual Freaks <noreply@virtualfreaks.co>',
       to: opts.email,
-      subject: 'Would you write a few lines about working with us?',
+      subject: 'Would you write a few lines about working remotely?',
       html: `
-        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 540px; margin: 0 auto; padding: 32px 20px; color: #1a1418;">
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 560px; margin: 0 auto; padding: 32px 20px; color: #1a1418;">
           <h1 style="font-size: 20px; margin: 0 0 24px; color: #a21caf;">Virtual Freaks</h1>
 
           <p style="font-size: 15px; line-height: 1.65;">Hi${opts.name ? ` ${opts.name}` : ''},</p>
 
           <p style="font-size: 15px; line-height: 1.65;">
-            I am putting real stories on the Virtual Freaks site, and yours is one I would like people
-            to read. Business owners deciding whether to hire from here have no way to know it works
-            until somebody who has done it tells them.
+            I am putting real stories on the Virtual Freaks site, and yours is one I would like
+            people to read. Someone deciding whether any of this is real has no way to know until
+            somebody who has actually done it tells them.
           </p>
 
           <p style="font-size: 15px; line-height: 1.65;">
-            A few honest lines is plenty — what you do, how the placement came about, and what it has
-            meant for you. Good and bad both welcome; a page of perfect reviews convinces nobody.
+            <strong>Here is all I am asking.</strong> Pick <strong>${PROMPTS_TO_ANSWER} questions</strong>
+            from the list below &mdash; from at least two different sections, so everybody&rsquo;s
+            comes out different &mdash; and answer them honestly. ${LENGTH_GUIDE}
           </p>
 
-          <p style="font-size: 15px; line-height: 1.65;"><strong>What you get for it:</strong></p>
-          <ul style="font-size: 15px; line-height: 1.7; padding-left: 20px; margin: 0 0 20px;">
-            <li>
-              The <strong>Placed through Virtual Freaks</strong> badge on your public profile. It tells
-              an employer you were actually hired here and it worked — which is the thing they look for
-              hardest.
-            </li>
-            <li>
-              <strong>30 days on the GoHighLevel practice account</strong>, on us. A real sandbox to
-              build in and break.
-            </li>
-          </ul>
+          <div style="background: #fbf5fc; border: 1px solid #e6c9ec; border-radius: 10px; padding: 14px 16px; margin: 0 0 24px;">
+            <p style="font-size: 14px; line-height: 1.6; margin: 0; color: #1a1418;">
+              <strong>One rule:</strong> ${NO_NAMES_RULE}
+            </p>
+          </div>
+
+          ${groupsHtml}
+
+          <div style="border-top: 1px solid #e6e0e2; margin: 26px 0 0; padding-top: 22px;">
+            <p style="font-size: 14px; font-weight: 600; margin: 0 0 10px;">What a useful one looks like</p>
+            <p style="font-size: 13px; color: #6f676c; margin: 0 0 6px;">This one says nothing anybody can act on:</p>
+            <p style="font-size: 14px; line-height: 1.6; color: #837b80; margin: 0 0 16px; padding-left: 12px; border-left: 3px solid #e6e0e2;">
+              &ldquo;${EXAMPLE_WEAK}&rdquo;
+            </p>
+            <p style="font-size: 13px; color: #6f676c; margin: 0 0 6px;">This one changes somebody&rsquo;s mind:</p>
+            <p style="font-size: 14px; line-height: 1.6; color: #1a1418; margin: 0; padding-left: 12px; border-left: 3px solid #a21caf;">
+              &ldquo;${EXAMPLE_STRONG}&rdquo;
+            </p>
+            <p style="font-size: 13px; color: #6f676c; margin: 12px 0 0; line-height: 1.6;">
+              Numbers, a timeframe, and one honest downside. The downside is not a problem &mdash; a
+              page of perfect reviews convinces nobody, and the rough bits are what make the rest
+              believable.
+            </p>
+          </div>
+
+          <div style="border-top: 1px solid #e6e0e2; margin: 26px 0 0; padding-top: 22px;">
+            <p style="font-size: 15px; line-height: 1.65; margin: 0 0 10px;"><strong>What you get for it:</strong></p>
+            <ul style="font-size: 15px; line-height: 1.7; padding-left: 20px; margin: 0 0 20px;">
+              <li>
+                The <strong>Placed through Virtual Freaks</strong> badge on your public profile. It
+                tells an employer you were actually hired and it worked &mdash; which is the thing
+                they look for hardest.
+              </li>
+              <li>
+                <strong>30 days of practice account</strong>, on us. A real system to build in and
+                break rather than a course to sit through.
+              </li>
+            </ul>
+          </div>
 
           <p style="margin: 28px 0 12px;">
             <a href="${primary.href}"
@@ -181,8 +287,9 @@ export async function sendTestimonialInviteEmail(opts: {
           </p>
 
           <p style="font-size: 15px; line-height: 1.65;">
-            Once you are in, it is on your dashboard — a box titled <strong>Share your story</strong>.
-            Two minutes.
+            That link goes straight to the form, and these same questions are on the page so you are
+            not working from memory. It is also under your name in the menu, as
+            <strong>Share Your Story</strong>, whenever you want to come back to it.
           </p>
 
           <p style="font-size: 15px; line-height: 1.65;">
@@ -192,9 +299,9 @@ export async function sendTestimonialInviteEmail(opts: {
           <p style="font-size: 15px; line-height: 1.65;">Spencer</p>
 
           <hr style="border: none; border-top: 1px solid #e6e0e2; margin: 28px 0;" />
-          <p style="color: #837b80; font-size: 12px; line-height: 1.6;">
+          <p style="color: #6f676c; font-size: 12px; line-height: 1.6;">
             Nothing is published without your say-so, and you can ask for it to be taken down at any
-            time — your badge and your 30 days stay either way.
+            time &mdash; your badge and your 30 days stay either way.
           </p>
         </div>
       `,
@@ -204,7 +311,6 @@ export async function sendTestimonialInviteEmail(opts: {
   }
 }
 
-/** Sent when Spencer approves one. */
 export async function sendTestimonialApprovedEmail(opts: {
   email: string
   name?: string | null

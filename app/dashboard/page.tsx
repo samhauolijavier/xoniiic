@@ -15,7 +15,6 @@ import { getCompletionScore } from '@/lib/completionScore'
 import { ShareProfileCard } from './ShareProfileCard'
 import { PremiumBadge } from '@/components/ui/PremiumBadge'
 import { FoundingMemberBadge } from '@/components/ui/FoundingMemberBadge'
-import { WhoViewedSection } from './WhoViewedSection'
 import { AnalyticsSection } from './AnalyticsSection'
 import { ActivityFeedWidget } from '@/components/ui/ActivityFeedWidget'
 import { isMonetizationEnabled } from '@/lib/monetization'
@@ -261,8 +260,9 @@ export default async function DashboardPage() {
       {/* Renders nothing unless something is booked. */}
       <AdSlot placement="banner" />
 
-      {/* Who Viewed Your Profile */}
-      <WhoViewedSection isPremium={isPremium} hideMonetization={!monetizationOn} />
+      {/* Who Viewed Your Profile — shelved until there are employers doing the
+          viewing. The component and its route are untouched; put this line back
+          when the blurred rows would be hiding something real. */}
 
       {/* Analytics Section */}
       <AnalyticsSection isPremium={isPremium} hideMonetization={!monetizationOn} />

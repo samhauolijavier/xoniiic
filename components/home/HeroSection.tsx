@@ -13,7 +13,7 @@ export function HeroSection() {
   const [heroHeadline, setHeroHeadline] = useState('Nobody hires you without experience. Start here.')
   const [heroSubtitle, setHeroSubtitle] = useState('Build a profile that shows real work, practice on live systems, and get found by people hiring directly. Free, and it stays free.')
   const [heroCta1, setHeroCta1] = useState('Make a free profile')
-  const [heroCta2, setHeroCta2] = useState('See the practice account')
+  const [heroCta2, setHeroCta2] = useState("I'm hiring")
   // Starts blank rather than with a claim. The old defaults said 500+
   // freelancers and 50+ categories no matter what was actually in the
   // database, and a launch page aimed at people who will go and look
@@ -119,7 +119,7 @@ export function HeroSection() {
             <button onClick={handlePostProfileClick} className="btn-primary text-base px-8 py-3">
               {heroCta1}
             </button>
-            <Link href="/sandbox" className="btn-secondary text-base px-8 py-3">
+            <Link href="/hire" className="btn-secondary text-base px-8 py-3">
               {heroCta2}
             </Link>
           </div>

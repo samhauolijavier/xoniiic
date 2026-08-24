@@ -61,6 +61,12 @@ export const metadata: Metadata = {
     follow: true,
     googleBot: { index: true, follow: true, 'max-video-preview': -1, 'max-image-preview': 'large', 'max-snippet': -1 },
   },
+  // Search Console's HTML-tag verification. Set GOOGLE_SITE_VERIFICATION in
+  // Vercel to the content value Google gives you and redeploy; leaving it
+  // unset renders no tag at all rather than an empty one.
+  verification: process.env.GOOGLE_SITE_VERIFICATION
+    ? { google: process.env.GOOGLE_SITE_VERIFICATION }
+    : undefined,
 }
 
 async function getFaviconUrl(): Promise<string | null> {

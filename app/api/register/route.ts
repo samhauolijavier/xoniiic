@@ -4,6 +4,7 @@ import { db } from '@/lib/db'
 import { logActivity } from '@/lib/activity'
 import { TERMS_VERSION } from '@/lib/legal'
 import { sendVerificationEmail } from '@/lib/email'
+import { REQUIRE_EMAIL_VERIFICATION } from '@/lib/constants'
 
 export const dynamic = 'force-dynamic'
 
@@ -144,6 +145,7 @@ export async function POST(req: NextRequest) {
     // which never happened — meaning every address collected so far was taken
     // on trust. Wrapped because a mail failure must not cost somebody the
     // account they just made; they can ask for a new code from the dashboard.
+    let emailSent = false
     try {
       const verificationCode = Math.floor(100000 + Math.random() * 900000).toString()
       await db.user.update({
@@ -156,7 +158,13 @@ export async function POST(req: NextRequest) {
           verificationAttempts: 0,
         },
       })
-      await sendVerificationEmail(email, verificationCode, name)
+      // Only spend a send when the code is actually needed. With verification
+      // off the account is usable immediately, and mailing a code nobody will
+      // be asked for burns quota that the rest of the site needs.
+      if (REQUIRE_EMAIL_VERIFICATION) {
+        const result = await sendVerificationEmail(email, verificationCode, name)
+        emailSent = result.ok
+      }
     } catch (e) {
       console.error('Verification send failed (account still created):', e)
     }
@@ -167,7 +175,10 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       message: 'Account created successfully',
-      requiresVerification: true,
+      requiresVerification: REQUIRE_EMAIL_VERIFICATION,
+      // False means the code never left. The client says so plainly rather
+      // than sending somebody to an inbox that has nothing in it.
+      emailSent,
       user: { id: user.id, email: user.email, role: user.role, username, foundingMemberNumber },
     }, { status: 201 })
   } catch (error) {

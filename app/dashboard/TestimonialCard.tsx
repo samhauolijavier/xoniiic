@@ -10,6 +10,13 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import {
+  PROMPT_GROUPS,
+  PROMPTS_TO_ANSWER,
+  NO_NAMES_RULE,
+  EXAMPLE_STRONG,
+  LENGTH_GUIDE,
+} from '@/lib/testimonial-prompts'
 
 interface Testimonial {
   id: string
@@ -22,10 +29,10 @@ interface Testimonial {
 
 const MIN_BODY = 80
 
-export function TestimonialCard() {
+export function TestimonialCard({ alwaysOpen = false }: { alwaysOpen?: boolean } = {}) {
   const [existing, setExisting] = useState<Testimonial | null>(null)
   const [loading, setLoading] = useState(true)
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(alwaysOpen)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
   const [done, setDone] = useState('')
@@ -34,6 +41,9 @@ export function TestimonialCard() {
   const [roleTitle, setRoleTitle] = useState('')
   const [company, setCompany] = useState('')
   const [consent, setConsent] = useState(true)
+  // The email carrying these questions is long gone by the time somebody sits
+  // down to write. Closed by default so the card stays a card.
+  const [showPrompts, setShowPrompts] = useState(false)
 
   useEffect(() => {
     fetch('/api/testimonials')
@@ -121,17 +131,62 @@ export function TestimonialCard() {
         </p>
       )}
 
-      {!open ? (
+      {!open && !alwaysOpen ? (
         <button className="btn-primary" onClick={() => setOpen(true)}>
           {existing?.state === 'rejected' ? 'Edit and resend' : 'Write a few lines'}
         </button>
       ) : (
         <form onSubmit={submit} className="grid gap-3">
+          <div className="rounded-lg border border-brand-purple/30 bg-brand-purple/[0.04] px-3.5 py-3">
+            <p className="text-sm leading-relaxed">
+              <strong className="text-brand-text">Pick {PROMPTS_TO_ANSWER} questions</strong> from at
+              least two different sections and answer them honestly. {LENGTH_GUIDE}
+            </p>
+            <p className="text-sm text-brand-muted leading-relaxed mt-2">
+              <strong className="text-brand-text">One rule:</strong> {NO_NAMES_RULE}
+            </p>
+            <button
+              type="button"
+              onClick={() => setShowPrompts(v => !v)}
+              className="text-sm text-brand-purple hover:text-brand-pink transition-colors underline underline-offset-2 mt-2.5"
+              aria-expanded={showPrompts}
+            >
+              {showPrompts ? 'Hide the questions' : 'Show the questions'}
+            </button>
+
+            {showPrompts && (
+              <div className="grid gap-4 mt-4 pt-4 border-t border-brand-purple/20">
+                {PROMPT_GROUPS.map(g => (
+                  <div key={g.key}>
+                    <p className="text-sm font-semibold text-brand-text">{g.title}</p>
+                    <p className="text-xs text-brand-muted italic mb-1.5">{g.hint}</p>
+                    <ul className="list-disc pl-5 grid gap-1">
+                      {g.questions.map(q => (
+                        <li key={q} className="text-sm text-brand-muted leading-relaxed">{q}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+                <div className="pt-3 border-t border-brand-purple/20">
+                  <p className="text-sm font-semibold text-brand-text mb-1.5">
+                    What a useful one looks like
+                  </p>
+                  <p className="text-sm text-brand-muted leading-relaxed border-l-2 border-brand-purple pl-3">
+                    &ldquo;{EXAMPLE_STRONG}&rdquo;
+                  </p>
+                  <p className="text-xs text-brand-muted leading-relaxed mt-2">
+                    Numbers, a timeframe, and one honest downside. The rough bits are what make the
+                    rest believable.
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
           <label className="block">
             <span className="block text-sm font-medium mb-1.5">Your story</span>
             <textarea
               className="w-full" rows={5} value={body} onChange={e => setBody(e.target.value)}
-              placeholder="What you do, how the placement came about, and what it has meant for you. Honest beats glowing — a page of perfect reviews convinces nobody."
+              placeholder="Answer the questions above in your own words. Honest beats glowing — a page of perfect reviews convinces nobody."
               required
             />
             <span className="block text-xs text-brand-muted mt-1">
@@ -151,10 +206,13 @@ export function TestimonialCard() {
             </label>
             <label className="block">
               <span className="block text-sm font-medium mb-1.5">
-                Company <span className="text-brand-muted font-normal">— optional</span>
+                Who you work for <span className="text-brand-muted font-normal">— optional</span>
               </span>
               <input className="w-full" value={company} onChange={e => setCompany(e.target.value)}
-                placeholder="Leave blank if you would rather not say" />
+                placeholder="A US real estate agency" />
+              <span className="block text-xs text-brand-muted mt-1">
+                The kind of business, not its name.
+              </span>
             </label>
           </div>
 
@@ -173,7 +231,9 @@ export function TestimonialCard() {
             <button className="btn-primary" type="submit" disabled={busy || body.trim().length < MIN_BODY}>
               {busy ? 'Sending…' : 'Send it'}
             </button>
-            <button className="btn-secondary" type="button" onClick={() => setOpen(false)}>Cancel</button>
+            {!alwaysOpen && (
+              <button className="btn-secondary" type="button" onClick={() => setOpen(false)}>Cancel</button>
+            )}
           </div>
         </form>
       )}

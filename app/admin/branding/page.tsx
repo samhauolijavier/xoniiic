@@ -94,7 +94,7 @@ export default function BrandingPage() {
   const [heroHeadline, setHeroHeadline] = useState('Nobody hires you without experience. Start here.')
   const [heroSubtitle, setHeroSubtitle] = useState('Build a profile that shows real work, practice on live systems, and get found by people hiring directly. Free, and it stays free.')
   const [heroCta1, setHeroCta1] = useState('Make a free profile')
-  const [heroCta2, setHeroCta2] = useState('See the practice account')
+  const [heroCta2, setHeroCta2] = useState("I'm hiring")
   const [heroStat1Value, setHeroStat1Value] = useState('')
   const [heroStat1Label, setHeroStat1Label] = useState('')
   const [heroStat2Value, setHeroStat2Value] = useState('')

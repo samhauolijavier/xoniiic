@@ -299,6 +299,20 @@ export default async function Home() {
               </div>
             ))}
           </div>
+
+          {/* Step two is the one that needs somewhere to work. Named as a
+              link rather than a CTA — the sandbox is one feature for one
+              skill, and putting it in a button reads as the whole product. */}
+          <p className="text-center text-sm text-brand-muted mt-10 max-w-xl mx-auto leading-relaxed">
+            Step two goes faster with somewhere to actually work.{' '}
+            <Link
+              href="/sandbox"
+              className="text-brand-purple hover:text-brand-pink transition-colors underline underline-offset-2"
+            >
+              Practice on real systems
+            </Link>{' '}
+            &mdash; GoHighLevel is open now.
+          </p>
         </div>
       </section>
 
@@ -348,11 +362,12 @@ export default async function Home() {
             <span className="gradient-text">top remote talent?</span>
           </h2>
           <p className="text-brand-muted text-lg mb-8 max-w-2xl mx-auto">
-            Browse thousands of skilled freelancers. It&apos;s completely free for employers — no hidden fees, no subscriptions.
+            Free for employers, permanently — no commission on what you pay, no subscription, and no
+            fee to make contact. Make an account and you can see everyone on the platform.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/browse" className="btn-primary text-base px-8 py-3">
-              Start Browsing Free
+            <Link href="/register?role=employer&redirect=/browse" className="btn-primary text-base px-8 py-3">
+              Start hiring — free
             </Link>
             <Link href="/register?role=seeker" className="btn-secondary text-base px-8 py-3">
               Post Your Profile
