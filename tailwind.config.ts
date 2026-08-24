@@ -19,7 +19,7 @@ const config: Config = {
           pink: '#e879f9',
           orange: '#f97316',
           text: '#1a1418',
-          muted: '#837b80',
+          muted: '#6f676c',
         },
       },
       backgroundImage: {

@@ -39,7 +39,10 @@
   --brand-pink: #e879f9;
   --brand-orange: #f97316;
   --brand-text: #1a1418;    /* ink, warmed slightly toward the brand */
-  --brand-muted: #837b80;
+  /* 5.22:1 on paper. It was #837b80, which measured 3.92:1 — under the 4.5:1
+     WCAG AA needs for body text, and this is the colour most of the site's
+     prose is set in. */
+  --brand-muted: #6f676c;
 }
 
 * {

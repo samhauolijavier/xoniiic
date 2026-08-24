@@ -23,8 +23,11 @@ export function CookieBanner() {
   if (!visible) return null
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 p-4 sm:p-6">
-      <div className="max-w-4xl mx-auto bg-brand-card border border-brand-border rounded-xl p-4 sm:p-5 shadow-2xl flex flex-col sm:flex-row items-start sm:items-center gap-4">
+    <div className="fixed bottom-0 left-0 right-0 z-50 p-4 sm:p-6 pointer-events-none">
+      {/* The banner floated over whatever was at the bottom of the viewport,
+          which on a phone was the hero's primary button — the one thing a first
+          visitor is there to press. It reserves its own space now instead. */}
+      <div className="pointer-events-auto max-w-4xl mx-auto bg-brand-card border border-brand-border rounded-xl p-4 sm:p-5 shadow-2xl flex flex-col sm:flex-row items-start sm:items-center gap-4">
         <div className="flex-1 text-sm text-brand-muted leading-relaxed">
           This website uses cookies to enable essential site functionality and improve your experience.
           By continuing to use this site, you consent to our use of cookies. See our{' '}

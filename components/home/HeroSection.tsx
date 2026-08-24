@@ -88,7 +88,7 @@ export function HeroSection() {
   const gradientWords = words.slice(words.length - gradientCount).join(' ')
 
   return (
-    <section className="relative overflow-hidden hero-bg py-20 lg:py-32">
+    <section className="relative overflow-hidden hero-bg py-12 sm:py-20 lg:py-32">
       {/* Background decorations */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute -top-40 -left-40 w-96 h-96 bg-brand-purple/10 rounded-full blur-3xl" />
@@ -105,12 +105,12 @@ export function HeroSection() {
           </div>
 
           {/* Heading */}
-          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black leading-tight mb-6">
+          <h1 className="text-[32px] leading-[1.12] sm:text-5xl sm:leading-tight lg:text-7xl font-black mb-5 sm:mb-6">
             {normalWords}{' '}
             <span className="brand-text-gradient">{gradientWords}</span>
           </h1>
 
-          <p className="text-lg sm:text-xl text-brand-muted max-w-2xl mx-auto mb-10 leading-relaxed">
+          <p className="text-base sm:text-xl text-brand-muted max-w-2xl mx-auto mb-7 sm:mb-10 leading-relaxed">
             {heroSubtitle}
           </p>
 
