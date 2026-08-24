@@ -1,7 +1,7 @@
 import Link from 'next/link'
 
 export const metadata = {
-  title: 'Privacy Policy | Virtual Freaks',
+  title: 'Privacy Policy',
   description: 'Privacy Policy for Virtual Freaks — the remote talent marketplace.',
 }
 

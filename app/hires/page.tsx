@@ -1,3 +1,9 @@
+export const metadata = {
+  title: 'Your hires',
+  // Signed-in pages are private; keeping them out of an index is the point.
+  robots: { index: false, follow: false },
+}
+
 export const dynamic = 'force-dynamic'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'

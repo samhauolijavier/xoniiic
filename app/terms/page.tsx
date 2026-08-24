@@ -1,7 +1,7 @@
 import Link from 'next/link'
 
 export const metadata = {
-  title: 'Terms of Service | Virtual Freaks',
+  title: 'Terms of Service',
   description: 'Terms of Service for Virtual Freaks — the remote talent marketplace.',
 }
 

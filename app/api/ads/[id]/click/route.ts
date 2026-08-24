@@ -12,6 +12,27 @@ export const dynamic = 'force-dynamic'
  * column on the admin screen mean anything — and that number is what an
  * advertiser is actually buying.
  */
+
+/**
+ * Sends somebody on, or home if the destination is unusable.
+ *
+ * Only http and https. The destination comes from an advertiser, and without
+ * this a javascript: or data: URL typed into the admin form would be handed to
+ * a visitor's browser by our own domain.
+ */
+function redirectTo(linkUrl: string, fallback: string) {
+  let destination: URL
+  try {
+    destination = new URL(linkUrl)
+  } catch {
+    return NextResponse.redirect(fallback)
+  }
+  if (destination.protocol !== 'http:' && destination.protocol !== 'https:') {
+    return NextResponse.redirect(fallback)
+  }
+  return NextResponse.redirect(destination.toString())
+}
+
 export async function GET(
   _req: NextRequest,
   { params }: { params: { id: string } }
@@ -48,6 +69,20 @@ export async function GET(
       }).catch(error => console.error('Ad click log failed:', error))
     }
 
+    // Only a signed-in click counts.
+    //
+    // Adverts render exclusively to members, so a click arriving with no
+    // session is a crawler, a preview bot, or somebody following a stale link
+    // — Providence walked this very endpoint during an audit and would have
+    // added one. An advertiser is buying a number that means people; a number
+    // inflated by robots is worse than no number, because it is believed.
+    //
+    // The redirect still happens either way. Whoever it is still gets where
+    // they were going; they are simply not counted as an audience.
+    if (!viewer?.id) {
+      return redirectTo(ad.linkUrl, fallback)
+    }
+
     // Counted without waiting: a slow write should never sit between somebody
     // clicking and the page they wanted.
     db.adSlot.update({
@@ -59,20 +94,7 @@ export async function GET(
       },
     }).catch(error => console.error('Ad click count failed:', error))
 
-    // Only http and https. The destination is supplied by an advertiser, and
-    // without this check a javascript: or data: URL entered in the admin form
-    // would be handed to a visitor's browser from our own domain.
-    let destination: URL
-    try {
-      destination = new URL(ad.linkUrl)
-    } catch {
-      return NextResponse.redirect(fallback)
-    }
-    if (destination.protocol !== 'http:' && destination.protocol !== 'https:') {
-      return NextResponse.redirect(fallback)
-    }
-
-    return NextResponse.redirect(destination.toString())
+    return redirectTo(ad.linkUrl, fallback)
   } catch (error) {
     console.error('Ad click error:', error)
     return NextResponse.redirect(fallback)
