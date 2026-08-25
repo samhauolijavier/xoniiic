@@ -502,6 +502,19 @@ button {
    is rendered without a flash of the wrong theme or a client component.       */
 
 .page-ink {
+  /* Two systems needed remapping, not one.
+     Tailwind compiles bg-brand-card and friends to literal hex, so those are
+     handled by the utility overrides further down. But everything defined in
+     this stylesheet — .hero-bg, .card, .btn-*, .input-field — reads the
+     variables, and .hero-bg ends in var(--brand-bg). Left alone it painted
+     paper underneath white text, which is how vs-Upwork shipped illegible.
+     Redefining the variables here repairs all of them at once. */
+  --brand-bg: #0f0d11;
+  --brand-card: #17121a;
+  --brand-border: rgba(255, 255, 255, 0.13);
+  --brand-text: #ffffff;
+  --brand-muted: rgba(255, 255, 255, 0.62);
+
   --ink-bg: #0f0d11;
   --ink-bg-2: #16131a;
   --ink-line: rgba(255, 255, 255, 0.13);
@@ -651,3 +664,8 @@ body:has(.page-ink) footer strong { color: #ffffff; }
   font-family: var(--font-display), "Archivo", system-ui, sans-serif;
   letter-spacing: -0.03em;
 }
+
+/* Anything that painted itself white explicitly. */
+.page-ink .bg-white { background-color: rgba(255, 255, 255, 0.04); }
+/* The hero wash reads well on ink — it just needed a dark floor under it. */
+.page-ink .hero-bg { background-color: #0f0d11; }
