@@ -9,6 +9,7 @@
  * knows it. A name, a face, a role, and something specific enough that it
  * could only have come from a real person is the whole argument.
  */
+import Link from 'next/link'
 import { db, withRetry } from '@/lib/db'
 
 export async function Testimonials({ limit = 3 }: { limit?: number }) {
@@ -21,7 +22,12 @@ export async function Testimonials({ limit = 3 }: { limit?: number }) {
     user: { name: string | null; seekerProfile: { username: string; avatarUrl: string | null } | null }
   }[] = []
 
+  let total = 0
+
   try {
+    total = await withRetry(() => db.testimonial.count({
+      where: { state: 'approved', consentPublic: true },
+    }))
     items = await withRetry(() => db.testimonial.findMany({
       where: { state: 'approved', consentPublic: true },
       orderBy: [{ featured: 'desc' }, { reviewedAt: 'desc' }],
@@ -44,12 +50,22 @@ export async function Testimonials({ limit = 3 }: { limit?: number }) {
 
   return (
     <section className="py-16 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-brand-text mb-2">
-        From people we placed
-      </h2>
-      <p className="text-brand-muted mb-8">
-        Written by them, in their words. Nothing here is edited.
-      </p>
+      <div className="flex items-end justify-between gap-4 flex-wrap mb-8">
+        <div>
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-brand-text mb-2">
+            From people we placed
+          </h2>
+          <p className="text-brand-muted">
+            Written by them, in their words. Nothing here is edited.
+          </p>
+        </div>
+        {/* Only once there is more to see than what is already on screen. */}
+        {total > items.length && (
+          <Link href="/testimonials" className="btn-secondary text-sm">
+            Read all {total} &rarr;
+          </Link>
+        )}
+      </div>
 
       <div className="grid md:grid-cols-3 gap-5">
         {items.map(t => (

@@ -76,6 +76,12 @@ const nextConfig = {
     return [
       { source: '/home', destination: '/', permanent: true },
 
+      // The form used to live at the singular. One letter from the public page,
+      // which sent the first person who guessed to a 404. The invitation emails
+      // carrying the old path have not gone out yet, but this costs nothing and
+      // outlives anyone's memory of the rename.
+      { source: '/testimonial', destination: '/testimonials/write', permanent: true },
+
       // Two pages advertising products that do not exist.
       //
       // /verified-partner said "coming soon! Stay tuned" and /premium sold a

@@ -15,7 +15,7 @@ import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { authOptions } from '@/lib/auth'
-import { TestimonialCard } from '../dashboard/TestimonialCard'
+import { TestimonialCard } from '../../dashboard/TestimonialCard'
 
 export const dynamic = 'force-dynamic'
 
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 
 export default async function TestimonialPage() {
   const session = await getServerSession(authOptions)
-  if (!session?.user) redirect('/login?callbackUrl=/testimonial')
+  if (!session?.user) redirect('/login?callbackUrl=/testimonials/write')
 
   return (
     <div className="max-w-2xl mx-auto px-4 sm:px-6 py-10">

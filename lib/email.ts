@@ -196,11 +196,11 @@ export async function sendTestimonialInviteEmail(opts: {
   // Two doors, because half of them have an account and half do not, and
   // sending someone to a signup page they do not need is how you lose them.
   const primary = opts.hasAccount
-    ? { href: `${site}/login?callbackUrl=/testimonial`, label: 'Sign in and write it' }
-    : { href: `${site}/register?role=seeker&redirect=/testimonial`, label: 'Make an account' }
+    ? { href: `${site}/login?callbackUrl=/testimonials/write`, label: 'Sign in and write it' }
+    : { href: `${site}/register?role=seeker&redirect=/testimonials/write`, label: 'Make an account' }
   const secondary = opts.hasAccount
-    ? { href: `${site}/register?role=seeker&redirect=/testimonial`, label: 'Make an account' }
-    : { href: `${site}/login?callbackUrl=/testimonial`, label: 'Sign in' }
+    ? { href: `${site}/register?role=seeker&redirect=/testimonials/write`, label: 'Make an account' }
+    : { href: `${site}/login?callbackUrl=/testimonials/write`, label: 'Sign in' }
 
   // Rendered from the same source the dashboard form uses, so the questions
   // somebody reads in the email are the questions waiting when they arrive.

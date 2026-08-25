@@ -549,7 +549,7 @@ export function Navbar() {
                         )}
                         {user?.role === 'seeker' && (
                           <Link
-                            href="/testimonial"
+                            href="/testimonials/write"
                             onClick={() => setDropdownOpen(false)}
                             className="block px-4 py-2 text-sm text-brand-muted hover:text-brand-text hover:bg-brand-border transition-all"
                           >
