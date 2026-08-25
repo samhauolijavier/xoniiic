@@ -40,9 +40,9 @@ export function HireSearch() {
           onChange={e => setQ(e.target.value)}
           placeholder="What do you need done?"
           aria-label="What do you need done?"
-          className="input-field flex-1 min-w-[220px]"
+          className="flex-1 min-w-[220px] rounded-full bg-white/[0.06] border border-white/18 px-5 py-3 text-white placeholder:text-white/40 focus:outline-none focus:border-white/45 transition-colors"
         />
-        <button className="btn-primary" type="submit">Find someone</button>
+        <button className="btn-grad whitespace-nowrap" type="submit">Find someone</button>
       </form>
 
       <div className="flex gap-2 flex-wrap mt-3">
@@ -51,7 +51,7 @@ export function HireSearch() {
             key={term}
             type="button"
             onClick={() => go(term)}
-            className="text-xs font-medium px-3 py-1.5 rounded-full border border-brand-border text-brand-muted hover:border-brand-purple hover:text-brand-purple transition-colors"
+            className="text-xs font-medium px-3 py-1.5 rounded-full border border-white/18 text-white/65 hover:border-white/50 hover:text-white transition-colors"
           >
             {term}
           </button>
