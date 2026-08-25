@@ -12,6 +12,21 @@ export default function Error({
 }) {
   useEffect(() => {
     console.error('Page error:', error)
+    // Tell someone who can act on it. Production strips the message and leaves
+    // a digest, so both go — the digest is what ties this to the server log.
+    try {
+      fetch('/api/client-error', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: error.message || String(error),
+          digest: error.digest ?? '',
+          path: typeof window !== 'undefined' ? window.location.pathname + window.location.search : '',
+        }),
+      }).catch(() => {})
+    } catch {
+      // Never let reporting be the thing that breaks the error page.
+    }
   }, [error])
 
   return (

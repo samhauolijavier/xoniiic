@@ -83,6 +83,33 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
+    /*
+     * Treat www and the bare domain as one site.
+     *
+     * The canonical host is now the apex, with www 308-ing to it. But a 308
+     * carries the query string across, so a callbackUrl built while somebody was
+     * on www — a stale tab, an old bookmark, a link shared before Facebook
+     * re-scraped — survives the redirect pointing at the wrong origin. NextAuth
+     * rejects it, correctly, because a callback to another origin is how open
+     * redirects happen, and the person gets ?error=Callback instead of their
+     * dashboard.
+     *
+     * So www is accepted and rewritten to the apex rather than refused. Anything
+     * genuinely off-site still falls back to baseUrl, which is the protection
+     * that mattered in the first place.
+     */
+    async redirect({ url, baseUrl }) {
+      try {
+        const target = new URL(url, baseUrl)
+        const base = new URL(baseUrl)
+        const bare = (h: string) => h.replace(/^www\./, '')
+        if (bare(target.hostname) !== bare(base.hostname)) return baseUrl
+        return `${base.origin}${target.pathname}${target.search}${target.hash}`
+      } catch {
+        return baseUrl
+      }
+    },
+
     async signIn({ user, account }) {
       if (account?.provider === 'google') {
         // Retry up to 4 times with longer delays for Google sign-in
