@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { signIn } from 'next-auth/react'
+import { safeRedirect } from '@/lib/safe-redirect'
 
 
 type Role = 'seeker' | 'employer'
@@ -12,7 +13,10 @@ export default function RegisterPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const initialRole = (searchParams.get('role') as Role) || 'seeker'
-  const redirectUrl = searchParams.get('redirect') || null
+  const redirectUrl = safeRedirect(searchParams.get('redirect'), '') || null
+  // Prefix, not equality. The homepage links into browse with a filter now —
+  // /browse?search=Figma — and an exact match silently stopped being true.
+  const headingForBrowse = redirectUrl?.startsWith('/browse') ?? false
   // Carried from a member's invite link: virtualfreaks.co/register?ref=CODE
   const referralCode = searchParams.get('ref')
 
@@ -115,7 +119,7 @@ export default function RegisterPage() {
           </Link>
           <h1 className="text-2xl font-bold text-brand-text">Create your account</h1>
           <p className="text-brand-muted mt-1">
-            {redirectUrl === '/browse'
+            {headingForBrowse
               ? 'Free to join, free to browse, free to hire. No card, no commission.'
               : 'Join the remote talent marketplace'}
           </p>

@@ -1,6 +1,10 @@
 import { ImageResponse } from 'next/og'
+import { getLogoUrl } from '@/lib/brand'
 
-export const runtime = 'edge'
+// Node rather than edge, so the real mark can be read from site settings.
+// These are the cards members post to Facebook and LinkedIn; a drawn stand-in
+// where the logo should be is the difference between a share that looks like
+// a company and one that looks like a side project.
 
 /*
  * The card LinkedIn and Facebook draw when somebody reposts their profile.
@@ -24,6 +28,7 @@ const RULE = '#e6e0e2'
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
+  const logoUrl = await getLogoUrl()
 
   const name = searchParams.get('name')
   const headline = searchParams.get('headline') || ''
@@ -44,24 +49,35 @@ export async function GET(request: Request) {
 
   const wordmark = (
     <div style={{ display: 'flex', alignItems: 'center' }}>
-      <div
-        style={{
-          width: 30,
-          height: 30,
-          borderRadius: 8,
-          background: ACCENT,
-          color: '#fff',
-          fontSize: 15,
-          fontWeight: 700,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          marginRight: 10,
-        }}
-      >
-        VF
-      </div>
-      <div style={{ fontSize: 20, fontWeight: 700, color: INK, letterSpacing: '0.02em' }}>
+      {logoUrl ? (
+        /* eslint-disable-next-line @next/next/no-img-element */
+        <img
+          src={logoUrl}
+          alt=""
+          width={52}
+          height={49}
+          style={{ width: 52, height: 49, objectFit: 'contain', marginRight: 11 }}
+        />
+      ) : (
+        <div
+          style={{
+            width: 30,
+            height: 30,
+            borderRadius: 8,
+            background: ACCENT,
+            color: '#fff',
+            fontSize: 15,
+            fontWeight: 700,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginRight: 10,
+          }}
+        >
+          VF
+        </div>
+      )}
+      <div style={{ fontSize: 21, fontWeight: 700, color: INK, letterSpacing: '0.02em' }}>
         VIRTUAL FREAKS
       </div>
     </div>

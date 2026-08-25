@@ -16,8 +16,10 @@
  * describes the problem somebody is scrolling with.
  */
 import { ImageResponse } from 'next/og'
+import { getLogoUrl } from '@/lib/brand'
 
-export const runtime = 'edge'
+// Node rather than edge: the mark is a site setting in the database, and the
+// card should carry the real logo rather than a drawn stand-in.
 export const alt = 'Virtual Freaks — build a profile that shows real work'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
@@ -29,6 +31,8 @@ const ACCENT = '#a21caf'
 const RULE = '#e6e0e2'
 
 export default async function Image() {
+  const logoUrl = await getLogoUrl()
+
   return new ImageResponse(
     (
       <div
@@ -44,24 +48,35 @@ export default async function Image() {
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <div
-            style={{
-              width: 34,
-              height: 34,
-              borderRadius: 9,
-              background: ACCENT,
-              color: '#fff',
-              fontSize: 17,
-              fontWeight: 700,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginRight: 12,
-            }}
-          >
-            VF
-          </div>
-          <div style={{ fontSize: 22, fontWeight: 700, color: INK, letterSpacing: '0.02em' }}>
+          {logoUrl ? (
+            /* eslint-disable-next-line @next/next/no-img-element */
+            <img
+              src={logoUrl}
+              alt=""
+              width={72}
+              height={68}
+              style={{ width: 72, height: 68, objectFit: 'contain', marginRight: 14 }}
+            />
+          ) : (
+            <div
+              style={{
+                width: 34,
+                height: 34,
+                borderRadius: 9,
+                background: ACCENT,
+                color: '#fff',
+                fontSize: 17,
+                fontWeight: 700,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginRight: 12,
+              }}
+            >
+              VF
+            </div>
+          )}
+          <div style={{ fontSize: 24, fontWeight: 700, color: INK, letterSpacing: '0.02em' }}>
             VIRTUAL FREAKS
           </div>
         </div>

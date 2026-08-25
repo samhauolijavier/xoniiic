@@ -1,83 +1,148 @@
 /*
  * Browse by category.
  *
- * This used to be six emoji sitting in rounded gradient tiles, each a different
- * unrelated hue — blue, pink, teal, amber, red, indigo. That exact treatment is
- * on every generated landing page of the last two years and is recognisable on
- * sight. It also fought the brand: six rainbow tiles beside a fuchsia mark
- * means the page has no colour of its own.
+ * Two rewrites ago this was six emoji in rounded gradient tiles — the treatment
+ * on every generated landing page of the last two years. It became a plain
+ * ruled grid, which fixed the cliché and introduced a different problem: six
+ * identical grey cells, no hierarchy, and a number nobody could interpret.
  *
- * Typography carries it instead. A category is a word and a number, and both
- * are more useful than a picture of a wrench. The number is set in monospace
- * because it is data, and it is counted from the database now rather than typed
- * in — the old counts were hardcoded and drifted from the truth the moment
- * anybody added a skill.
+ * It is a list now rather than a grid. Full-width rows scan faster than a 3x2
+ * block, they still work at twelve categories, and the brand arrives as a tick
+ * against each name instead of as a background.
+ *
+ * The bigger change is what a row contains. Nobody thinks "I need a Marketing
+ * person" — they think "I need someone who can run Meta ads". So the
+ * description sentence is gone and the skills themselves are links. Six
+ * clickable areas becomes thirty, each landing on a real search, each a term
+ * somebody actually types into Google.
+ *
+ * And the count is people now, not skills. The old number was how many skills
+ * existed in a category, which read as how many freelancers were in it. It
+ * flattered us at launch and would have badly undersold us later, and it was
+ * never the number a person browsing wanted.
  */
 import Link from 'next/link'
 import { db, withRetry } from '@/lib/db'
+import { publiclyListable } from '@/lib/constants'
 
-const CATEGORIES = [
-  { name: 'Development', description: 'React, Node.js, Python, full-stack' },
-  { name: 'Design', description: 'Figma, UI/UX, branding, video' },
-  { name: 'Virtual Assistant', description: 'Admin, customer support, research' },
-  { name: 'Writing', description: 'Copywriting, SEO, blog, technical' },
-  { name: 'Marketing', description: 'Ads, SEO, social media, analytics' },
-  { name: 'Other', description: 'Finance, HR, teaching, translation' },
+/* Stops from the mark, assigned by name so the colours do not shuffle when the
+   rows reorder. "Other" stays grey — it is a catch-all, not a category. */
+const CATEGORIES: { name: string; tick: string; fallback: string[] }[] = [
+  { name: 'Virtual Assistant', tick: '#a21caf', fallback: ['Admin', 'Customer support', 'Research'] },
+  { name: 'Development', tick: '#e879f9', fallback: ['React', 'Node.js', 'Python'] },
+  { name: 'Design', tick: '#f472b6', fallback: ['Figma', 'UI/UX', 'Branding'] },
+  { name: 'Marketing', tick: '#f97316', fallback: ['Ads', 'SEO', 'Social media'] },
+  { name: 'Writing', tick: '#facc15', fallback: ['Copywriting', 'Blog', 'Technical'] },
+  { name: 'Other', tick: '#6f676c', fallback: ['Finance', 'HR', 'Translation'] },
 ]
 
+const CHIPS_PER_ROW = 5
+
 export async function CategoryGrid() {
-  let counts: Record<string, number> = {}
+  // People per category, and the skills those people actually hold. One read
+  // rather than twelve, and it guarantees every chip leads somewhere with
+  // somebody in it — a link to an empty result is worse than no link.
+  const people = new Map<string, Set<string>>()
+  const skillHolders = new Map<string, Map<string, number>>()
+
   try {
-    const grouped = await withRetry(() => db.skill.groupBy({
-      by: ['category'],
-      where: { active: true },
-      _count: { _all: true },
+    const rows = await withRetry(() => db.seekerSkill.findMany({
+      where: {
+        profile: { openToWork: true, user: publiclyListable() },
+      },
+      select: {
+        profileId: true,
+        skill: { select: { name: true, category: true } },
+      },
     }))
-    counts = Object.fromEntries(grouped.map(g => [g.category, g._count._all]))
+
+    for (const row of rows) {
+      const category = row.skill.category
+      if (!people.has(category)) people.set(category, new Set())
+      people.get(category)!.add(row.profileId)
+
+      if (!skillHolders.has(category)) skillHolders.set(category, new Map())
+      const bucket = skillHolders.get(category)!
+      bucket.set(row.skill.name, (bucket.get(row.skill.name) ?? 0) + 1)
+    }
   } catch (error) {
-    // A category with no number still works as a link. An invented count is
-    // worse than no count.
-    console.error('Category counts failed:', error)
+    // Falls back to the written skill lists below. A category with no number
+    // still works as a link; an invented count does not.
+    console.error('Category rollup failed:', error)
   }
+
+  const rows = CATEGORIES.map(category => {
+    const count = people.get(category.name)?.size ?? 0
+    const held = skillHolders.get(category.name)
+    const chips = held
+      ? Array.from(held.entries()).sort((a, b) => b[1] - a[1]).slice(0, CHIPS_PER_ROW).map(([name]) => name)
+      : []
+    return { ...category, count, chips: chips.length ? chips : category.fallback, live: chips.length > 0 }
+  })
+
+  // Busiest first, so the row somebody is most likely to want is the row they
+  // read first. Ties keep the written order above.
+  rows.sort((a, b) => b.count - a.count)
 
   return (
     <section className="py-16 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="mb-8">
         <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-brand-text mb-2">
-          Browse by category
+          Browse by skill
         </h2>
         <p className="text-brand-muted">
-          Six areas, one directory. Everyone here can be contacted directly.
+          Tap anything to see who can do it. Everyone here can be contacted directly.
         </p>
       </div>
 
-      {/* One-pixel gaps over a border, so the grid reads as a single ruled
-          object rather than six floating cards with six drop shadows. */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-brand-border border border-brand-border rounded-xl overflow-hidden">
-        {CATEGORIES.map(category => {
-          const count = counts[category.name]
-          return (
+      <div className="border-t border-brand-border">
+        {rows.map(row => (
+          <div
+            key={row.name}
+            className="group grid gap-2.5 sm:gap-5 sm:grid-cols-[minmax(150px,210px)_1fr_auto] sm:items-center py-4 border-b border-brand-border transition-colors hover:bg-brand-card"
+          >
             <Link
-              key={category.name}
-              href={`/browse?category=${encodeURIComponent(category.name)}`}
-              className="group bg-brand-card p-5 transition-colors hover:bg-brand-purple/[0.04]"
+              href={`/browse?category=${encodeURIComponent(row.name)}`}
+              className="flex items-center gap-2.5 font-semibold text-brand-text hover:text-brand-purple transition-colors"
             >
-              <div className="flex items-baseline justify-between gap-3 mb-1.5">
-                <h3 className="font-semibold text-brand-text group-hover:text-brand-purple transition-colors">
-                  {category.name}
-                </h3>
-                {typeof count === 'number' && count > 0 && (
-                  <span className="font-mono text-xs text-brand-muted tabular-nums">
-                    {count}
-                  </span>
-                )}
-              </div>
-              <p className="text-sm text-brand-muted leading-relaxed">
-                {category.description}
-              </p>
+              <span
+                aria-hidden
+                className="w-[3px] h-[17px] rounded-sm flex-none"
+                style={{ background: row.tick }}
+              />
+              {row.name}
             </Link>
-          )
-        })}
+
+            <div className="flex flex-wrap gap-1.5">
+              {row.chips.map(skill => (
+                <Link
+                  key={skill}
+                  // ?search= already matches on skill name, so these need no
+                  // new filter — and they are the terms people search for.
+                  href={`/browse?search=${encodeURIComponent(skill)}`}
+                  className="text-xs sm:text-[13px] rounded-full border border-brand-border bg-brand-bg px-2.5 py-1 text-brand-text hover:border-brand-purple hover:text-brand-purple transition-colors"
+                >
+                  {skill}
+                </Link>
+              ))}
+            </div>
+
+            <Link
+              href={`/browse?category=${encodeURIComponent(row.name)}`}
+              className="flex items-center gap-3 font-mono text-xs text-brand-muted tabular-nums whitespace-nowrap hover:text-brand-purple transition-colors"
+            >
+              {/* No count rather than a zero. "0 available" is an argument for
+                  leaving, and every category starts there. */}
+              {row.count > 0 ? `${row.count} available` : 'Be the first'}
+              <span
+                aria-hidden
+                className="text-brand-purple opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all"
+              >
+                &rarr;
+              </span>
+            </Link>
+          </div>
+        ))}
       </div>
     </section>
   )

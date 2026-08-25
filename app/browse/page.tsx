@@ -95,7 +95,17 @@ export default async function BrowsePage({
 }) {
   const session = await getServerSession(authOptions)
   if (!session?.user) {
-    redirect('/register?role=employer&redirect=/browse')
+    // Carry the filter through the register wall. The homepage now links
+    // straight to a skill — "Figma", "Meta ads" — and sending somebody who
+    // clicked one to a bare directory after signing up loses the only thing
+    // they told us they wanted.
+    const query = new URLSearchParams(
+      Object.entries(searchParams).flatMap(([key, value]) =>
+        typeof value === 'string' && value ? [[key, value] as [string, string]] : []
+      )
+    ).toString()
+    const target = query ? `/browse?${query}` : '/browse'
+    redirect(`/register?role=employer&redirect=${encodeURIComponent(target)}`)
   }
 
   // Track skill search for trending
