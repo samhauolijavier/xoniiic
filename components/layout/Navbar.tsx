@@ -236,6 +236,12 @@ export function Navbar() {
       { href: '/admin/leads', label: '\u{1F4CB} Leads' },
       { href: '/browse', label: 'Browse' },
     ],
+    // Signed in with Google and never picked a role. Without this the nav shows
+    // them nothing at all, which is how somebody ends up logged in with no
+    // route to their own profile and no error explaining why.
+    pending: [
+      { href: '/onboarding', label: 'Finish setting up' },
+    ],
   }
 
   const links = user ? (roleLinks[user.role as keyof typeof roleLinks] || []) : []

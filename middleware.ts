@@ -13,6 +13,20 @@ export default withAuth(
       }
     }
 
+    /*
+     * Somebody who signed in with Google and never finished choosing a role.
+     *
+     * That sign-in creates the account with role 'pending' and no profile — the
+     * profile is made at /onboarding, once they pick. Nothing sent them back
+     * there, and every route that would let them finish is gated on the role
+     * they have not picked yet. So they logged in, got bounced to /browse, and
+     * had no way to reach or edit a profile. Ever. There was no error to see;
+     * the door simply was not there.
+     */
+    if (token && token.role === 'pending' && !pathname.startsWith('/onboarding')) {
+      return NextResponse.redirect(new URL('/onboarding', req.url))
+    }
+
     // Seeker-only routes
     if (pathname.startsWith('/dashboard') || pathname.startsWith('/profile/edit')) {
       if (token?.role !== 'seeker' && token?.role !== 'admin') {
