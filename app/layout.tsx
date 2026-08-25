@@ -41,20 +41,15 @@ export const metadata: Metadata = {
     siteName: 'Virtual Freaks',
     type: 'website',
     locale: 'en_US',
-    images: [
-      {
-        url: '/api/og',
-        width: 1200,
-        height: 630,
-        alt: 'Virtual Freaks — The Marketplace for Remote Talent',
-      },
-    ],
+    // No images here on purpose. app/opengraph-image.tsx is the homepage card
+    // and Next's file convention overrides this field, so a URL here would be
+    // decorative — and misleading to whoever reads it next.
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Virtual Freaks | The Marketplace for Remote Talent',
     description: 'Connect with top remote talent worldwide. Browse skilled freelancers — completely free for employers.',
-    images: ['/api/og'],
+    // Same story: app/twitter-image or the opengraph-image file wins here.
   },
   robots: {
     index: true,

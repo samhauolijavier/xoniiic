@@ -1,118 +1,128 @@
+/*
+ * The card that appears when somebody pastes virtualfreaks.co anywhere.
+ *
+ * This file quietly outranks everything else: Next's opengraph-image convention
+ * takes precedence over metadata.images, so the carefully built /api/og route
+ * was never reached for the homepage. What shipped instead was the old dark
+ * site — near-black, gradient wordmark, three emoji buttons — which stopped
+ * being what the site looked like some time ago.
+ *
+ * It matters more than its size suggests. The whole launch plan is people
+ * sharing this link, and this image is the first thing every one of those
+ * people sees. A preview that does not match the site reads as a dead project.
+ *
+ * The headline is the site's own, not the meta title. "The Marketplace for
+ * Remote Talent" describes a category; "Nobody hires you without experience"
+ * describes the problem somebody is scrolling with.
+ */
 import { ImageResponse } from 'next/og'
 
 export const runtime = 'edge'
-
-export const alt = 'Virtual Freaks — The Marketplace for Remote Talent'
+export const alt = 'Virtual Freaks — build a profile that shows real work'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
+
+const PAPER = '#fbf9f8'
+const INK = '#1a1418'
+const MUTED = '#6f676c'
+const ACCENT = '#a21caf'
+const RULE = '#e6e0e2'
 
 export default async function Image() {
   return new ImageResponse(
     (
       <div
         style={{
-          background: 'linear-gradient(135deg, #0a0a0f 0%, #12121a 50%, #0a0a0f 100%)',
           width: '100%',
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          position: 'relative',
+          justifyContent: 'space-between',
+          background: PAPER,
+          fontFamily: 'system-ui, sans-serif',
+          padding: 64,
         }}
       >
-        {/* Purple glow */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: '600px',
-            height: '600px',
-            borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%)',
-          }}
-        />
-
-        {/* VF Logo text */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '16px',
-            marginBottom: '24px',
-          }}
-        >
+        <div style={{ display: 'flex', alignItems: 'center' }}>
           <div
             style={{
-              fontSize: '72px',
-              fontWeight: 900,
-              background: 'linear-gradient(135deg, #a855f7, #ec4899, #f97316)',
-              backgroundClip: 'text',
-              color: 'transparent',
-              letterSpacing: '0.05em',
+              width: 34,
+              height: 34,
+              borderRadius: 9,
+              background: ACCENT,
+              color: '#fff',
+              fontSize: 17,
+              fontWeight: 700,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginRight: 12,
             }}
           >
+            VF
+          </div>
+          <div style={{ fontSize: 22, fontWeight: 700, color: INK, letterSpacing: '0.02em' }}>
             VIRTUAL FREAKS
           </div>
         </div>
 
-        {/* Tagline */}
-        <div
-          style={{
-            fontSize: '28px',
-            color: '#a1a1aa',
-            marginBottom: '48px',
-            textAlign: 'center',
-          }}
-        >
-          The Marketplace for Remote Talent
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <div
+            style={{
+              fontSize: 68,
+              fontWeight: 700,
+              color: INK,
+              letterSpacing: '-0.03em',
+              lineHeight: 1.05,
+              maxWidth: 1000,
+              display: 'flex',
+            }}
+          >
+            Nobody hires you without experience.
+          </div>
+          <div
+            style={{
+              fontSize: 68,
+              fontWeight: 700,
+              color: ACCENT,
+              letterSpacing: '-0.03em',
+              lineHeight: 1.05,
+              display: 'flex',
+              marginTop: 4,
+            }}
+          >
+            Start here.
+          </div>
+          <div
+            style={{
+              fontSize: 27,
+              color: MUTED,
+              marginTop: 22,
+              lineHeight: 1.35,
+              maxWidth: 920,
+              display: 'flex',
+            }}
+          >
+            A free profile that shows real work, and people hiring who can contact you directly.
+          </div>
         </div>
 
-        {/* Stats row */}
         <div
           style={{
             display: 'flex',
-            gap: '48px',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            borderTop: `1px solid ${RULE}`,
+            paddingTop: 26,
           }}
         >
-          {[
-            { label: 'Freelancers', icon: '👨‍💻' },
-            { label: 'Categories', icon: '📂' },
-            { label: 'Free for Employers', icon: '✨' },
-          ].map((item) => (
-            <div
-              key={item.label}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '12px 24px',
-                borderRadius: '12px',
-                border: '1px solid rgba(139, 92, 246, 0.3)',
-                background: 'rgba(139, 92, 246, 0.08)',
-              }}
-            >
-              <span style={{ fontSize: '24px' }}>{item.icon}</span>
-              <span style={{ color: '#d4d4d8', fontSize: '18px' }}>{item.label}</span>
-            </div>
-          ))}
-        </div>
-
-        {/* URL */}
-        <div
-          style={{
-            position: 'absolute',
-            bottom: '32px',
-            fontSize: '18px',
-            color: '#71717a',
-          }}
-        >
-          virtualfreaks.co
+          <div style={{ fontSize: 22, color: ACCENT, fontWeight: 600, display: 'flex' }}>
+            No commission, ever
+          </div>
+          <div style={{ fontSize: 20, color: MUTED, display: 'flex' }}>virtualfreaks.co</div>
         </div>
       </div>
     ),
-    { ...size }
+    size
   )
 }
