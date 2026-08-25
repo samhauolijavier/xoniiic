@@ -116,6 +116,7 @@ export default function TermsOfServicePage() {
             <li>The sandbox is shared with other members. Do not put real client data, personal records, or anything confidential into it. Treat everything in there as visible to others and impermanent.</li>
             <li>We may remove your sandbox user without refund if you use it to harm other members&apos; work, to send unsolicited messages, or in breach of GoHighLevel&apos;s own terms.</li>
             <li>Payments are made by GCash directly to us. Because access is granted immediately on confirmation, payments are not generally refundable &mdash; but if something goes wrong on our side, tell us and we will make it right.</li>
+            <li><strong className="text-brand-text">A practice account runs on GoHighLevel, and their rules apply to you as well as to us.</strong> By taking one you agree to abide by GoHighLevel&rsquo;s own terms of service. You may not resell, share or sub-license your access, and you may not use it to hold data belonging to anyone but yourself.</li>
             <li>Your Virtual Freaks profile, badges and messages are free and are not affected when a practice account ends.</li>
           </ul>
         </section>
@@ -276,8 +277,8 @@ export default function TermsOfServicePage() {
           <h2 className="text-xl font-bold text-brand-text mb-3">16. Contact</h2>
           <p className="text-brand-muted leading-relaxed">
             If you have any questions about these Terms of Service, please contact us at{' '}
-            <a href="mailto:support@virtualfreaks.com" className="text-brand-purple hover:text-brand-pink transition-colors">
-              support@virtualfreaks.com
+            <a href="mailto:support@virtualfreaks.co" className="text-brand-purple hover:text-brand-pink transition-colors">
+              support@virtualfreaks.co
             </a>
             .
           </p>

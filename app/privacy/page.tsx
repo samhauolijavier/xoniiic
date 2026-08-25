@@ -261,8 +261,8 @@ export default function PrivacyPolicyPage() {
           </ul>
           <p className="text-brand-muted leading-relaxed mt-3">
             To exercise any of these rights, please contact us at{' '}
-            <a href="mailto:support@virtualfreaks.com" className="text-brand-purple hover:text-brand-pink transition-colors">
-              support@virtualfreaks.com
+            <a href="mailto:support@virtualfreaks.co" className="text-brand-purple hover:text-brand-pink transition-colors">
+              support@virtualfreaks.co
             </a>
             . We will respond to your request within 30 days.
           </p>
@@ -273,8 +273,8 @@ export default function PrivacyPolicyPage() {
           <h2 className="text-xl font-bold text-brand-text mb-3">9. Children&apos;s Privacy</h2>
           <p className="text-brand-muted leading-relaxed">
             The Service is not directed to individuals under the age of 16. We do not knowingly collect personal information from children under 16. If we become aware that we have inadvertently collected personal information from a child under 16, we will take steps to delete that information promptly. If you believe a child has provided us with personal information, please contact us at{' '}
-            <a href="mailto:support@virtualfreaks.com" className="text-brand-purple hover:text-brand-pink transition-colors">
-              support@virtualfreaks.com
+            <a href="mailto:support@virtualfreaks.co" className="text-brand-purple hover:text-brand-pink transition-colors">
+              support@virtualfreaks.co
             </a>
             .
           </p>
@@ -306,8 +306,8 @@ export default function PrivacyPolicyPage() {
             <p>Virtual Freaks</p>
             <p>
               Email:{' '}
-              <a href="mailto:support@virtualfreaks.com" className="text-brand-purple hover:text-brand-pink transition-colors">
-                support@virtualfreaks.com
+              <a href="mailto:support@virtualfreaks.co" className="text-brand-purple hover:text-brand-pink transition-colors">
+                support@virtualfreaks.co
               </a>
             </p>
           </div>

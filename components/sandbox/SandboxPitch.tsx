@@ -18,11 +18,11 @@ import Link from 'next/link'
 
 export function SandboxPitch({
   price,
-  privatePrice,
+  privateContact,
   affiliateUrl,
 }: {
   price: number
-  privatePrice: number
+  privateContact: string | null
   affiliateUrl: string | null
 }) {
   return (
@@ -57,7 +57,8 @@ export function SandboxPitch({
             </Link>
           </div>
           <p className="quieter text-sm mt-5">
-            The profile and the briefs are free forever. Only the account below costs anything.
+            Your profile and the briefs are free forever. Practice time is the only thing here that
+            costs anything.
           </p>
         </div>
       </section>
@@ -82,16 +83,33 @@ export function SandboxPitch({
 
           <div className="py-9 grid sm:grid-cols-[minmax(0,14rem)_1fr] gap-5 sm:gap-10 border-b border-white/10">
             <div>
-              <p className="display-sm text-3xl sm:text-4xl">&#8369;{privatePrice}</p>
-              <p className="quieter text-sm mt-1.5">a month</p>
+              <p className="display-sm text-3xl sm:text-4xl">Ask us</p>
+              <p className="quieter text-sm mt-1.5">arranged case by case</p>
             </div>
             <div>
-              <h2 className="display-sm text-xl sm:text-2xl mb-2">Your own sub-account</h2>
-              <p className="quiet text-[15px] leading-relaxed max-w-[54ch]">
-                A sub-account nobody else is in. What you build stays built, so you can keep a
-                working funnel, a real pipeline and a calendar you can screen-share in an interview.
-                For your own learning and your own business.
+              <h2 className="display-sm text-xl sm:text-2xl mb-2">A private space of your own</h2>
+              <p className="quiet text-[15px] leading-relaxed max-w-[54ch] mb-4">
+                Somewhere nobody else can touch. What you build stays built &mdash; a working funnel,
+                a real pipeline, a calendar you can screen-share in an interview without somebody
+                else&rsquo;s half-finished experiment in the frame.
               </p>
+              {/* No price here on purpose. Ours is arranged per person, and what
+                  suits somebody depends entirely on what they are actually
+                  doing with it — which is a conversation, not a checkout. */}
+              {privateContact ? (
+                <a
+                  href={privateContact}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block text-sm text-white/80 hover:text-white border-b border-white/30 hover:border-white pb-0.5 transition-colors"
+                >
+                  Need your own private space to practice and build? Message us
+                </a>
+              ) : (
+                <p className="quieter text-sm">
+                  Need your own private space to practice and build? Get in touch and we will sort it out.
+                </p>
+              )}
             </div>
           </div>
 
