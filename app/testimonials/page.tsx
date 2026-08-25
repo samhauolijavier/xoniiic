@@ -54,7 +54,7 @@ export default async function TestimonialsPage() {
   }
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="page-ink"><div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
       <h1 className="text-3xl sm:text-4xl font-black text-brand-text mb-3">
         Stories from people we <span className="gradient-text">placed</span>
       </h1>
@@ -83,7 +83,7 @@ export default async function TestimonialsPage() {
           {items.map(t => {
             const username = t.user.seekerProfile?.username
             const body = (
-              <blockquote className="card p-6 flex flex-col h-full">
+              <blockquote className="rounded-xl border border-white/12 bg-white/[0.03] p-6 flex flex-col h-full">
                 {t.videoUrl && (
                   /* eslint-disable-next-line jsx-a11y/media-has-caption */
                   <video
@@ -139,6 +139,6 @@ export default async function TestimonialsPage() {
           &mdash; it takes a few minutes and it is the thing that helps the next person most.
         </p>
       </div>
-    </div>
+    </div></div>
   )
 }

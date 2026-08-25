@@ -23,37 +23,44 @@ export function CookieBanner() {
   if (!visible) return null
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 p-4 sm:p-6 pointer-events-none">
-      {/* The banner floated over whatever was at the bottom of the viewport,
-          which on a phone was the hero's primary button — the one thing a first
-          visitor is there to press. It reserves its own space now instead. */}
-      <div className="pointer-events-auto max-w-4xl mx-auto bg-brand-card border border-brand-border rounded-xl p-4 sm:p-5 shadow-2xl flex flex-col sm:flex-row items-start sm:items-center gap-4">
-        <div className="flex-1 text-sm text-brand-muted leading-relaxed">
-          This website uses cookies to enable essential site functionality and improve your experience.
-          By continuing to use this site, you consent to our use of cookies. See our{' '}
-          <Link href="/cookie-policy" className="text-brand-purple hover:text-brand-pink transition-colors underline">
-            Cookie Policy
-          </Link>{' '}
-          and{' '}
-          <Link href="/privacy" className="text-brand-purple hover:text-brand-pink transition-colors underline">
-            Privacy Policy
-          </Link>.
-        </div>
-        <div className="flex items-center gap-3 shrink-0">
-          <button
-            onClick={accept}
-            className="btn-primary px-5 py-2 text-sm"
-          >
-            Accept
-          </button>
-          <button
-            onClick={accept}
-            className="text-sm text-brand-muted hover:text-brand-text transition-colors"
-          >
-            Dismiss
-          </button>
-        </div>
+    /*
+     * A bar, not a panel.
+     *
+     * Three sentences of consent copy wrapped over four lines and took roughly
+     * a third of a phone screen at every scroll position — sitting on top of
+     * whatever the visitor was actually reading. Nobody reads a cookie notice;
+     * they look for the button. So it says the necessary thing in one line,
+     * puts the button where a thumb already is, and gets out of the way.
+     *
+     * Still the full disclosure: the links are the disclosure, and they are
+     * where somebody who cares will look for them.
+     */
+    <div className="fixed bottom-0 left-0 right-0 z-50 p-2.5 sm:p-4 pointer-events-none">
+      <div className="pointer-events-auto max-w-3xl mx-auto rounded-xl border border-white/12 bg-[#17121a]/95 backdrop-blur-md shadow-2xl px-4 py-3 flex items-center gap-3">
+        <p className="flex-1 text-[13px] leading-snug text-white/65 min-w-0">
+          We use cookies to keep the site working.{' '}
+          <Link href="/cookie-policy" className="text-white/85 hover:text-white underline underline-offset-2">
+            Cookies
+          </Link>
+          {' · '}
+          <Link href="/privacy" className="text-white/85 hover:text-white underline underline-offset-2">
+            Privacy
+          </Link>
+        </p>
+        <button
+          onClick={accept}
+          className="flex-none rounded-full bg-white text-[#17121a] font-semibold text-[13px] px-4 py-2 hover:opacity-90 transition-opacity"
+        >
+          Got it
+        </button>
+        <button
+          onClick={accept}
+          aria-label="Dismiss"
+          className="flex-none text-white/45 hover:text-white transition-colors text-lg leading-none px-1"
+        >
+          &times;
+        </button>
       </div>
     </div>
-  )
+    )
 }

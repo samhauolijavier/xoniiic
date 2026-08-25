@@ -63,7 +63,7 @@ const differentiators = [
 
 export default function AboutPage() {
   return (
-    <>
+    <div className="page-ink">
       <JsonLd
         data={{
           '@context': 'https://schema.org',
@@ -199,6 +199,6 @@ export default function AboutPage() {
           </div>
         </section>
       </div>
-    </>
+    </div>
   )
 }

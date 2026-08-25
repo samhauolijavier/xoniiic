@@ -32,7 +32,7 @@ const comparisonRows = [
 
 export default function VsUpworkPage() {
   return (
-    <>
+    <div className="page-ink">
       <JsonLd
         data={{
           '@context': 'https://schema.org',
@@ -239,6 +239,6 @@ export default function VsUpworkPage() {
           </div>
         </section>
       </div>
-    </>
+    </div>
   )
 }

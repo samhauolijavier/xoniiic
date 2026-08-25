@@ -7,7 +7,7 @@ export const metadata = {
 
 export default function TermsOfServicePage() {
   return (
-    <div className="max-w-4xl mx-auto px-4 py-12">
+    <div className="page-ink"><div className="max-w-4xl mx-auto px-4 py-16">
       <div className="mb-10">
         <h1 className="text-4xl font-black gradient-text mb-3">Terms of Service</h1>
         <p className="text-brand-muted text-sm">Effective date: 25 August 2026</p>
@@ -294,6 +294,6 @@ export default function TermsOfServicePage() {
           Privacy Policy
         </Link>
       </div>
-    </div>
+    </div></div>
   )
 }

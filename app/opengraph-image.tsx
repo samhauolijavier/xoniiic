@@ -121,7 +121,7 @@ export default async function Image() {
               display: 'flex',
             }}
           >
-            No commission on your rate. No fee to apply. Free for freelancers and businesses alike.
+            No fee to apply. No charge to message anyone. And no commission on what you earn.
           </div>
         </div>
 

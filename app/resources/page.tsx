@@ -61,7 +61,7 @@ export default async function ResourcesPage() {
   const tracks = Object.keys(grouped)
 
   return (
-    <div className="max-w-4xl mx-auto px-5 py-14">
+    <div className="page-ink"><div className="max-w-4xl mx-auto px-5 py-16 sm:py-20">
       <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-3">Resources</h1>
       <p className="text-brand-muted text-base leading-relaxed mb-10 max-w-2xl">
         The briefs and templates from the videos. Download them and do the work — this is the
@@ -124,6 +124,6 @@ export default async function ResourcesPage() {
         </p>
         <Link href="/sandbox" className="btn-primary">See the practice account</Link>
       </div>
-    </div>
+    </div></div>
   )
 }

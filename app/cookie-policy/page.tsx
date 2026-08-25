@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function CookiePolicyPage() {
   return (
-    <div className="hero-bg min-h-screen">
+    <div className="page-ink min-h-screen">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <h1 className="text-3xl font-bold text-brand-text mb-2">Cookie Policy</h1>
         <p className="text-sm text-brand-muted mb-8">

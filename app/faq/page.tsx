@@ -63,7 +63,7 @@ const faqSchema = {
 
 export default function FAQPage() {
   return (
-    <div className="min-h-screen bg-brand-bg">
+    <div className="page-ink min-h-screen">
       <JsonLd data={faqSchema} />
 
       {/* Hero */}

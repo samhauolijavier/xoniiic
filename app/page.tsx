@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Nobody should have to pay to get hired.',
     description:
-      'No commission on your rate. No fee to apply. No charge to message anyone. Free for freelancers, free for businesses, and it stays that way.',
+      'No fee to apply. No charge to message anyone. And no commission on what you earn, ever. Free for freelancers and businesses alike.',
     url: 'https://virtualfreaks.co',
     siteName: 'Virtual Freaks',
     type: 'website',
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Nobody should have to pay to get hired.',
     description:
-      'No commission on your rate. No fee to apply. Free for freelancers and businesses alike.',
+      'No fee to apply. No charge to message anyone. And no commission on what you earn, ever.',
   },
 }
 
