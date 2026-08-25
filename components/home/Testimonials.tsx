@@ -49,7 +49,7 @@ export async function Testimonials({ limit = 3 }: { limit?: number }) {
   if (!items.length) return null
 
   return (
-    <section className="py-20 sm:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-14 sm:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex items-end justify-between gap-4 flex-wrap mb-8">
         <div>
           <h2 className="display-sm text-3xl sm:text-4xl mb-3">

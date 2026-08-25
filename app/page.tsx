@@ -170,7 +170,7 @@ export default async function Home() {
       {/* How It Works — three ruled rows, not three centred cards. The
           numerals stay because the steps genuinely are a sequence; the boxes
           go because they were not doing any work. */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
         <div className="grid lg:grid-cols-[minmax(0,26rem)_1fr] gap-12 lg:gap-20">
           <div>
             <h2 className="display-sm text-3xl sm:text-4xl">How it works</h2>
@@ -210,7 +210,7 @@ export default async function Home() {
 
       {/* Top Talent This Week — only show with 3+ entries so it doesn't look sparse */}
       {topTalent.length >= 3 && (
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
           <div>
             <div className="flex items-center justify-between mb-8 flex-wrap gap-3">
               <div>
@@ -282,7 +282,7 @@ export default async function Home() {
           people" blocks in a row, two of them usually empty. One ruled list
           does the only job they had: showing the place is alive. */}
       {recentSeekers.length >= 2 && (
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
           <div className="flex items-end justify-between gap-4 flex-wrap mb-9">
             <div>
               <h2 className="display-sm text-3xl sm:text-4xl">Recently joined</h2>
@@ -326,7 +326,7 @@ export default async function Home() {
       )}
 
       {/* CTA Section */}
-      <section className="py-24 sm:py-32 relative overflow-hidden">
+      <section className="py-20 sm:py-28 relative overflow-hidden">
         {/* A single warm bloom, so the closing band is not a flat rectangle. */}
         <div
           className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[600px] pointer-events-none"

@@ -551,14 +551,14 @@ body:has(.page-ink) footer strong { color: #ffffff; }
 /* The accent cancels the phrase rather than celebrating it.
    Drawn as a bar rather than text-decoration so it can carry the gradient and
    sit at a chosen height — a real strike sits too low on a 900-weight face. */
-.strikeout { position: relative; color: var(--ink-text-3); white-space: nowrap; }
+.strikeout { position: relative; color: rgba(255, 255, 255, 0.58); white-space: nowrap; }
 .strikeout::after {
   content: "";
   position: absolute;
   left: -0.02em;
   right: -0.02em;
-  top: 0.52em;
-  height: 0.09em;
+  top: 0.53em;
+  height: 0.062em;
   border-radius: 999px;
   background: linear-gradient(to right, #a21caf, #e879f9 50%, #f97316);
 }

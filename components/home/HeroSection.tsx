@@ -83,7 +83,7 @@ export function HeroSection() {
         }}
       />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-16 sm:pt-20 sm:pb-24">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-14 sm:pt-32 sm:pb-20">
         <h1 className="display text-[clamp(2.6rem,8.4vw,6.5rem)] max-w-[15ch]">
           {head}
           {struck && <span className="strikeout">{struck}</span>}

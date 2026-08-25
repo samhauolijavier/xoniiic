@@ -85,7 +85,7 @@ export async function CategoryGrid() {
   rows.sort((a, b) => b.count - a.count)
 
   return (
-    <section className="py-20 sm:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-14 sm:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="mb-8">
         <h2 className="display-sm text-3xl sm:text-4xl mb-3">
           Browse by skill

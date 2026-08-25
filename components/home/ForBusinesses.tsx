@@ -9,7 +9,7 @@ import Link from 'next/link'
 
 export function ForBusinesses() {
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
       <div className="border-t border-white/10 pt-10 flex flex-col lg:flex-row lg:items-end gap-10">
         <div className="flex-1 min-w-0">
           <p className="quieter font-mono text-[11px] uppercase tracking-[0.16em] mb-5">

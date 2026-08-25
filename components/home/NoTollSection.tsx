@@ -28,7 +28,7 @@ const TOLLS = [
 
 export function NoTollSection() {
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
       <div className="grid lg:grid-cols-[minmax(0,26rem)_1fr] gap-12 lg:gap-20">
         <div>
           <h2 className="display-sm text-3xl sm:text-4xl">
