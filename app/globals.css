@@ -440,3 +440,54 @@ button {
     scroll-behavior: auto !important;
   }
 }
+
+
+/* ── Dark sections ─────────────────────────────────────────────────────────
+   Nine sections on the same paper, separated by tints at four percent opacity,
+   read as one long panel — you cannot see a boundary you cannot see. The page
+   alternates now: paper, ink, paper, ink. Roughly every fourth section carries
+   the dark ground, which is enough to give the scroll a pulse without turning
+   the site dark.
+
+   Defined here rather than repeated inline because the exact ink has to match
+   between sections; two nearly-identical dark grounds look like a mistake in a
+   way one deliberate colour never does. */
+.section-ink {
+  background: #17121a;
+  color: #ffffff;
+}
+.section-ink h1,
+.section-ink h2,
+.section-ink h3,
+.section-ink strong { color: #ffffff; }
+.section-ink .ink-sub { color: rgba(255, 255, 255, 0.70); }
+.section-ink .ink-quiet { color: rgba(255, 255, 255, 0.55); }
+
+/* A card that belongs on the ink ground. Borders rather than fills, because a
+   lighter panel on dark reads as a hole punched in the section. */
+.ink-card {
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 12px;
+}
+.ink-card:hover { border-color: rgba(232, 121, 249, 0.45); }
+
+.ink-btn {
+  background: #ffffff;
+  color: #17121a;
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 0.7rem 1.4rem;
+  transition: opacity var(--dur, 160ms) var(--ease, ease);
+}
+.ink-btn:hover { opacity: 0.88; }
+
+.ink-btn-ghost {
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  color: #ffffff;
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 0.7rem 1.4rem;
+  transition: background var(--dur, 160ms) var(--ease, ease);
+}
+.ink-btn-ghost:hover { background: rgba(255, 255, 255, 0.10); }

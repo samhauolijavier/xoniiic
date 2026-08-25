@@ -183,7 +183,7 @@ export default async function Home() {
       <NoTollSection />
 
       {/* How It Works */}
-      <section className="py-16 bg-brand-card/30 border-y border-brand-border">
+      <section className="py-16 bg-brand-card border-y border-brand-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-black text-brand-text mb-4">
@@ -237,16 +237,19 @@ export default async function Home() {
 
       {/* Top Talent This Week — only show with 3+ entries so it doesn't look sparse */}
       {topTalent.length >= 3 && (
-        <section className="py-12 bg-brand-card/20 border-y border-brand-border">
+        <section className="section-ink py-14">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between mb-8 flex-wrap gap-3">
               <div>
-                <h2 className="text-2xl sm:text-3xl font-black text-brand-text">
-                  <span className="gradient-text">Top Talent</span> This Week
+                <h2 className="text-2xl sm:text-3xl font-black">
+                  <span className="bg-gradient-to-r from-brand-pink to-brand-orange bg-clip-text text-transparent">
+                    Top Talent
+                  </span>{' '}
+                  This Week
                 </h2>
-                <p className="text-brand-muted mt-1 text-sm sm:text-base">Most viewed profiles in the last seven days.</p>
+                <p className="ink-sub mt-1 text-sm sm:text-base">Most viewed profiles in the last seven days.</p>
               </div>
-              <Link href="/leaderboard" className="btn-secondary text-sm">
+              <Link href="/leaderboard" className="ink-btn-ghost text-sm">
                 Full Leaderboard →
               </Link>
             </div>
@@ -261,12 +264,12 @@ export default async function Home() {
                 const isPodium = entry.rank <= 3
                 return (
                   <Link key={entry.id} href={`/@${entry.username}`} className="block h-full">
-                    <div className="card p-4 text-center group hover-glow cursor-pointer h-full flex flex-col">
-                      <div className={`font-mono text-sm mb-2 tabular-nums ${isPodium ? 'text-brand-purple font-semibold' : 'text-brand-muted'}`}>
+                    <div className="ink-card p-4 text-center group cursor-pointer h-full flex flex-col transition-colors">
+                      <div className={`font-mono text-sm mb-2 tabular-nums ${isPodium ? 'text-brand-pink font-semibold' : 'ink-quiet'}`}>
                         #{entry.rank}
                       </div>
                       {entry.avatarUrl ? (
-                        <div className="w-14 h-14 rounded-full overflow-hidden mx-auto mb-2 ring-2 ring-brand-purple/30">
+                        <div className="w-14 h-14 rounded-full overflow-hidden mx-auto mb-2 ring-2 ring-white/20">
                           <Image
                             src={entry.avatarUrl}
                             alt={entry.name || entry.username}
@@ -281,19 +284,19 @@ export default async function Home() {
                         </div>
                       )}
                       <div className="flex items-center justify-center gap-1 mb-1">
-                        <p className="text-sm font-semibold text-brand-text group-hover:gradient-text transition-all truncate">
+                        <p className="text-sm font-semibold text-white group-hover:text-brand-pink transition-colors truncate">
                           {entry.name || entry.username}
                         </p>
-                        {entry.premium && <span className="text-brand-purple text-xs font-semibold">PRO</span>}
+                        {entry.premium && <span className="text-brand-pink text-xs font-semibold">PRO</span>}
                       </div>
                       {/* Always rendered. Two of five profiles have no top skill,
                           and letting the line vanish made those cards shorter
                           than the rest of the row. */}
-                      <p className="text-xs text-brand-muted truncate mb-1 min-h-[1rem]">
+                      <p className="text-xs ink-quiet truncate mb-1 min-h-[1rem]">
                         {entry.topSkill ?? '\u00A0'}
                       </p>
-                      <p className="text-xs text-brand-muted mt-auto">
-                        <span className="font-semibold text-brand-text">{entry.profileViews}</span> views
+                      <p className="text-xs ink-quiet mt-auto">
+                        <span className="font-semibold text-white">{entry.profileViews}</span> views
                       </p>
                     </div>
                   </Link>
@@ -378,22 +381,28 @@ export default async function Home() {
       )}
 
       {/* CTA Section */}
-      <section className="py-20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-brand-purple/[0.06]" />
+      <section className="section-ink py-20 relative overflow-hidden">
+        {/* A single warm bloom, so the closing band is not a flat rectangle. */}
+        <div
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[600px] pointer-events-none"
+          style={{ background: 'radial-gradient(ellipse, rgba(162,28,175,0.28), rgba(249,115,22,0.10) 50%, transparent 72%)' }}
+        />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl sm:text-4xl font-black text-brand-text mb-4">
+          <h2 className="text-3xl sm:text-4xl font-black mb-4">
             Put your work{' '}
-            <span className="gradient-text">where people can see it</span>
+            <span className="bg-gradient-to-r from-brand-pink to-brand-orange bg-clip-text text-transparent">
+              where people can see it
+            </span>
           </h2>
-          <p className="text-brand-muted text-lg mb-8 max-w-2xl mx-auto">
+          <p className="ink-sub text-lg mb-8 max-w-2xl mx-auto">
             A profile takes a few minutes and costs nothing — now or ever. No commission on what you
             earn, no fee to message anyone, and businesses contact you directly.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/register?role=seeker&redirect=/profile/edit" className="btn-primary text-base px-8 py-3">
+            <Link href="/register?role=seeker&redirect=/profile/edit" className="ink-btn text-base px-8 py-3">
               Make a free profile
             </Link>
-            <Link href="/hire" className="btn-secondary text-base px-8 py-3">
+            <Link href="/hire" className="ink-btn-ghost text-base px-8 py-3">
               I&apos;m hiring instead
             </Link>
           </div>

@@ -31,7 +31,7 @@ const TOLLS = [
 
 export function NoTollSection() {
   return (
-    <section className="bg-[#17121a] text-white py-16 sm:py-20">
+    <section className="section-ink py-16 sm:py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-2xl sm:text-3xl font-black tracking-tight mb-3">
           What we{' '}
@@ -40,7 +40,7 @@ export function NoTollSection() {
           </span>{' '}
           charge for
         </h2>
-        <p className="text-white/70 max-w-2xl leading-relaxed mb-10">
+        <p className="ink-sub max-w-2xl leading-relaxed mb-10">
           Every other marketplace puts a toll between you and the work. We make our money elsewhere,
           which means the only thing we want from you is that you get hired.
         </p>
@@ -49,12 +49,12 @@ export function NoTollSection() {
           {TOLLS.map(item => (
             <div key={item.heading} className="bg-[#17121a] p-6">
               <h3 className="font-semibold text-white mb-2 leading-snug">{item.heading}</h3>
-              <p className="text-sm text-white/65 leading-relaxed">{item.body}</p>
+              <p className="text-sm ink-sub leading-relaxed">{item.body}</p>
             </div>
           ))}
         </div>
 
-        <p className="text-sm text-white/60 mt-6 leading-relaxed">
+        <p className="text-sm ink-quiet mt-6 leading-relaxed">
           {/* The argument this whole position rests on already exists as a page
               and nothing linked to it. */}
           <Link
