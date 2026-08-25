@@ -48,9 +48,18 @@ export async function Testimonials({ limit = 3 }: { limit?: number }) {
 
   if (!items.length) return null
 
+  // One story is a pull quote, not a card.
+  //
+  // A single 400-word testimonial in a bordered box at a third of the width
+  // becomes a column of small text with an acre of nothing beside it — which is
+  // exactly how it looked. Set large and given the room, the same words carry a
+  // section on their own, and it will be a while before there are three.
+  const solo = items.length === 1
+  const one = items[0]
+
   return (
     <section className="py-14 sm:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="flex items-end justify-between gap-4 flex-wrap mb-8">
+      <div className="flex items-end justify-between gap-4 flex-wrap mb-9">
         <div>
           <h2 className="display-sm text-3xl sm:text-4xl mb-3">
             From people we placed
@@ -59,7 +68,6 @@ export async function Testimonials({ limit = 3 }: { limit?: number }) {
             Written by them, in their words. Nothing here is edited.
           </p>
         </div>
-        {/* Only once there is more to see than what is already on screen. */}
         {total > items.length && (
           <Link href="/testimonials" className="btn-outline text-sm">
             Read all {total} &rarr;
@@ -67,56 +75,95 @@ export async function Testimonials({ limit = 3 }: { limit?: number }) {
         )}
       </div>
 
-      <div
-        className={
-          items.length === 1 ? 'grid gap-5 max-w-2xl'
-          : items.length === 2 ? 'grid sm:grid-cols-2 gap-5'
-          : 'grid sm:grid-cols-2 lg:grid-cols-3 gap-5'
-        }
-      >
-        {items.map(t => (
-          <blockquote key={t.id} className="rounded-xl border border-white/12 bg-white/[0.03] p-6 flex flex-col">
-            {t.videoUrl && (
-              /* Never autoplays. A page that starts talking at you is a page
-                 people close. preload="metadata" fetches a few kilobytes for
-                 the poster frame rather than the whole file. */
-              /* eslint-disable-next-line jsx-a11y/media-has-caption */
-              <video
-                src={t.videoUrl}
-                controls
-                playsInline
-                preload="metadata"
-                className="w-full rounded-lg bg-black mb-4 aspect-video object-cover"
-              />
-            )}
-            <p className="text-sm leading-relaxed text-white/85 flex-1 whitespace-pre-wrap">
-              {t.body}
-            </p>
-            <footer className="flex items-center gap-3 mt-5 pt-4 border-t border-white/12">
-              {t.user.seekerProfile?.avatarUrl ? (
-                /* eslint-disable-next-line @next/next/no-img-element */
-                <img
-                  src={t.user.seekerProfile.avatarUrl}
-                  alt={t.user.name ?? 'Profile photo'}
-                  width={36}
-                  height={36}
-                  className="w-9 h-9 rounded-full object-cover flex-none"
-                />
-              ) : (
-                <span className="w-9 h-9 rounded-full bg-white/10 flex-none" />
-              )}
-              <div className="min-w-0">
-                <cite className="not-italic font-semibold text-sm block truncate text-white">
-                  {t.user.name ?? 'Virtual Freaks member'}
-                </cite>
-                <span className="text-xs text-white/45 block leading-snug line-clamp-2">
-                  {[t.roleTitle, t.company].filter(Boolean).join(' · ') || 'Placed through Virtual Freaks'}
-                </span>
-              </div>
-            </footer>
+      {solo ? (
+        <figure className="max-w-[64ch]">
+          {one.videoUrl && (
+            /* eslint-disable-next-line jsx-a11y/media-has-caption */
+            <video
+              src={one.videoUrl}
+              controls
+              playsInline
+              preload="metadata"
+              className="w-full max-w-2xl rounded-xl bg-black mb-8 aspect-video object-cover"
+            />
+          )}
+          {/* The rule is the only ornament, and it carries the one gradient. */}
+          <span
+            aria-hidden
+            className="block w-14 h-[3px] rounded-full mb-7"
+            style={{ background: 'linear-gradient(to right,#a21caf,#e879f9,#f97316)' }}
+          />
+          <blockquote className="text-lg sm:text-[1.4rem] leading-[1.55] text-white/90 whitespace-pre-wrap">
+            {one.body}
           </blockquote>
-        ))}
-      </div>
+          <figcaption className="flex items-center gap-3.5 mt-8">
+            {one.user.seekerProfile?.avatarUrl ? (
+              /* eslint-disable-next-line @next/next/no-img-element */
+              <img
+                src={one.user.seekerProfile.avatarUrl}
+                alt=""
+                width={44}
+                height={44}
+                className="w-11 h-11 rounded-full object-cover flex-none"
+              />
+            ) : (
+              <span className="w-11 h-11 rounded-full bg-white/10 flex-none" />
+            )}
+            <div className="min-w-0">
+              <cite className="not-italic font-semibold block text-white">
+                {one.user.name ?? 'Virtual Freaks member'}
+              </cite>
+              <span className="text-sm text-white/45 block leading-snug">
+                {[one.roleTitle, one.company].filter(Boolean).join(' · ') || 'Placed through Virtual Freaks'}
+              </span>
+            </div>
+          </figcaption>
+        </figure>
+      ) : (
+        /* Rules between, not boxes around — the same move as every other
+           section on the page. */
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-10 border-t border-white/10 pt-10">
+          {items.map(t => (
+            <blockquote key={t.id} className="flex flex-col">
+              {t.videoUrl && (
+                /* eslint-disable-next-line jsx-a11y/media-has-caption */
+                <video
+                  src={t.videoUrl}
+                  controls
+                  playsInline
+                  preload="metadata"
+                  className="w-full rounded-lg bg-black mb-5 aspect-video object-cover"
+                />
+              )}
+              <p className="text-[15px] leading-relaxed text-white/80 flex-1 whitespace-pre-wrap">
+                {t.body}
+              </p>
+              <footer className="flex items-center gap-3 mt-6">
+                {t.user.seekerProfile?.avatarUrl ? (
+                  /* eslint-disable-next-line @next/next/no-img-element */
+                  <img
+                    src={t.user.seekerProfile.avatarUrl}
+                    alt=""
+                    width={38}
+                    height={38}
+                    className="w-[38px] h-[38px] rounded-full object-cover flex-none"
+                  />
+                ) : (
+                  <span className="w-[38px] h-[38px] rounded-full bg-white/10 flex-none" />
+                )}
+                <div className="min-w-0">
+                  <cite className="not-italic font-semibold text-sm block truncate text-white">
+                    {t.user.name ?? 'Virtual Freaks member'}
+                  </cite>
+                  <span className="text-xs text-white/45 block leading-snug line-clamp-2">
+                    {[t.roleTitle, t.company].filter(Boolean).join(' · ') || 'Placed through Virtual Freaks'}
+                  </span>
+                </div>
+              </footer>
+            </blockquote>
+          ))}
+        </div>
+      )}
     </section>
   )
 }

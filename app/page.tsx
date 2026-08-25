@@ -232,12 +232,12 @@ export default async function Home() {
                 const isPodium = entry.rank <= 3
                 return (
                   <Link key={entry.id} href={`/@${entry.username}`} className="block h-full">
-                    <div className="rounded-xl border border-white/12 bg-white/[0.03] hover:border-brand-pink/45 p-4 text-center group cursor-pointer h-full flex flex-col transition-colors">
+                    <div className="p-2 text-center group cursor-pointer h-full flex flex-col">
                       <div className={`font-mono text-sm mb-2 tabular-nums ${isPodium ? 'text-brand-pink font-semibold' : 'quieter'}`}>
                         #{entry.rank}
                       </div>
                       {entry.avatarUrl ? (
-                        <div className="w-14 h-14 rounded-full overflow-hidden mx-auto mb-2 ring-2 ring-white/20">
+                        <div className="w-16 h-16 rounded-full overflow-hidden mx-auto mb-3 ring-2 ring-white/15 transition-all group-hover:ring-brand-pink/70 group-hover:scale-105">
                           <Image
                             src={entry.avatarUrl}
                             alt={entry.name || entry.username}
@@ -247,7 +247,7 @@ export default async function Home() {
                           />
                         </div>
                       ) : (
-                        <div className="w-14 h-14 rounded-full bg-brand-purple flex items-center justify-center text-white font-bold text-lg mx-auto mb-2">
+                        <div className="w-16 h-16 rounded-full bg-brand-purple flex items-center justify-center text-white font-bold text-lg mx-auto mb-3 transition-transform group-hover:scale-105">
                           {initials}
                         </div>
                       )}

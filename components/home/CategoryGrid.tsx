@@ -28,12 +28,12 @@ import { publiclyListable } from '@/lib/constants'
 /* Stops from the mark, assigned by name so the colours do not shuffle when the
    rows reorder. "Other" stays grey — it is a catch-all, not a category. */
 const CATEGORIES: { name: string; tick: string; fallback: string[] }[] = [
-  { name: 'Virtual Assistant', tick: '#a21caf', fallback: ['Admin', 'Customer support', 'Research'] },
+  { name: 'Virtual Assistant', tick: '#d946ef', fallback: ['Admin', 'Customer support', 'Research'] },
   { name: 'Development', tick: '#e879f9', fallback: ['React', 'Node.js', 'Python'] },
   { name: 'Design', tick: '#f472b6', fallback: ['Figma', 'UI/UX', 'Branding'] },
-  { name: 'Marketing', tick: '#f97316', fallback: ['Ads', 'SEO', 'Social media'] },
+  { name: 'Marketing', tick: '#fb923c', fallback: ['Ads', 'SEO', 'Social media'] },
   { name: 'Writing', tick: '#facc15', fallback: ['Copywriting', 'Blog', 'Technical'] },
-  { name: 'Other', tick: '#6f676c', fallback: ['Finance', 'HR', 'Translation'] },
+  { name: 'Other', tick: '#a3a3a3', fallback: ['Finance', 'HR', 'Translation'] },
 ]
 
 const CHIPS_PER_ROW = 5
@@ -99,16 +99,24 @@ export async function CategoryGrid() {
         {rows.map(row => (
           <div
             key={row.name}
-            className="group grid gap-2.5 sm:gap-5 sm:grid-cols-[minmax(150px,210px)_1fr_auto] sm:items-center py-5 border-b border-white/10 transition-colors hover:bg-white/[0.035]"
+            className="group relative grid gap-2.5 sm:gap-5 sm:grid-cols-[minmax(150px,210px)_1fr_auto] sm:items-center py-5 border-b border-white/10 transition-colors"
           >
+            {/* The row's own colour, washed in from the left on hover. Cheaper
+                than tinting every chip and it keeps the resting state calm. */}
+            <span
+              aria-hidden
+              className="pointer-events-none absolute inset-y-0 -inset-x-3 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"
+              style={{ background: `linear-gradient(to right, ${row.tick}1f, transparent 62%)` }}
+            />
             <Link
               href={`/browse?category=${encodeURIComponent(row.name)}`}
-              className="flex items-center gap-2.5 font-semibold text-white hover:text-brand-pink transition-colors"
+              className="relative flex items-center gap-3 font-semibold transition-colors"
+              style={{ color: row.tick }}
             >
               <span
                 aria-hidden
-                className="w-[3px] h-[17px] rounded-sm flex-none"
-                style={{ background: row.tick }}
+                className="w-[3px] h-[19px] rounded-full flex-none transition-all group-hover:h-[26px]"
+                style={{ background: row.tick, boxShadow: `0 0 14px ${row.tick}66` }}
               />
               {row.name}
             </Link>
@@ -120,7 +128,8 @@ export async function CategoryGrid() {
                   // ?search= already matches on skill name, so these need no
                   // new filter — and they are the terms people search for.
                   href={`/browse?search=${encodeURIComponent(skill)}`}
-                  className="text-xs sm:text-[13px] rounded-full border border-white/15 px-2.5 py-1 text-white/75 hover:border-brand-pink hover:text-brand-pink transition-colors"
+                  className="relative text-xs sm:text-[13px] rounded-full border px-2.5 py-1 text-white/75 transition-colors hover:text-white"
+                  style={{ borderColor: `${row.tick}4d`, background: `${row.tick}12` }}
                 >
                   {skill}
                 </Link>
@@ -129,14 +138,15 @@ export async function CategoryGrid() {
 
             <Link
               href={`/browse?category=${encodeURIComponent(row.name)}`}
-              className="flex items-center gap-3 font-mono text-xs tabular-nums whitespace-nowrap text-white/45 hover:text-brand-pink transition-colors"
+              className="relative flex items-center gap-3 font-mono text-xs tabular-nums whitespace-nowrap text-white/45 transition-colors group-hover:text-white/70"
             >
               {/* No count rather than a zero. "0 available" is an argument for
                   leaving, and every category starts there. */}
               {row.count > 0 ? `${row.count} available` : 'Be the first'}
               <span
                 aria-hidden
-                className="text-brand-pink opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all"
+                className="opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all"
+                style={{ color: row.tick }}
               >
                 &rarr;
               </span>
