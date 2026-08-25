@@ -54,9 +54,9 @@ export async function GET(request: Request) {
         <img
           src={logoUrl}
           alt=""
-          width={52}
-          height={49}
-          style={{ width: 52, height: 49, objectFit: 'contain', marginRight: 11 }}
+          width={74}
+          height={70}
+          style={{ width: 74, height: 70, objectFit: 'contain', marginRight: 8 }}
         />
       ) : (
         <div
@@ -92,13 +92,12 @@ export async function GET(request: Request) {
             height: '100%',
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'space-between',
             background: PAPER,
             fontFamily: 'system-ui, sans-serif',
             padding: '56px 64px',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center', flex: 1 }}>
             {avatar ? (
               /* eslint-disable-next-line @next/next/no-img-element */
               <img

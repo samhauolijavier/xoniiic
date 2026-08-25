@@ -53,9 +53,12 @@ export default async function Image() {
             <img
               src={logoUrl}
               alt=""
-              width={72}
-              height={68}
-              style={{ width: 72, height: 68, objectFit: 'contain', marginRight: 14 }}
+              width={104}
+              height={98}
+              /* The source PNG carries a wide transparent margin, so the mark
+                 reads about half the height of its box. Sized for the mark, not
+                 for the file. */
+              style={{ width: 104, height: 98, objectFit: 'contain', marginRight: 10 }}
             />
           ) : (
             <div
