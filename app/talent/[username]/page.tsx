@@ -287,7 +287,7 @@ export default async function TalentProfilePage({
         /* eslint-disable-next-line @next/next/no-img-element */
         <img
           src={profile.coverUrl}
-          alt={`${name}'s banner`}
+          alt={`${profile.user.name || profile.username}'s banner`}
           className="w-full rounded-2xl border border-brand-border mb-6"
           style={{ aspectRatio: '4 / 1', objectFit: 'cover' }}
         />
