@@ -41,7 +41,7 @@ export function SandboxPitch({
           </span>
           <h1 className="display text-[clamp(2.4rem,7vw,5rem)] max-w-[17ch] mb-8">
             Reading about a tool is not{' '}
-            <span className="strikeout">the same as using one.</span>
+            <span className="grad-warm">the same as using one.</span>
           </h1>
           <p className="quiet text-lg leading-relaxed max-w-[48ch] mb-9">
             A real GoHighLevel account to build in, break, and put back together &mdash; so the work
