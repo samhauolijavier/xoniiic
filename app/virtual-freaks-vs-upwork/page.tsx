@@ -17,9 +17,9 @@ export const metadata: Metadata = {
 
 const comparisonRows = [
   { feature: 'Employer Fees', vf: 'Free — $0', upwork: '5-10% marketplace fee' },
-  { feature: 'Freelancer Commission', vf: '0% — keep everything', upwork: '10% on all earnings' },
+  { feature: 'Freelancer Commission', vf: '0% — keep everything', upwork: '0–15%, set per contract' },
   { feature: 'Monthly Subscription', vf: 'None required', upwork: '$49.99/mo for Plus plan' },
-  { feature: 'Proposal/Connect Fees', vf: 'None — browse freely', upwork: 'Freelancers pay per proposal' },
+  { feature: 'Proposal/Connect Fees', vf: 'None — message anyone', upwork: 'Connects: roughly $0.60–$2.40 to apply' },
   { feature: 'Direct Messaging', vf: 'Yes — contact talent directly', upwork: 'Only after hiring or proposal' },
   { feature: 'Video Introductions', vf: 'Built into profiles', upwork: 'Not standard' },
   { feature: 'Talent Profiles', vf: 'Portfolio, skills, rates, video', upwork: 'Portfolio, skills, tests' },
@@ -52,7 +52,7 @@ export default function VsUpworkPage() {
               name: 'Is Virtual Freaks a free alternative to Upwork?',
               acceptedAnswer: {
                 '@type': 'Answer',
-                text: 'Yes. Virtual Freaks is completely free for employers — no marketplace fees, no subscriptions, and no commissions. Upwork charges employers 5-10% marketplace fees and freelancers 10% on all earnings.',
+                text: 'Yes. Virtual Freaks is completely free for employers — no marketplace fees, no subscriptions, and no commissions. Upwork charges employers a marketplace fee, and takes a variable 0–15% from the freelancer depending on the contract.',
               },
             },
             {
@@ -60,7 +60,7 @@ export default function VsUpworkPage() {
               name: 'How much does Upwork charge compared to Virtual Freaks?',
               acceptedAnswer: {
                 '@type': 'Answer',
-                text: 'Upwork charges employers a 5-10% marketplace fee, freelancers a 10% commission, and offers a $49.99/month Plus subscription. Virtual Freaks charges $0 to employers and takes 0% commission from freelancers.',
+                text: 'Upwork charges employers a marketplace fee, takes a variable 0–15% from freelancers per contract, and freelancers also buy Connects to submit proposals. Virtual Freaks charges $0 to employers and takes 0% from freelancers.',
               },
             },
             {
@@ -98,6 +98,10 @@ export default function VsUpworkPage() {
               Upwork&apos;s fees cost you an extra <span className="text-red-600 font-semibold">$100-200/month</span>.
               On Virtual Freaks, that same hire costs <span className="text-emerald-700 font-semibold">$0 in platform fees</span>.
               Over a year, that&apos;s <span className="text-emerald-700 font-semibold">$1,200-2,400 saved</span>.
+            </p>
+            <p className="text-xs text-brand-muted mt-4">
+              Upwork&rsquo;s published fees, checked August 2026. They changed in May 2025 and may
+              change again &mdash; the zero on our side does not.
             </p>
           </div>
         </section>
@@ -168,7 +172,7 @@ export default function VsUpworkPage() {
                   'Want built-in escrow and payment protection',
                   'Prefer a proposal-based hiring process',
                   'Need time tracking with screenshot monitoring',
-                  'Are comfortable paying 5-10% marketplace fees',
+                  'Are comfortable paying marketplace fees on every hire',
                   'Need enterprise-level compliance features',
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2 text-sm text-brand-muted">
@@ -190,8 +194,10 @@ export default function VsUpworkPage() {
           <div className="card p-8">
             <h2 className="text-xl font-bold text-brand-text mb-3">Understanding Upwork Fees</h2>
             <p className="text-brand-muted leading-relaxed mb-3">
-              Upwork charges employers a marketplace fee ranging from 5% to 10% on top of what you
-              pay the freelancer. For freelancers, Upwork takes a flat 10% commission on all earnings.
+              Upwork charges employers a marketplace fee on top of what you pay the freelancer. For
+              freelancers, Upwork replaced its flat 10% with a variable rate of 0&ndash;15% in May 2025,
+              set per contract &mdash; and freelancers also buy Connects, roughly $0.60 to $2.40, simply
+              to submit a proposal.
               Additionally, Upwork sells &quot;Connects&quot; that freelancers must purchase to submit
               proposals — meaning talent pays just to apply for work.
             </p>
