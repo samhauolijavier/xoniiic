@@ -108,7 +108,8 @@ export default function TermsOfServicePage() {
         <section>
           <h2 className="text-xl font-bold text-brand-text mb-3">6a. Practice Accounts</h2>
           <ul className="list-disc list-inside space-y-2 text-brand-muted">
-            <li>A practice account gives you a user inside a shared GoHighLevel sandbox that we control, for a fixed period. It is for learning. It is not a licence to GoHighLevel and it is not a business account.</li>
+            <li>A practice account gives you a user inside a GoHighLevel sub-account that we control, for a fixed period. It is for learning. It is not a licence to GoHighLevel and it is not a business account.</li>
+            <li><strong className="text-brand-text">Practice accounts are for your own learning and your own business only. They may not be used to do work for a client.</strong> If you are managing marketing for a real business, that business&rsquo;s contacts and conversations must live in an account held in your own name &mdash; not in ours. We will end a practice account being used for client work, and we may do so without notice.</li>
             <li><strong className="text-brand-text">Nothing renews automatically.</strong> No card is stored and no subscription is created. When the period ends, access simply stops unless you take another.</li>
             <li>Your period begins when we confirm your sandbox is ready, not when you pay. If setting it up takes us a day, that day is not taken out of your time.</li>
             <li>Access can also be earned rather than paid for. Earned time is worth the same as paid time and carries no different conditions.</li>

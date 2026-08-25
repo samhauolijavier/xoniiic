@@ -24,13 +24,14 @@ import Link from 'next/link'
 import { db, withRetry } from '@/lib/db'
 import { seatStatus, referralCodeFor, seatPrice, SEAT_DAYS } from '@/lib/sandbox'
 import { ClaimForm } from './ClaimForm'
+import { SandboxPitch } from '@/components/sandbox/SandboxPitch'
 import { CopyLink } from './CopyLink'
 import './sandbox.css'
 
 export const metadata: Metadata = {
   title: 'Practice on real systems',
   description: 'Real accounts to build in and break, so the work on your profile is work you have actually done. GoHighLevel is open now.',
-  robots: { index: false, follow: false },
+  alternates: { canonical: 'https://virtualfreaks.co/sandbox' },
 }
 
 const SITE = process.env.NEXT_PUBLIC_APP_URL ?? 'https://virtualfreaks.co'
@@ -38,7 +39,25 @@ const REFERRALS_FOR_A_MONTH = 2
 
 export default async function SandboxPage() {
   const session = await getServerSession(authOptions)
-  if (!session?.user) redirect('/login?callbackUrl=/sandbox')
+
+  // Logged out gets the pitch, not a password field. The homepage tells people
+  // this exists; bouncing them to a login with no price and no explanation was
+  // the surest way to lose them at the moment they were interested.
+  if (!session?.user) {
+    const [price, privatePrice, affiliate] = await Promise.all([
+      seatPrice(),
+      withRetry(() => db.siteSetting.findUnique({ where: { key: 'sandboxPrivatePrice' }, select: { value: true } })),
+      withRetry(() => db.siteSetting.findUnique({ where: { key: 'ghlAffiliateUrl' }, select: { value: true } })),
+    ])
+    return (
+      <SandboxPitch
+        price={price}
+        privatePrice={Number(privatePrice?.value) || 349}
+        affiliateUrl={affiliate?.value || null}
+      />
+    )
+  }
+
   const me = session.user as { id: string; name?: string | null }
 
   const [status, referralCode, gcash, gcashQr, qualified, passed, price, scenarioCount] = await Promise.all([
