@@ -15,14 +15,13 @@
  * seat, for as long as they keep it.
  */
 import Link from 'next/link'
+import { PrivateSpaceForm } from './PrivateSpaceForm'
 
 export function SandboxPitch({
   price,
-  privateContact,
   affiliateUrl,
 }: {
   price: number
-  privateContact: string | null
   affiliateUrl: string | null
 }) {
   return (
@@ -96,20 +95,7 @@ export function SandboxPitch({
               {/* No price here on purpose. Ours is arranged per person, and what
                   suits somebody depends entirely on what they are actually
                   doing with it — which is a conversation, not a checkout. */}
-              {privateContact ? (
-                <a
-                  href={privateContact}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block text-sm text-white/80 hover:text-white border-b border-white/30 hover:border-white pb-0.5 transition-colors"
-                >
-                  Need your own private space to practice and build? Message us
-                </a>
-              ) : (
-                <p className="quieter text-sm">
-                  Need your own private space to practice and build? Get in touch and we will sort it out.
-                </p>
-              )}
+              <PrivateSpaceForm />
             </div>
           </div>
 

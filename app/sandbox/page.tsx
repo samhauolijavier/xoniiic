@@ -44,21 +44,11 @@ export default async function SandboxPage() {
   // this exists; bouncing them to a login with no price and no explanation was
   // the surest way to lose them at the moment they were interested.
   if (!session?.user) {
-    const [price, privateContact, affiliate] = await Promise.all([
+    const [price, affiliate] = await Promise.all([
       seatPrice(),
-      // A link, not a number. Whatever Spencer wants to be reached on —
-      // https://wa.me/…, m.me/…, or a mailto: — set once and changed without
-      // a deploy.
-      withRetry(() => db.siteSetting.findUnique({ where: { key: 'sandboxPrivateContact' }, select: { value: true } })),
       withRetry(() => db.siteSetting.findUnique({ where: { key: 'ghlAffiliateUrl' }, select: { value: true } })),
     ])
-    return (
-      <SandboxPitch
-        price={price}
-        privateContact={privateContact?.value || null}
-        affiliateUrl={affiliate?.value || null}
-      />
-    )
+    return <SandboxPitch price={price} affiliateUrl={affiliate?.value || null} />
   }
 
   const me = session.user as { id: string; name?: string | null }
