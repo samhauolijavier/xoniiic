@@ -12,6 +12,26 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://virtualfreaks.co',
   },
+  // The homepage overrides the site-wide card copy so the words Facebook prints
+  // under the image agree with the image. The generic pair — "The Marketplace
+  // for Remote Talent" over "Connect with top remote talent worldwide" — pitched
+  // employers beneath a picture aimed at somebody looking for work, and promised
+  // browsing that needs an account. Every other page keeps the generic version.
+  openGraph: {
+    title: 'Nobody hires you without experience. Start here.',
+    description:
+      'A free profile that shows work you have actually done, and businesses that contact you directly. No commission on what you earn, ever.',
+    url: 'https://virtualfreaks.co',
+    siteName: 'Virtual Freaks',
+    type: 'website',
+    locale: 'en_US',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Nobody hires you without experience. Start here.',
+    description:
+      'A free profile that shows work you have actually done, and businesses that contact you directly. No commission, ever.',
+  },
 }
 
 import { getServerSession } from 'next-auth'
