@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Bebas_Neue, Inter } from 'next/font/google'
+import { Bebas_Neue, Inter, Archivo } from 'next/font/google'
 import './globals.css'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
@@ -22,6 +22,16 @@ const syne = Bebas_Neue({
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
+})
+
+// The display face. Inter is a fine text type and a characterless headline —
+// it is also the default every generated landing page reaches for, which is
+// most of why they look alike. Archivo at 900 has actual width and a tight fit
+// at size, which is what lets one line of type carry a whole screen.
+const archivo = Archivo({
+  subsets: ['latin'],
+  weight: ['600', '700', '800', '900'],
+  variable: '--font-display',
 })
 
 export const metadata: Metadata = {
@@ -83,7 +93,7 @@ export default async function RootLayout({
   const faviconUrl = await getFaviconUrl()
 
   return (
-    <html lang="en" className={`dark ${syne.variable} ${inter.variable}`}>
+    <html lang="en" className={`dark ${syne.variable} ${archivo.variable} ${inter.variable}`}>
       <head>
         {faviconUrl && <link rel="icon" href={faviconUrl} />}
       </head>

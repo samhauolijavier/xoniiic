@@ -49,19 +49,19 @@ export async function Testimonials({ limit = 3 }: { limit?: number }) {
   if (!items.length) return null
 
   return (
-    <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-20 sm:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex items-end justify-between gap-4 flex-wrap mb-8">
         <div>
-          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-brand-text mb-2">
+          <h2 className="display-sm text-3xl sm:text-4xl mb-3">
             From people we placed
           </h2>
-          <p className="text-brand-muted">
+          <p className="quiet">
             Written by them, in their words. Nothing here is edited.
           </p>
         </div>
         {/* Only once there is more to see than what is already on screen. */}
         {total > items.length && (
-          <Link href="/testimonials" className="btn-secondary text-sm">
+          <Link href="/testimonials" className="btn-outline text-sm">
             Read all {total} &rarr;
           </Link>
         )}
@@ -75,7 +75,7 @@ export async function Testimonials({ limit = 3 }: { limit?: number }) {
         }
       >
         {items.map(t => (
-          <blockquote key={t.id} className="card p-6 flex flex-col">
+          <blockquote key={t.id} className="rounded-xl border border-white/12 bg-white/[0.03] p-6 flex flex-col">
             {t.videoUrl && (
               /* Never autoplays. A page that starts talking at you is a page
                  people close. preload="metadata" fetches a few kilobytes for
@@ -89,10 +89,10 @@ export async function Testimonials({ limit = 3 }: { limit?: number }) {
                 className="w-full rounded-lg bg-black mb-4 aspect-video object-cover"
               />
             )}
-            <p className="text-sm leading-relaxed text-brand-text flex-1 whitespace-pre-wrap">
+            <p className="text-sm leading-relaxed text-white/85 flex-1 whitespace-pre-wrap">
               {t.body}
             </p>
-            <footer className="flex items-center gap-3 mt-5 pt-4 border-t border-brand-border">
+            <footer className="flex items-center gap-3 mt-5 pt-4 border-t border-white/12">
               {t.user.seekerProfile?.avatarUrl ? (
                 /* eslint-disable-next-line @next/next/no-img-element */
                 <img
@@ -103,13 +103,13 @@ export async function Testimonials({ limit = 3 }: { limit?: number }) {
                   className="w-9 h-9 rounded-full object-cover flex-none"
                 />
               ) : (
-                <span className="w-9 h-9 rounded-full bg-brand-purple/[0.10] flex-none" />
+                <span className="w-9 h-9 rounded-full bg-white/10 flex-none" />
               )}
               <div className="min-w-0">
-                <cite className="not-italic font-semibold text-sm block truncate">
+                <cite className="not-italic font-semibold text-sm block truncate text-white">
                   {t.user.name ?? 'Virtual Freaks member'}
                 </cite>
-                <span className="text-xs text-brand-muted block leading-snug line-clamp-2">
+                <span className="text-xs text-white/45 block leading-snug line-clamp-2">
                   {[t.roleTitle, t.company].filter(Boolean).join(' · ') || 'Placed through Virtual Freaks'}
                 </span>
               </div>

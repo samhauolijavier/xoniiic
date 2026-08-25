@@ -42,23 +42,10 @@ import { CategoryGrid } from '@/components/home/CategoryGrid'
 import { NoTollSection } from '@/components/home/NoTollSection'
 import { ForBusinesses } from '@/components/home/ForBusinesses'
 import { Testimonials } from '@/components/home/Testimonials'
-import { ProfileCard } from '@/components/seeker/ProfileCard'
 import { db } from '@/lib/db'
 import { excludeDemoAccounts, publiclyListable } from '@/lib/constants'
 import Link from 'next/link'
 import Image from 'next/image'
-
-async function getFeaturedSeekers() {
-  return db.seekerProfile.findMany({
-    where: { featured: true, openToWork: true, user: publiclyListable() },
-    take: 6,
-    orderBy: { profileViews: 'desc' },
-    include: {
-      user: { select: { id: true, name: true, email: true } },
-      skills: { include: { skill: true }, orderBy: { rating: 'desc' } },
-    },
-  })
-}
 
 async function getRecentSeekers() {
   return db.seekerProfile.findMany({
@@ -159,13 +146,11 @@ export default async function Home() {
     if (user.role === 'admin') redirect('/admin')
   }
 
-  let featuredSeekers: Awaited<ReturnType<typeof getFeaturedSeekers>> = []
   let recentSeekers: Awaited<ReturnType<typeof getRecentSeekers>> = []
   let topTalent: Awaited<ReturnType<typeof getTopTalent>> = []
 
   try {
-    ;[featuredSeekers, recentSeekers, topTalent] = await Promise.all([
-      getFeaturedSeekers(),
+    ;[recentSeekers, topTalent] = await Promise.all([
       getRecentSeekers(),
       getTopTalent(),
     ])
@@ -175,54 +160,42 @@ export default async function Home() {
   }
 
   return (
-    <div>
+    <div className="page-ink">
       <HeroSection />
 
       {/* The position, not a feature — and the page's only dark section, which
           is what stops nine identical panels reading as a list. */}
       <NoTollSection />
 
-      {/* How It Works */}
-      <section className="py-16 bg-brand-card border-y border-brand-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-black text-brand-text mb-4">
-              How It{' '}
-              <span className="gradient-text">Works</span>
-            </h2>
-            <p className="text-brand-muted text-lg max-w-xl mx-auto">
-              Connect with remote talent in 3 simple steps — completely free
+      {/* How It Works — three ruled rows, not three centred cards. The
+          numerals stay because the steps genuinely are a sequence; the boxes
+          go because they were not doing any work. */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
+        <div className="grid lg:grid-cols-[minmax(0,26rem)_1fr] gap-12 lg:gap-20">
+          <div>
+            <h2 className="display-sm text-3xl sm:text-4xl">How it works</h2>
+            <p className="quiet mt-5 leading-relaxed">
+              Three steps, and none of them cost anything.
+            </p>
+            <p className="quieter text-sm mt-6 leading-relaxed">
+              Step two goes faster with somewhere to actually work.{' '}
+              <Link href="/sandbox" className="text-white/70 hover:text-white border-b border-white/25 hover:border-white pb-0.5 transition-colors">
+                Practice on real systems
+              </Link>{' '}
+              &mdash; GoHighLevel is open now.
             </p>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {howItWorks.map((step, i) => (
-              <div key={step.step} className="relative text-center">
-                {i < howItWorks.length - 1 && (
-                  <div className="hidden md:block absolute top-8 left-3/4 w-1/2 h-px bg-gradient-to-r from-brand-purple/50 to-transparent" />
-                )}
-                <div className="font-mono text-3xl text-brand-purple mb-3 tabular-nums">
-                  {step.step}
+          <div>
+            {howItWorks.map(step => (
+              <div key={step.step} className="ink-row py-7 grid grid-cols-[2.5rem_1fr] gap-5 sm:gap-8">
+                <span className="quieter font-mono text-xs pt-1.5">{step.step}</span>
+                <div>
+                  <h3 className="display-sm text-xl sm:text-2xl mb-2">{step.title}</h3>
+                  <p className="quiet text-[15px] leading-relaxed max-w-[52ch]">{step.description}</p>
                 </div>
-                <h3 className="text-xl font-bold text-brand-text mb-3">{step.title}</h3>
-                <p className="text-brand-muted text-sm leading-relaxed">{step.description}</p>
               </div>
             ))}
           </div>
-
-          {/* Step two is the one that needs somewhere to work. Named as a
-              link rather than a CTA — the sandbox is one feature for one
-              skill, and putting it in a button reads as the whole product. */}
-          <p className="text-center text-sm text-brand-muted mt-10 max-w-xl mx-auto leading-relaxed">
-            Step two goes faster with somewhere to actually work.{' '}
-            <Link
-              href="/sandbox"
-              className="text-brand-purple hover:text-brand-pink transition-colors underline underline-offset-2"
-            >
-              Practice on real systems
-            </Link>{' '}
-            &mdash; GoHighLevel is open now.
-          </p>
         </div>
       </section>
 
@@ -237,19 +210,14 @@ export default async function Home() {
 
       {/* Top Talent This Week — only show with 3+ entries so it doesn't look sparse */}
       {topTalent.length >= 3 && (
-        <section className="section-ink py-14">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
+          <div>
             <div className="flex items-center justify-between mb-8 flex-wrap gap-3">
               <div>
-                <h2 className="text-2xl sm:text-3xl font-black">
-                  <span className="bg-gradient-to-r from-brand-pink to-brand-orange bg-clip-text text-transparent">
-                    Top Talent
-                  </span>{' '}
-                  This Week
-                </h2>
-                <p className="ink-sub mt-1 text-sm sm:text-base">Most viewed profiles in the last seven days.</p>
+                <h2 className="display-sm text-3xl sm:text-4xl">Top talent this week</h2>
+                <p className="quiet mt-3 text-sm sm:text-base">Most viewed profiles in the last seven days.</p>
               </div>
-              <Link href="/leaderboard" className="ink-btn-ghost text-sm">
+              <Link href="/leaderboard" className="btn-outline text-sm">
                 Full Leaderboard →
               </Link>
             </div>
@@ -264,8 +232,8 @@ export default async function Home() {
                 const isPodium = entry.rank <= 3
                 return (
                   <Link key={entry.id} href={`/@${entry.username}`} className="block h-full">
-                    <div className="ink-card p-4 text-center group cursor-pointer h-full flex flex-col transition-colors">
-                      <div className={`font-mono text-sm mb-2 tabular-nums ${isPodium ? 'text-brand-pink font-semibold' : 'ink-quiet'}`}>
+                    <div className="rounded-xl border border-white/12 bg-white/[0.03] hover:border-brand-pink/45 p-4 text-center group cursor-pointer h-full flex flex-col transition-colors">
+                      <div className={`font-mono text-sm mb-2 tabular-nums ${isPodium ? 'text-brand-pink font-semibold' : 'quieter'}`}>
                         #{entry.rank}
                       </div>
                       {entry.avatarUrl ? (
@@ -292,10 +260,10 @@ export default async function Home() {
                       {/* Always rendered. Two of five profiles have no top skill,
                           and letting the line vanish made those cards shorter
                           than the rest of the row. */}
-                      <p className="text-xs ink-quiet truncate mb-1 min-h-[1rem]">
+                      <p className="text-xs quieter truncate mb-1 min-h-[1rem]">
                         {entry.topSkill ?? '\u00A0'}
                       </p>
-                      <p className="text-xs ink-quiet mt-auto">
+                      <p className="text-xs quieter mt-auto">
                         <span className="font-semibold text-white">{entry.profileViews}</span> views
                       </p>
                     </div>
@@ -307,102 +275,79 @@ export default async function Home() {
         </section>
       )}
 
-      {/* Featured Talent — or early adopter CTA */}
-      {featuredSeekers.length > 0 ? (
-        <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between mb-10 flex-wrap gap-3">
+      {/* Recently joined.
+          This was two sections — Featured Talent and Recently Joined — each
+          with a full-card grid and each with an "early adopter" empty state
+          that said the same thing as the closing call below. Three "here are
+          people" blocks in a row, two of them usually empty. One ruled list
+          does the only job they had: showing the place is alive. */}
+      {recentSeekers.length >= 2 && (
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
+          <div className="flex items-end justify-between gap-4 flex-wrap mb-9">
             <div>
-              <h2 className="text-2xl sm:text-3xl font-black text-brand-text">
-                <span className="gradient-text">Featured</span> Talent
-              </h2>
-              <p className="text-brand-muted mt-1 text-sm sm:text-base">Hand-picked top performers</p>
+              <h2 className="display-sm text-3xl sm:text-4xl">Recently joined</h2>
+              <p className="quiet mt-3 text-sm sm:text-base">The newest profiles on the platform.</p>
             </div>
-            <Link href="/browse?featured=true" className="btn-secondary text-sm">
-              View All
-            </Link>
+            <Link href="/browse" className="btn-outline text-sm">View all</Link>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {featuredSeekers.map((profile) => (
-              <ProfileCard key={profile.id} profile={profile} />
-            ))}
-          </div>
-        </section>
-      ) : (
-        <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="card p-10 text-center border-brand-purple/30 bg-brand-purple/[0.04]">
-            <h2 className="text-2xl sm:text-3xl font-black text-brand-text mb-3">
-              Join <span className="gradient-text">Virtual Freaks</span>
-            </h2>
-            <p className="text-brand-muted max-w-lg mx-auto mb-6">
-              Create your profile and get discovered by employers worldwide. Early members earn exclusive Founding Member badges.
-            </p>
-            <Link href="/register" className="inline-block btn-primary px-8 py-3 text-lg font-bold">
-              Register Now
-            </Link>
-          </div>
-        </section>
-      )}
-
-      {/* Recently Joined */}
-      {recentSeekers.length >= 2 ? (
-        <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between mb-10 flex-wrap gap-3">
-            <div>
-              <h2 className="text-2xl sm:text-3xl font-black text-brand-text">
-                Recently{' '}
-                <span className="gradient-text">Joined</span>
-              </h2>
-              <p className="text-brand-muted mt-1 text-sm sm:text-base">The newest profiles on the platform.</p>
-            </div>
-            <Link href="/browse" className="btn-secondary text-sm">
-              View All
-            </Link>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="border-t border-white/10">
             {recentSeekers.map((profile) => (
-              <ProfileCard key={profile.id} profile={profile} />
+              <Link
+                key={profile.id}
+                href={`/@${profile.username}`}
+                className="group flex items-center gap-4 py-4 border-b border-white/10 transition-colors hover:bg-white/[0.035] px-1"
+              >
+                {profile.avatarUrl ? (
+                  <Image
+                    src={profile.avatarUrl}
+                    alt=""
+                    width={40}
+                    height={40}
+                    className="w-10 h-10 rounded-full object-cover flex-none"
+                  />
+                ) : (
+                  <span className="w-10 h-10 rounded-full bg-white/10 flex-none" />
+                )}
+                <div className="min-w-0 flex-1">
+                  <p className="font-semibold text-white truncate group-hover:text-brand-pink transition-colors">
+                    {profile.user.name ?? profile.username}
+                  </p>
+                  <p className="quieter text-sm truncate">
+                    {profile.title ?? profile.skills[0]?.skill.name ?? 'Building their profile'}
+                  </p>
+                </div>
+                <span className="quieter font-mono text-xs hidden sm:block flex-none">
+                  {profile.skills.slice(0, 2).map(s => s.skill.name).join(' · ')}
+                </span>
+              </Link>
             ))}
-          </div>
-        </section>
-      ) : (
-        <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="card p-10 text-center border-brand-purple/30 bg-brand-purple/[0.04]">
-            <h2 className="text-2xl sm:text-3xl font-black text-brand-text mb-3">
-              <span className="gradient-text">Be one of the first</span>
-            </h2>
-            <p className="text-brand-muted max-w-lg mx-auto mb-6">
-              The first members here are numbered, and the badge stays on the profile permanently.
-            </p>
-            <Link href="/register" className="inline-block btn-primary px-8 py-3 text-lg font-bold">
-              Register Now
-            </Link>
           </div>
         </section>
       )}
 
       {/* CTA Section */}
-      <section className="section-ink py-20 relative overflow-hidden">
+      <section className="py-24 sm:py-32 relative overflow-hidden">
         {/* A single warm bloom, so the closing band is not a flat rectangle. */}
         <div
           className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[600px] pointer-events-none"
           style={{ background: 'radial-gradient(ellipse, rgba(162,28,175,0.28), rgba(249,115,22,0.10) 50%, transparent 72%)' }}
         />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl sm:text-4xl font-black mb-4">
+          <h2 className="display-sm text-4xl sm:text-6xl mb-6">
             Put your work{' '}
             <span className="bg-gradient-to-r from-brand-pink to-brand-orange bg-clip-text text-transparent">
               where people can see it
             </span>
           </h2>
-          <p className="ink-sub text-lg mb-8 max-w-2xl mx-auto">
+          <p className="quiet text-lg mb-9 max-w-2xl mx-auto">
             A profile takes a few minutes and costs nothing — now or ever. No commission on what you
             earn, no fee to message anyone, and businesses contact you directly.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/register?role=seeker&redirect=/profile/edit" className="ink-btn text-base px-8 py-3">
+            <Link href="/register?role=seeker&redirect=/profile/edit" className="btn-grad text-base">
               Make a free profile
             </Link>
-            <Link href="/hire" className="ink-btn-ghost text-base px-8 py-3">
+            <Link href="/hire" className="btn-outline text-base">
               I&apos;m hiring instead
             </Link>
           </div>

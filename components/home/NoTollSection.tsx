@@ -1,29 +1,26 @@
 /*
- * The position, given a section instead of a pill.
+ * The position, as three ruled rows rather than three cards.
  *
- * "No commission, ever" used to appear once, at 13px, inside a grey badge above
- * the fold — and it is not a nice extra, it is the entire argument for existing.
- * Upwork takes 0-15% of a freelancer's rate and charges them to submit a
- * proposal; OnlineJobs.ph charges the employer a monthly fee for the right to
- * send a message. Both put a toll between the work and the person doing it.
- *
- * It is the only dark section on the page, and deliberately so. Nine sections on
- * identical paper read as a list rather than a composed page; one moment of
- * contrast is what gives the scroll a shape, and this is the part that has
- * earned it.
+ * A border on four sides makes an object; a border on one side makes a
+ * structure. Nine bordered objects down a column is the shape that reads as
+ * assembled from a kit — so the page uses rules and space from here on, and
+ * keeps its boxes for the things that genuinely are objects: a person, a job.
  */
 import Link from 'next/link'
 
 const TOLLS = [
   {
+    n: '01',
     heading: 'No commission on what you earn',
     body: 'Not fifteen percent, not ten, not five. You agree a rate with a business and that is the number that reaches you.',
   },
   {
+    n: '02',
     heading: 'No fee to apply',
     body: 'No connects, no credits, no paying for the chance to be considered. Message anyone you like, as often as you like.',
   },
   {
+    n: '03',
     heading: 'Free for businesses too',
     body: 'No subscription to browse, no charge to make contact. The cost of hiring here is the wage you agree, and nothing else.',
   },
@@ -31,40 +28,37 @@ const TOLLS = [
 
 export function NoTollSection() {
   return (
-    <section className="section-ink py-16 sm:py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-2xl sm:text-3xl font-black tracking-tight mb-3">
-          What we{' '}
-          <span className="bg-gradient-to-r from-brand-pink via-[#f472b6] to-brand-orange bg-clip-text text-transparent">
-            don&apos;t
-          </span>{' '}
-          charge for
-        </h2>
-        <p className="ink-sub max-w-2xl leading-relaxed mb-10">
-          Every other marketplace puts a toll between you and the work. We make our money elsewhere,
-          which means the only thing we want from you is that you get hired.
-        </p>
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
+      <div className="grid lg:grid-cols-[minmax(0,26rem)_1fr] gap-12 lg:gap-20">
+        <div>
+          <h2 className="display-sm text-3xl sm:text-4xl">
+            What we don&apos;t
+            <br />
+            charge for
+          </h2>
+          <p className="quiet mt-5 leading-relaxed">
+            Every other marketplace puts a toll between you and the work. We make our money
+            elsewhere, which means the only thing we want from you is that you get hired.
+          </p>
+          <Link
+            href="/virtual-freaks-vs-upwork"
+            className="inline-block mt-6 text-sm text-white/80 hover:text-white border-b border-white/30 hover:border-white pb-0.5 transition-colors"
+          >
+            How this compares to Upwork
+          </Link>
+        </div>
 
-        <div className="grid sm:grid-cols-3 gap-px bg-white/[0.14] border border-white/[0.14] rounded-xl overflow-hidden">
+        <div>
           {TOLLS.map(item => (
-            <div key={item.heading} className="bg-[#17121a] p-6">
-              <h3 className="font-semibold text-white mb-2 leading-snug">{item.heading}</h3>
-              <p className="text-sm ink-sub leading-relaxed">{item.body}</p>
+            <div key={item.n} className="ink-row py-7 grid grid-cols-[2.5rem_1fr] gap-5 sm:gap-8">
+              <span className="quieter font-mono text-xs pt-1.5">{item.n}</span>
+              <div>
+                <h3 className="display-sm text-xl sm:text-2xl mb-2">{item.heading}</h3>
+                <p className="quiet text-[15px] leading-relaxed max-w-[52ch]">{item.body}</p>
+              </div>
             </div>
           ))}
         </div>
-
-        <p className="text-sm ink-quiet mt-6 leading-relaxed">
-          {/* The argument this whole position rests on already exists as a page
-              and nothing linked to it. */}
-          <Link
-            href="/virtual-freaks-vs-upwork"
-            className="text-brand-pink hover:text-white transition-colors underline underline-offset-2"
-          >
-            How this compares to Upwork
-          </Link>{' '}
-          &mdash; the fees, side by side.
-        </p>
       </div>
     </section>
   )

@@ -491,3 +491,103 @@ button {
   transition: background var(--dur, 160ms) var(--ease, ease);
 }
 .ink-btn-ghost:hover { background: rgba(255, 255, 255, 0.10); }
+
+/* ── The ink homepage ──────────────────────────────────────────────────────
+   Marketing pages run dark and type-led; the app behind the login stays on
+   paper. That split is deliberate rather than inconsistent — the homepage has
+   to make an argument, and the dashboard has to be legible for eight hours.
+
+   The nav and footer are siblings of the page content in the layout, so they
+   cannot inherit from a wrapper class. :has() lets them respond to which page
+   is rendered without a flash of the wrong theme or a client component.       */
+
+.page-ink {
+  --ink-bg: #0f0d11;
+  --ink-bg-2: #16131a;
+  --ink-line: rgba(255, 255, 255, 0.13);
+  --ink-line-soft: rgba(255, 255, 255, 0.075);
+  --ink-text: #ffffff;
+  --ink-text-2: rgba(255, 255, 255, 0.62);
+  --ink-text-3: rgba(255, 255, 255, 0.42);
+
+  background: var(--ink-bg);
+  color: var(--ink-text);
+}
+
+body:has(.page-ink) { background: #0f0d11; }
+
+body:has(.page-ink) nav {
+  background: rgba(15, 13, 17, 0.82) !important;
+  border-bottom-color: rgba(255, 255, 255, 0.10) !important;
+}
+body:has(.page-ink) nav a,
+body:has(.page-ink) nav button { color: rgba(255, 255, 255, 0.72); }
+body:has(.page-ink) nav a:hover { color: #ffffff; }
+body:has(.page-ink) footer {
+  background: #0b090d;
+  border-top-color: rgba(255, 255, 255, 0.10);
+  color: rgba(255, 255, 255, 0.55);
+}
+body:has(.page-ink) footer a { color: rgba(255, 255, 255, 0.62); }
+body:has(.page-ink) footer a:hover { color: #ffffff; }
+body:has(.page-ink) footer h3,
+body:has(.page-ink) footer strong { color: #ffffff; }
+
+/* Display type. One face, one job — headlines only. Body stays on Inter,
+   which is the right tool for a paragraph and the wrong one for a statement. */
+.page-ink .display {
+  font-family: var(--font-display), "Archivo", system-ui, sans-serif;
+  font-weight: 900;
+  letter-spacing: -0.045em;
+  line-height: 0.92;
+}
+.page-ink .display-sm {
+  font-family: var(--font-display), "Archivo", system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.032em;
+  line-height: 1.02;
+}
+
+/* The accent cancels the phrase rather than celebrating it.
+   Drawn as a bar rather than text-decoration so it can carry the gradient and
+   sit at a chosen height — a real strike sits too low on a 900-weight face. */
+.strikeout { position: relative; color: var(--ink-text-3); white-space: nowrap; }
+.strikeout::after {
+  content: "";
+  position: absolute;
+  left: -0.02em;
+  right: -0.02em;
+  top: 0.52em;
+  height: 0.09em;
+  border-radius: 999px;
+  background: linear-gradient(to right, #a21caf, #e879f9 50%, #f97316);
+}
+
+.page-ink .quiet   { color: var(--ink-text-2); }
+.page-ink .quieter { color: var(--ink-text-3); }
+.page-ink .rule    { border-color: var(--ink-line); }
+
+/* Rules, not cards. A border on four sides makes an object; a border on one
+   side makes a structure — and nine objects in a column is the shape that
+   reads as templated. */
+.ink-row { border-top: 1px solid var(--ink-line-soft); }
+.ink-row:first-child { border-top: 0; }
+
+.page-ink .btn-light {
+  background: #ffffff; color: #0f0d11; font-weight: 700;
+  border-radius: 999px; padding: 0.85rem 1.7rem;
+  transition: opacity var(--dur, 160ms) var(--ease, ease);
+}
+.page-ink .btn-light:hover { opacity: 0.88; }
+.page-ink .btn-outline {
+  border: 1px solid rgba(255, 255, 255, 0.26); color: #ffffff; font-weight: 600;
+  border-radius: 999px; padding: 0.85rem 1.7rem;
+  transition: background var(--dur, 160ms) var(--ease, ease);
+}
+.page-ink .btn-outline:hover { background: rgba(255, 255, 255, 0.09); }
+.page-ink .btn-grad {
+  background: linear-gradient(100deg, #a21caf, #e879f9 55%, #f97316);
+  color: #ffffff; font-weight: 700; border-radius: 999px; padding: 0.85rem 1.7rem;
+  transition: opacity var(--dur, 160ms) var(--ease, ease);
+}
+.page-ink .btn-grad:hover { opacity: 0.9; }

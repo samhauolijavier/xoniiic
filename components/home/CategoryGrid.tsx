@@ -85,25 +85,25 @@ export async function CategoryGrid() {
   rows.sort((a, b) => b.count - a.count)
 
   return (
-    <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-20 sm:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="mb-8">
-        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-brand-text mb-2">
+        <h2 className="display-sm text-3xl sm:text-4xl mb-3">
           Browse by skill
         </h2>
-        <p className="text-brand-muted">
+        <p className="quiet">
           Tap anything to see who can do it. Everyone here can be contacted directly.
         </p>
       </div>
 
-      <div className="border-t border-brand-border">
+      <div className="border-t border-white/10">
         {rows.map(row => (
           <div
             key={row.name}
-            className="group grid gap-2.5 sm:gap-5 sm:grid-cols-[minmax(150px,210px)_1fr_auto] sm:items-center py-4 border-b border-brand-border transition-colors hover:bg-brand-card"
+            className="group grid gap-2.5 sm:gap-5 sm:grid-cols-[minmax(150px,210px)_1fr_auto] sm:items-center py-5 border-b border-white/10 transition-colors hover:bg-white/[0.035]"
           >
             <Link
               href={`/browse?category=${encodeURIComponent(row.name)}`}
-              className="flex items-center gap-2.5 font-semibold text-brand-text hover:text-brand-purple transition-colors"
+              className="flex items-center gap-2.5 font-semibold text-white hover:text-brand-pink transition-colors"
             >
               <span
                 aria-hidden
@@ -120,7 +120,7 @@ export async function CategoryGrid() {
                   // ?search= already matches on skill name, so these need no
                   // new filter — and they are the terms people search for.
                   href={`/browse?search=${encodeURIComponent(skill)}`}
-                  className="text-xs sm:text-[13px] rounded-full border border-brand-border bg-brand-bg px-2.5 py-1 text-brand-text hover:border-brand-purple hover:text-brand-purple transition-colors"
+                  className="text-xs sm:text-[13px] rounded-full border border-white/15 px-2.5 py-1 text-white/75 hover:border-brand-pink hover:text-brand-pink transition-colors"
                 >
                   {skill}
                 </Link>
@@ -129,14 +129,14 @@ export async function CategoryGrid() {
 
             <Link
               href={`/browse?category=${encodeURIComponent(row.name)}`}
-              className="flex items-center gap-3 font-mono text-xs text-brand-muted tabular-nums whitespace-nowrap hover:text-brand-purple transition-colors"
+              className="flex items-center gap-3 font-mono text-xs tabular-nums whitespace-nowrap text-white/45 hover:text-brand-pink transition-colors"
             >
               {/* No count rather than a zero. "0 available" is an argument for
                   leaving, and every category starts there. */}
               {row.count > 0 ? `${row.count} available` : 'Be the first'}
               <span
                 aria-hidden
-                className="text-brand-purple opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all"
+                className="text-brand-pink opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all"
               >
                 &rarr;
               </span>
