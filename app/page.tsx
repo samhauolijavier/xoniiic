@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   // otherwise search sends employers to the page written for someone else,
   // and /hire, which was written for them, never gets found.
   title: 'Virtual Freaks — Get hired as a VA or remote professional',
-  description: 'Build a free profile that shows real work, practice on live systems, and get found by people hiring directly. No commission, ever. Hiring instead? See virtualfreaks.co/hire.',
+  description: 'No commission on your rate, no fee to apply, and no charge to message anyone. A free profile that shows work you have actually finished, and businesses that contact you directly. Hiring instead? See virtualfreaks.co/hire.',
   keywords: ['virtual assistant jobs', 'remote work philippines', 'VA portfolio', 'get hired as a VA', 'remote jobs', 'GoHighLevel practice', 'freelancer profile', 'hire remote talent'],
   alternates: {
     canonical: 'https://virtualfreaks.co',
@@ -18,9 +18,9 @@ export const metadata: Metadata = {
   // employers beneath a picture aimed at somebody looking for work, and promised
   // browsing that needs an account. Every other page keeps the generic version.
   openGraph: {
-    title: 'Nobody hires you without experience. Start here.',
+    title: 'Nobody should have to pay to get hired.',
     description:
-      'A free profile that shows work you have actually done, and businesses that contact you directly. No commission on what you earn, ever.',
+      'No commission on your rate. No fee to apply. No charge to message anyone. Free for freelancers, free for businesses, and it stays that way.',
     url: 'https://virtualfreaks.co',
     siteName: 'Virtual Freaks',
     type: 'website',
@@ -28,9 +28,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Nobody hires you without experience. Start here.',
+    title: 'Nobody should have to pay to get hired.',
     description:
-      'A free profile that shows work you have actually done, and businesses that contact you directly. No commission, ever.',
+      'No commission on your rate. No fee to apply. Free for freelancers and businesses alike.',
   },
 }
 
@@ -39,9 +39,10 @@ import { authOptions } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import { HeroSection } from '@/components/home/HeroSection'
 import { CategoryGrid } from '@/components/home/CategoryGrid'
+import { NoTollSection } from '@/components/home/NoTollSection'
+import { ForBusinesses } from '@/components/home/ForBusinesses'
 import { Testimonials } from '@/components/home/Testimonials'
 import { ProfileCard } from '@/components/seeker/ProfileCard'
-import { TrendingSkills } from '@/components/ui/TrendingSkills'
 import { db } from '@/lib/db'
 import { excludeDemoAccounts, publiclyListable } from '@/lib/constants'
 import Link from 'next/link'
@@ -177,15 +178,62 @@ export default async function Home() {
     <div>
       <HeroSection />
 
-      {/* Trending Skills */}
-      <section className="py-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <TrendingSkills />
+      {/* The position, not a feature — and the page's only dark section, which
+          is what stops nine identical panels reading as a list. */}
+      <NoTollSection />
+
+      {/* How It Works */}
+      <section className="py-16 bg-brand-card/30 border-y border-brand-border">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-black text-brand-text mb-4">
+              How It{' '}
+              <span className="gradient-text">Works</span>
+            </h2>
+            <p className="text-brand-muted text-lg max-w-xl mx-auto">
+              Connect with remote talent in 3 simple steps — completely free
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {howItWorks.map((step, i) => (
+              <div key={step.step} className="relative text-center">
+                {i < howItWorks.length - 1 && (
+                  <div className="hidden md:block absolute top-8 left-3/4 w-1/2 h-px bg-gradient-to-r from-brand-purple/50 to-transparent" />
+                )}
+                <div className="font-mono text-3xl text-brand-purple mb-3 tabular-nums">
+                  {step.step}
+                </div>
+                <h3 className="text-xl font-bold text-brand-text mb-3">{step.title}</h3>
+                <p className="text-brand-muted text-sm leading-relaxed">{step.description}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Step two is the one that needs somewhere to work. Named as a
+              link rather than a CTA — the sandbox is one feature for one
+              skill, and putting it in a button reads as the whole product. */}
+          <p className="text-center text-sm text-brand-muted mt-10 max-w-xl mx-auto leading-relaxed">
+            Step two goes faster with somewhere to actually work.{' '}
+            <Link
+              href="/sandbox"
+              className="text-brand-purple hover:text-brand-pink transition-colors underline underline-offset-2"
+            >
+              Practice on real systems
+            </Link>{' '}
+            &mdash; GoHighLevel is open now.
+          </p>
+        </div>
       </section>
 
       <CategoryGrid />
 
       {/* Renders nothing until somebody has actually vouched. */}
       <Testimonials />
+
+      {/* Employers had one button in the hero and nothing else on a two-sided
+          marketplace whose thinner side is demand. */}
+      <ForBusinesses />
 
       {/* Top Talent This Week — only show with 3+ entries so it doesn't look sparse */}
       {topTalent.length >= 3 && (
@@ -292,50 +340,6 @@ export default async function Home() {
         </section>
       )}
 
-      {/* How It Works */}
-      <section className="py-16 bg-brand-card/30 border-y border-brand-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-black text-brand-text mb-4">
-              How It{' '}
-              <span className="gradient-text">Works</span>
-            </h2>
-            <p className="text-brand-muted text-lg max-w-xl mx-auto">
-              Connect with remote talent in 3 simple steps — completely free
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {howItWorks.map((step, i) => (
-              <div key={step.step} className="relative text-center">
-                {i < howItWorks.length - 1 && (
-                  <div className="hidden md:block absolute top-8 left-3/4 w-1/2 h-px bg-gradient-to-r from-brand-purple/50 to-transparent" />
-                )}
-                <div className="font-mono text-3xl text-brand-purple mb-3 tabular-nums">
-                  {step.step}
-                </div>
-                <h3 className="text-xl font-bold text-brand-text mb-3">{step.title}</h3>
-                <p className="text-brand-muted text-sm leading-relaxed">{step.description}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* Step two is the one that needs somewhere to work. Named as a
-              link rather than a CTA — the sandbox is one feature for one
-              skill, and putting it in a button reads as the whole product. */}
-          <p className="text-center text-sm text-brand-muted mt-10 max-w-xl mx-auto leading-relaxed">
-            Step two goes faster with somewhere to actually work.{' '}
-            <Link
-              href="/sandbox"
-              className="text-brand-purple hover:text-brand-pink transition-colors underline underline-offset-2"
-            >
-              Practice on real systems
-            </Link>{' '}
-            &mdash; GoHighLevel is open now.
-          </p>
-        </div>
-      </section>
-
       {/* Recently Joined */}
       {recentSeekers.length >= 2 ? (
         <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -378,19 +382,19 @@ export default async function Home() {
         <div className="absolute inset-0 bg-brand-purple/[0.06]" />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl sm:text-4xl font-black text-brand-text mb-4">
-            Ready to hire{' '}
-            <span className="gradient-text">top remote talent?</span>
+            Put your work{' '}
+            <span className="gradient-text">where people can see it</span>
           </h2>
           <p className="text-brand-muted text-lg mb-8 max-w-2xl mx-auto">
-            Free for employers, permanently — no commission on what you pay, no subscription, and no
-            fee to make contact. Make an account and you can see everyone on the platform.
+            A profile takes a few minutes and costs nothing — now or ever. No commission on what you
+            earn, no fee to message anyone, and businesses contact you directly.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/register?role=employer&redirect=/browse" className="btn-primary text-base px-8 py-3">
-              Start hiring — free
+            <Link href="/register?role=seeker&redirect=/profile/edit" className="btn-primary text-base px-8 py-3">
+              Make a free profile
             </Link>
-            <Link href="/register?role=seeker" className="btn-secondary text-base px-8 py-3">
-              Post Your Profile
+            <Link href="/hire" className="btn-secondary text-base px-8 py-3">
+              I&apos;m hiring instead
             </Link>
           </div>
         </div>

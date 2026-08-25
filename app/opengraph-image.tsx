@@ -11,16 +11,16 @@
  * sharing this link, and this image is the first thing every one of those
  * people sees. A preview that does not match the site reads as a dead project.
  *
- * The headline is the site's own, not the meta title. "The Marketplace for
- * Remote Talent" describes a category; "Nobody hires you without experience"
- * describes the problem somebody is scrolling with.
+ * The headline is the site's own, not the meta title. A category label
+ * describes what we are; "Nobody should have to pay to get hired" describes
+ * what everybody else does to them.
  */
 import { ImageResponse } from 'next/og'
 import { getLogoUrl } from '@/lib/brand'
 
 // Node rather than edge: the mark is a site setting in the database, and the
 // card should carry the real logo rather than a drawn stand-in.
-export const alt = 'Virtual Freaks — build a profile that shows real work'
+export const alt = 'Virtual Freaks — nobody should have to pay to get hired'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
@@ -96,7 +96,7 @@ export default async function Image() {
               display: 'flex',
             }}
           >
-            Nobody hires you without experience.
+            Nobody should have to
           </div>
           <div
             style={{
@@ -109,7 +109,7 @@ export default async function Image() {
               marginTop: 4,
             }}
           >
-            Start here.
+            pay to get hired.
           </div>
           <div
             style={{
@@ -121,7 +121,7 @@ export default async function Image() {
               display: 'flex',
             }}
           >
-            A free profile that shows real work, and people hiring who can contact you directly.
+            No commission on your rate. No fee to apply. Free for freelancers and businesses alike.
           </div>
         </div>
 

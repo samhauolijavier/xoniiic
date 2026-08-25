@@ -1,4 +1,5 @@
 import { db } from '@/lib/db'
+import { publiclyListable } from '@/lib/constants'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { NextRequest, NextResponse } from 'next/server'
@@ -28,12 +29,24 @@ export async function GET() {
     // claimed 500 freelancers and 50 categories regardless of the truth. On a
     // launch page aimed at people who will immediately go and look, a number
     // that cannot survive being checked costs more than no number at all.
-    const [seekers, skills] = await Promise.all([
-      db.seekerProfile.count(),
+    const [seekers, skills, faces] = await Promise.all([
+      // The same bar browse uses. This counted every row, so the hero could
+      // claim 27 profiles while browse showed a dozen — a number that fails
+      // the first check is worse than no number.
+      db.seekerProfile.count({ where: { user: publiclyListable() } }),
       db.skill.count(),
+      // A handful of real members for the hero. It is a marketplace of people
+      // and it showed none of them until three sections down.
+      db.seekerProfile.findMany({
+        where: { user: publiclyListable(), avatarUrl: { not: null } },
+        select: { avatarUrl: true, username: true },
+        orderBy: { profileViews: 'desc' },
+        take: 5,
+      }),
     ])
     map._seekerCount = String(seekers)
     map._skillCount = String(skills)
+    map._faces = JSON.stringify(faces)
 
     return NextResponse.json(map)
   } catch {

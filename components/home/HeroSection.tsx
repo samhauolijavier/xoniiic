@@ -10,8 +10,13 @@ export function HeroSection() {
   const router = useRouter()
 
   const [heroTag, setHeroTag] = useState('Free profile \u2022 No commission, ever')
-  const [heroHeadline, setHeroHeadline] = useState('Nobody hires you without experience. Start here.')
-  const [heroSubtitle, setHeroSubtitle] = useState('Build a profile that shows real work, practice on live systems, and get found by people hiring directly. Free, and it stays free.')
+  // The position, not a feature. Upwork takes 0-15% and charges to submit a
+  // proposal; OnlineJobs.ph charges the employer monthly for the right to send
+  // a message. Both put a toll between the work and the person doing it. That
+  // is what the page is against, and it is a principle rather than a price — so
+  // it does not go stale the next time Upwork changes its fee.
+  const [heroHeadline, setHeroHeadline] = useState('Nobody should have to pay to get hired.')
+  const [heroSubtitle, setHeroSubtitle] = useState('No commission on your rate. No fee to apply. No charge to message anyone. Free for freelancers, free for businesses, and it stays that way.')
   const [heroCta1, setHeroCta1] = useState('Make a free profile')
   const [heroCta2, setHeroCta2] = useState("I'm hiring")
   // Starts blank rather than with a claim. The old defaults said 500+
@@ -19,6 +24,8 @@ export function HeroSection() {
   // database, and a launch page aimed at people who will go and look
   // immediately cannot afford a number that fails the first check.
   const [stats, setStats] = useState<{ value: string; label: string }[]>([])
+  const [faces, setFaces] = useState<{ avatarUrl: string | null; username: string }[]>([])
+  const [memberCount, setMemberCount] = useState(0)
 
   useEffect(() => {
     fetch('/api/site-settings')
@@ -34,6 +41,13 @@ export function HeroSection() {
         // the site, the honest move is to say nothing and let the two claims
         // that are always true carry the row.
         const seekers = Number(data._seekerCount ?? 0)
+        setMemberCount(seekers)
+        try {
+          const parsed = JSON.parse(data._faces ?? '[]')
+          if (Array.isArray(parsed)) setFaces(parsed)
+        } catch {
+          // A missing row of avatars is a smaller loss than a broken hero.
+        }
         const skills = Number(data._skillCount ?? 0)
         const next: { value: string; label: string }[] = []
 
@@ -123,6 +137,40 @@ export function HeroSection() {
               {heroCta2}
             </Link>
           </div>
+
+          {/* Faces, before anything else on the page.
+              It is a marketplace of people and it used to show none of them
+              until three sections down — the stat said "27 Profiles" and then
+              displayed nothing. This costs about forty pixels. */}
+          {faces.length >= 3 && (
+            <div className="mt-7 flex items-center justify-center gap-3">
+              <div className="flex">
+                {faces.map((f, i) => (
+                  <Link
+                    key={f.username}
+                    href={`/@${f.username}`}
+                    className="block -ml-2.5 first:ml-0 transition-transform hover:-translate-y-0.5 hover:z-10"
+                    style={{ zIndex: faces.length - i }}
+                    aria-label={`See ${f.username}'s profile`}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={f.avatarUrl ?? ''}
+                      alt=""
+                      width={38}
+                      height={38}
+                      className="w-[38px] h-[38px] rounded-full object-cover ring-2 ring-brand-bg bg-brand-card"
+                    />
+                  </Link>
+                ))}
+              </div>
+              <p className="text-sm text-brand-muted text-left leading-tight">
+                <strong className="text-brand-text">{memberCount}</strong> people
+                <br className="hidden sm:block" />
+                <span className="sm:hidden"> </span>looking for work now
+              </p>
+            </div>
+          )}
 
           {/* Already have an account nudge — only shown to logged-out visitors */}
           {!session && (

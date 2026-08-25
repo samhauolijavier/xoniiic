@@ -91,8 +91,8 @@ export default function BrandingPage() {
 
   // Hero content state
   const [heroTag, setHeroTag] = useState('Free profile \u2022 No commission, ever')
-  const [heroHeadline, setHeroHeadline] = useState('Nobody hires you without experience. Start here.')
-  const [heroSubtitle, setHeroSubtitle] = useState('Build a profile that shows real work, practice on live systems, and get found by people hiring directly. Free, and it stays free.')
+  const [heroHeadline, setHeroHeadline] = useState('Nobody should have to pay to get hired.')
+  const [heroSubtitle, setHeroSubtitle] = useState('No commission on your rate. No fee to apply. No charge to message anyone. Free for freelancers, free for businesses, and it stays that way.')
   const [heroCta1, setHeroCta1] = useState('Make a free profile')
   const [heroCta2, setHeroCta2] = useState("I'm hiring")
   const [heroStat1Value, setHeroStat1Value] = useState('')
