@@ -54,6 +54,7 @@ export default async function AdminPage() {
           <Link href="/admin/seats" className="btn-secondary text-sm">Seat Desk</Link>
           <Link href="/admin/resources" className="btn-secondary text-sm">Resources</Link>
           <Link href="/admin/testimonials" className="btn-secondary text-sm">Testimonials</Link>
+          <Link href="/admin/accounts" className="btn-secondary text-sm">Accounts</Link>
           <Link href="/admin/ads" className="btn-secondary text-sm">Manage Ads</Link>
           <Link href="/admin/skills" className="btn-primary text-sm">Manage Skills</Link>
         </div>
