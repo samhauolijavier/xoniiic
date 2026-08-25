@@ -73,7 +73,13 @@ export default async function TestimonialsPage() {
           </p>
         </div>
       ) : (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div
+          className={
+            items.length === 1 ? 'grid gap-5 max-w-2xl'
+            : items.length === 2 ? 'grid sm:grid-cols-2 gap-5'
+            : 'grid sm:grid-cols-2 lg:grid-cols-3 gap-5'
+          }
+        >
           {items.map(t => {
             const username = t.user.seekerProfile?.username
             const body = (
@@ -107,7 +113,7 @@ export default async function TestimonialsPage() {
                     <cite className="not-italic font-semibold text-sm block truncate">
                       {t.user.name ?? 'Virtual Freaks member'}
                     </cite>
-                    <span className="text-xs text-brand-muted block truncate">
+                    <span className="text-xs text-brand-muted block leading-snug line-clamp-2">
                       {[t.roleTitle, t.company].filter(Boolean).join(' · ') || 'Placed through Virtual Freaks'}
                     </span>
                   </div>

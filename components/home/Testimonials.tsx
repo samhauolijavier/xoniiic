@@ -49,7 +49,7 @@ export async function Testimonials({ limit = 3 }: { limit?: number }) {
   if (!items.length) return null
 
   return (
-    <section className="py-16 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex items-end justify-between gap-4 flex-wrap mb-8">
         <div>
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-brand-text mb-2">
@@ -67,7 +67,13 @@ export async function Testimonials({ limit = 3 }: { limit?: number }) {
         )}
       </div>
 
-      <div className="grid md:grid-cols-3 gap-5">
+      <div
+        className={
+          items.length === 1 ? 'grid gap-5 max-w-2xl'
+          : items.length === 2 ? 'grid sm:grid-cols-2 gap-5'
+          : 'grid sm:grid-cols-2 lg:grid-cols-3 gap-5'
+        }
+      >
         {items.map(t => (
           <blockquote key={t.id} className="card p-6 flex flex-col">
             {t.videoUrl && (
@@ -103,7 +109,7 @@ export async function Testimonials({ limit = 3 }: { limit?: number }) {
                 <cite className="not-italic font-semibold text-sm block truncate">
                   {t.user.name ?? 'Virtual Freaks member'}
                 </cite>
-                <span className="text-xs text-brand-muted block truncate">
+                <span className="text-xs text-brand-muted block leading-snug line-clamp-2">
                   {[t.roleTitle, t.company].filter(Boolean).join(' · ') || 'Placed through Virtual Freaks'}
                 </span>
               </div>
