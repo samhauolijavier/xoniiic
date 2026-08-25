@@ -101,7 +101,12 @@ export default async function HirePage() {
           {/* The mirror of the homepage line, carrying the same strike — so the
               two sides of the marketplace make one argument in one voice. */}
           <h1 className="display text-[clamp(2.4rem,7vw,5rem)] max-w-[16ch] mb-8">
-            Pay the person, not <span className="strikeout">the platform.</span>
+            Pay the person,
+            {/* Break forced rather than left to wrapping: the strike has to
+                take the whole phrase, and "not" hanging on the line above
+                reads as a stray word rather than part of what is cancelled. */}
+            <br />
+            <span className="strikeout">not the platform.</span>
           </h1>
           <p className="quiet text-lg leading-relaxed max-w-[46ch] mb-9">
             Browse skilled virtual assistants and remote professionals, message them directly, and
