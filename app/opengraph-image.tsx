@@ -119,7 +119,10 @@ export default async function Image() {
 
           {/* Satori has no pseudo-elements, so the rule is a real element laid
               over the phrase rather than a text-decoration. */}
-          <div style={{ display: 'flex', position: 'relative', marginTop: 2 }}>
+          {/* Shrink to the phrase. A flex row stretches to its parent by
+              default, which sent the rule out to the edge of the card instead
+              of stopping where the words do. */}
+          <div style={{ display: 'flex', position: 'relative', marginTop: 2, alignSelf: 'flex-start' }}>
             <div
               style={{
                 fontSize: 74,
