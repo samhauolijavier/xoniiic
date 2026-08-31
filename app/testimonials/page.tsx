@@ -56,7 +56,7 @@ export default async function TestimonialsPage() {
   return (
     <div className="page-ink"><div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
       <h1 className="text-3xl sm:text-4xl font-black text-brand-text mb-3">
-        Stories from people we <span className="gradient-text">placed</span>
+        Stories from <span className="mark-warm">people we placed</span>
       </h1>
       <p className="text-brand-muted max-w-2xl leading-relaxed mb-10">
         Written by them, in their words. Nothing here is edited, and nothing is published without
@@ -97,23 +97,31 @@ export default async function TestimonialsPage() {
                 <p className="text-sm leading-relaxed text-brand-text flex-1 whitespace-pre-wrap">
                   {t.body}
                 </p>
-                <footer className="flex items-center gap-3 mt-5 pt-4 border-t border-brand-border">
-                  {t.user.seekerProfile?.avatarUrl ? (
-                    <Image
-                      src={t.user.seekerProfile.avatarUrl}
-                      alt=""
-                      width={36}
-                      height={36}
-                      className="w-9 h-9 rounded-full object-cover flex-none"
-                    />
-                  ) : (
-                    <span className="w-9 h-9 rounded-full bg-brand-purple/[0.10] flex-none" />
-                  )}
+                <footer className="flex items-center gap-3.5 mt-5 pt-4 border-t border-brand-border">
+                  {/* The person is the point of the page, so they get a ring
+                      rather than a thumbnail. The 2px gradient edge is the
+                      same warm half of the mark the headline uses. */}
+                  <span
+                    className="flex-none rounded-full p-[2px]"
+                    style={{ backgroundImage: 'linear-gradient(135deg, #e879f9, #f97316)' }}
+                  >
+                    {t.user.seekerProfile?.avatarUrl ? (
+                      <Image
+                        src={t.user.seekerProfile.avatarUrl}
+                        alt=""
+                        width={112}
+                        height={112}
+                        className="w-14 h-14 rounded-full object-cover block"
+                      />
+                    ) : (
+                      <span className="w-14 h-14 rounded-full bg-brand-card block" />
+                    )}
+                  </span>
                   <div className="min-w-0">
-                    <cite className="not-italic font-semibold text-sm block truncate">
+                    <cite className="not-italic font-semibold text-[15px] block truncate">
                       {t.user.name ?? 'Virtual Freaks member'}
                     </cite>
-                    <span className="text-xs text-brand-muted block leading-snug line-clamp-2">
+                    <span className="text-xs text-brand-muted block leading-snug line-clamp-2 mt-0.5">
                       {[t.roleTitle, t.company].filter(Boolean).join(' · ') || 'Placed through Virtual Freaks'}
                     </span>
                   </div>

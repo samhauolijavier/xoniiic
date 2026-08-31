@@ -633,6 +633,18 @@ body:has(.page-ink) footer strong { color: #ffffff; }
   box-shadow: none;
 }
 
+/* A highlight, not gradient text — the words sit ON the colour rather than
+   being filled by it. Padding and box-decoration-break so a phrase long enough
+   to wrap gets a clean block on each line instead of one torn in half. */
+.page-ink .mark-warm {
+  background-image: linear-gradient(to right, #e879f9, #f97316);
+  color: #ffffff;
+  padding: 0.06em 0.28em;
+  border-radius: 0.16em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
 /* Built for paper: it ramps fuchsia into pink, and fuchsia on ink is nearly
    the ground. The dark pages take the warm half of the mark instead. */
 .page-ink .gradient-text,
