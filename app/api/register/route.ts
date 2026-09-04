@@ -5,6 +5,7 @@ import { logActivity } from '@/lib/activity'
 import { TERMS_VERSION } from '@/lib/legal'
 import { sendVerificationEmail } from '@/lib/email'
 import { REQUIRE_EMAIL_VERIFICATION } from '@/lib/constants'
+import { isBlocked } from '@/lib/blocklist'
 
 export const dynamic = 'force-dynamic'
 
@@ -45,6 +46,20 @@ export async function POST(req: NextRequest) {
 
     if (password.length < 6) {
       return NextResponse.json({ error: 'Password must be at least 6 characters' }, { status: 400 })
+    }
+
+    // Checked before the duplicate lookup, because a blocked address whose
+    // account was deleted rather than deactivated has no row left to collide
+    // with — and that is precisely the case the blocklist exists for.
+    //
+    // The message points at support rather than saying "you are blocked".
+    // Somebody caught by mistake needs a way back, and somebody creating fake
+    // accounts learns nothing here that a second address would not tell them.
+    if (await isBlocked(email)) {
+      return NextResponse.json(
+        { error: 'This email address cannot be used to sign up. Contact support if you think that is a mistake.' },
+        { status: 403 }
+      )
     }
 
     const existingUser = await db.user.findUnique({ where: { email } })

@@ -3,6 +3,7 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
 import bcrypt from 'bcryptjs'
 import { db, withRetry } from '@/lib/db'
+import { isBlocked } from '@/lib/blocklist'
 
 function slugify(name: string): string {
   return name
@@ -115,7 +116,16 @@ export const authOptions: NextAuthOptions = {
         // Retry up to 4 times with longer delays for Google sign-in
         for (let attempt = 0; attempt < 5; attempt++) {
           try {
+            // Both gates below were missing, and between them they made
+            // moderation decorative: the credentials path refuses a
+            // deactivated account, but this one never looked, so anybody
+            // removed from the site could walk straight back in through
+            // "Sign in with Google" — and a deleted fake account could
+            // re-create itself on the next click.
+            if (await isBlocked(user.email!)) return false
+
             const existingUser = await db.user.findUnique({ where: { email: user.email! } })
+            if (existingUser && !existingUser.active) return false
             if (!existingUser) {
               await db.user.create({
                 data: {

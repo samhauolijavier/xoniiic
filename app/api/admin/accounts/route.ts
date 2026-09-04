@@ -23,6 +23,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { authOptions } from '@/lib/auth'
 import { db } from '@/lib/db'
 import { notifyDiscord } from '@/lib/discord'
+import { blockEmail, listBlocked, unblockEmail } from '@/lib/blocklist'
 
 export const dynamic = 'force-dynamic'
 
@@ -65,6 +66,12 @@ export async function GET(req: NextRequest) {
   const gate = await requireAdmin()
   if (gate.error) return gate.error
 
+  // The blocked list is small and has no search — it is read whole, so the
+  // screen can show it permanently rather than making somebody go looking.
+  if (req.nextUrl.searchParams.get('blocked')) {
+    return NextResponse.json({ blocked: await listBlocked() })
+  }
+
   const q = (req.nextUrl.searchParams.get('q') ?? '').trim()
   if (q.length < 2) return NextResponse.json({ users: [] })
 
@@ -96,6 +103,23 @@ export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => ({}))
   const id = String(body.id ?? '')
   const action = String(body.action ?? '')
+
+  // Handled before the account lookup, because the whole point of a blocklist
+  // is that it outlives the account — an address blocked after its empty
+  // account was deleted has no row left to find.
+  if (action === 'unblock') {
+    const email = String(body.email ?? '')
+    if (!email) return NextResponse.json({ error: 'No address given.' }, { status: 400 })
+    await unblockEmail(email)
+    await notifyDiscord({
+      title: 'Email unblocked',
+      description: email,
+      tone: 'good',
+      fields: [{ name: 'By', value: me.email ?? me.id!, inline: true }],
+    })
+    return NextResponse.json({ message: 'Unblocked. They can sign up again.' })
+  }
+
   if (!id) return NextResponse.json({ error: 'No account given.' }, { status: 400 })
 
   const target = await db.user.findUnique({
@@ -150,6 +174,48 @@ export async function POST(req: NextRequest) {
       ],
     })
     return NextResponse.json({ message: 'Deleted. It held nothing.' })
+  }
+
+  /*
+   * Remove and block, in one action.
+   *
+   * The two halves belong together. Removing an account without blocking the
+   * address stops nothing — whoever made it signs up again a minute later,
+   * which is the entire behaviour of somebody creating fake accounts. And
+   * blocking without removing leaves the account sitting on the site.
+   *
+   * What "remove" means still depends on what the account holds, on exactly
+   * the same terms as the delete action above: empty ones go, anything with a
+   * profile or a history is deactivated instead. Blocking is not a licence to
+   * destroy somebody's work.
+   */
+  if (action === 'block') {
+    const reason = String(body.reason ?? '').trim() || undefined
+    const content = await contentOf(id)
+
+    await blockEmail(target.email, { reason, by: me.email ?? me.id })
+
+    if (content.isEmpty) {
+      await db.user.delete({ where: { id } })
+    } else {
+      await db.user.update({ where: { id }, data: { active: false } })
+    }
+
+    await notifyDiscord({
+      title: content.isEmpty ? 'Account deleted and email blocked' : 'Account deactivated and email blocked',
+      description: `${target.name ?? 'No name'} · ${target.email}`,
+      tone: 'warn',
+      fields: [
+        { name: 'By', value: me.email ?? me.id!, inline: true },
+        ...(reason ? [{ name: 'Reason', value: reason, inline: true }] : []),
+      ],
+    })
+
+    return NextResponse.json({
+      message: content.isEmpty
+        ? 'Deleted and blocked. It held nothing, and that address cannot sign up again.'
+        : 'Deactivated and blocked. Nothing was deleted, and that address cannot sign up again.',
+    })
   }
 
   return NextResponse.json({ error: 'Unknown action.' }, { status: 400 })
