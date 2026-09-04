@@ -59,6 +59,9 @@ export default function AdminResourcesPage() {
   const [videoUrl, setVideoUrl] = useState('')
   const [file, setFile] = useState<File | null>(null)
 
+  const [batch, setBatch] = useState<File[]>([])
+  const [progress, setProgress] = useState<{ done: number; total: number } | null>(null)
+
   useEffect(() => {
     if (status === 'unauthenticated') router.push('/login')
     const user = session?.user as { role?: string } | undefined
@@ -109,6 +112,52 @@ export default function AdminResourcesPage() {
     }
   }
 
+  /*
+   * Thirty briefs, one at a time, over one connection.
+   *
+   * Deliberately not one request with thirty files: a single upload that fails
+   * halfway loses the lot and tells you nothing, and Vercel's request ceiling
+   * is a wall you would eventually hit. Sequential is slower to watch and far
+   * better to recover from — a failure names the file and the rest still land.
+   *
+   * Every brief is named for its key, so the server already knows what each one
+   * is. Nothing here has to be typed.
+   */
+  async function uploadBatch() {
+    if (!batch.length) return
+    setBusy(true); setError(''); setSuccess('')
+    let added = 0, already = 0
+    const failed: string[] = []
+
+    for (let i = 0; i < batch.length; i++) {
+      setProgress({ done: i, total: batch.length })
+      const form = new FormData()
+      form.set('file', batch[i])
+      try {
+        const res = await fetch('/api/admin/resources', { method: 'POST', body: form })
+        const data = await res.json()
+        if (!res.ok) failed.push(`${batch[i].name} — ${data.error ?? 'failed'}`)
+        else if (data.skipped) already++
+        else added++
+      } catch {
+        failed.push(`${batch[i].name} — could not reach the server`)
+      }
+    }
+
+    setProgress(null)
+    setBusy(false)
+    setBatch([])
+    const input = document.getElementById('batch-files') as HTMLInputElement | null
+    if (input) input.value = ''
+
+    const parts = []
+    if (added) parts.push(`${added} added as drafts`)
+    if (already) parts.push(`${already} already here`)
+    if (failed.length) setError(`${failed.length} did not upload:\n${failed.join('\n')}`)
+    if (parts.length) setSuccess(`${parts.join(' · ')}. Publish them when you are ready.`)
+    await load()
+  }
+
   async function togglePublished(r: Resource) {
     setBusyId(r.id); setError(''); setSuccess('')
     try {
@@ -154,8 +203,50 @@ export default function AdminResourcesPage() {
         publish it.
       </p>
 
-      {error && <p className="mb-4 px-4 py-3 rounded-xl text-sm bg-red-50 border border-red-200 text-red-700">{error}</p>}
+      {error && <p className="mb-4 px-4 py-3 rounded-xl text-sm bg-red-50 border border-red-200 text-red-700 whitespace-pre-line">{error}</p>}
       {success && <p className="mb-4 px-4 py-3 rounded-xl text-sm bg-brand-purple/[0.06] border border-brand-purple/30 text-brand-purple">{success}</p>}
+
+      <div className="card p-5 mb-6 border-brand-purple/30 bg-brand-purple/[0.03]">
+        <h2 className="font-semibold mb-1">Add the scenario briefs</h2>
+        <p className="text-sm text-brand-muted leading-relaxed mb-4 max-w-2xl">
+          Select the brief PDFs &mdash; all of them at once is fine. Each file is named for its
+          scenario, so the title, track and summary come from the curriculum and there is nothing
+          to type. They arrive as drafts. Uploading the same folder twice is harmless.
+        </p>
+
+        <input
+          id="batch-files" type="file" multiple accept=".pdf" className="w-full text-sm"
+          onChange={e => setBatch(Array.from(e.target.files ?? []))}
+        />
+
+        {batch.length > 0 && !progress && (
+          <p className="text-sm text-brand-text mt-3">
+            {batch.length} file{batch.length === 1 ? '' : 's'} ready.
+          </p>
+        )}
+
+        {progress && (
+          <div className="mt-3">
+            <div className="h-1.5 rounded-full bg-brand-purple/15 overflow-hidden">
+              <div
+                className="h-full bg-brand-purple transition-all"
+                style={{ width: `${Math.round((progress.done / progress.total) * 100)}%` }}
+              />
+            </div>
+            <p className="text-xs text-brand-muted mt-2 font-mono">
+              {progress.done} of {progress.total}
+            </p>
+          </div>
+        )}
+
+        <button
+          type="button" className="btn-primary text-sm mt-4"
+          disabled={busy || !batch.length}
+          onClick={uploadBatch}
+        >
+          {progress ? 'Uploading…' : `Upload ${batch.length || ''} brief${batch.length === 1 ? '' : 's'}`.trim()}
+        </button>
+      </div>
 
       <form onSubmit={upload} className="card p-5 mb-8">
         <div className="grid md:grid-cols-2 gap-4">

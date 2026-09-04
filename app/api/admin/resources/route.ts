@@ -3,6 +3,7 @@ import { authOptions } from '@/lib/auth'
 import { NextRequest, NextResponse } from 'next/server'
 import { db, withRetry } from '@/lib/db'
 import { uploadFile, deleteFile } from '@/lib/supabase-storage'
+import { scenarioFromFilename } from '@/lib/scenarios'
 import type { ResourceKind } from '@prisma/client'
 
 export const dynamic = 'force-dynamic'
@@ -71,12 +72,23 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Expected a form upload.' }, { status: 400 })
   }
 
-  const title = String(form.get('title') ?? '').trim()
-  const track = String(form.get('track') ?? '').trim()
-  const kind = String(form.get('kind') ?? '') as ResourceKind
-  const summary = String(form.get('summary') ?? '').trim() || null
-  const videoUrl = String(form.get('videoUrl') ?? '').trim() || null
   const file = form.get('file')
+
+  /*
+   * A scenario brief describes itself. The PDF is named for its key, so when
+   * the uploader sends one the title, track and summary come from the
+   * curriculum rather than from somebody retyping them — which is the whole
+   * difference between adding thirty briefs and never adding them.
+   *
+   * Everything else still goes through the manual fields below, unchanged.
+   */
+  const meta = file instanceof File ? scenarioFromFilename(file.name) : undefined
+
+  const title = meta?.title ?? String(form.get('title') ?? '').trim()
+  const track = meta?.track ?? String(form.get('track') ?? '').trim()
+  const kind = meta ? ('scenario' as ResourceKind) : (String(form.get('kind') ?? '') as ResourceKind)
+  const summary = meta?.summary ?? (String(form.get('summary') ?? '').trim() || null)
+  const videoUrl = meta ? null : (String(form.get('videoUrl') ?? '').trim() || null)
 
   if (!title) return NextResponse.json({ error: 'Give it a title.' }, { status: 400 })
   if (!track) return NextResponse.json({ error: 'Pick a track — that is how it is grouped on the page.' }, { status: 400 })
@@ -124,8 +136,19 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    let slug = slugify(title)
-    if (await withRetry(() => db.resource.findUnique({ where: { slug }, select: { id: true } }))) {
+    // A recognised brief keeps its key as the slug: stable, meaningful, and the
+    // thing that makes uploading the same folder twice harmless instead of
+    // leaving thirty duplicates behind.
+    let slug = meta ? meta.key : slugify(title)
+    const clash = await withRetry(() =>
+      db.resource.findUnique({ where: { slug }, select: { id: true } }))
+    if (clash) {
+      if (meta) {
+        return NextResponse.json({
+          skipped: true,
+          message: `${meta.code} is already here. Nothing was changed.`,
+        })
+      }
       slug = `${slug}-${Math.random().toString(36).slice(2, 6)}`
     }
 
@@ -146,7 +169,12 @@ export async function POST(req: NextRequest) {
       },
     }))
 
-    return NextResponse.json({ message: 'Saved as a draft. Publish it when it is ready.', resource })
+    return NextResponse.json({
+      message: meta
+        ? `${meta.code} added as a draft.`
+        : 'Saved as a draft. Publish it when it is ready.',
+      resource,
+    })
   } catch (error) {
     console.error('Resource create error:', error)
     return NextResponse.json({ error: 'Database connection failed. Please try again.' }, { status: 500 })
