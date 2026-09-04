@@ -14,6 +14,11 @@ export const metadata: Metadata = {
   description: 'What is happening on Virtual Freaks right now.',
 }
 
+// AdSlot reads the session, so this route cannot be prerendered. The slot now
+// says so itself, but the five pages that already render one all carry this
+// line — and it is what someone reading this file will look for.
+export const dynamic = 'force-dynamic'
+
 export default function ActivityPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">

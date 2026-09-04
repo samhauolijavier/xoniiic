@@ -9,12 +9,26 @@
  * placeholder, no empty bordered box: a slot that announces its own emptiness
  * tells every visitor the site could not sell it.
  */
+import { unstable_noStore as noStore } from 'next/cache'
 import { db, withRetry } from '@/lib/db'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { adWhereClause, audiencesFor, placementSpec, type Placement } from '@/lib/ads'
 
 export async function AdSlot({ placement }: { placement: Placement }) {
+  // The slot declares its own requirement, rather than every page that holds
+  // one having to remember `export const dynamic`.
+  //
+  // Reading the session means reading headers, and headers only exist inside a
+  // request. A page that gets prerendered instead throws "headers was called
+  // outside a request scope" — which is what /activity did for two days, after
+  // a fix that corrected the client/server boundary and then assumed the route
+  // would become dynamic on its own. Five pages remembered the export and two
+  // did not, which is the failure rate any rule enforced by memory eventually
+  // has. This is the same argument as resolving the audience here: the one
+  // page that forgets is the bug.
+  noStore()
+
   const spec = placementSpec(placement)
 
   // Resolved here rather than passed in. Every page that wants a slot would
