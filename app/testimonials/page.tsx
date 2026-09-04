@@ -10,6 +10,20 @@
  * Note the URL pair. /testimonials is this; /testimonials/write is the form.
  * They were /testimonials and /testimonial before, one letter apart, which sent
  * the first person who guessed to a 404.
+ *
+ * On the layout, which was the whole problem here:
+ *
+ * These were an equal-height grid. Real testimonials are not equal height —
+ * one person writes four paragraphs and the next writes four lines — so every
+ * short story was stretched to match the tallest in its row and left two
+ * thirds of its card empty, with the attribution stranded at the bottom of a
+ * void. Four stories also meant three across and one alone underneath.
+ *
+ * So: the first story leads, laid out sideways where a long one can use the
+ * width instead of being poured into a 250px column. The rest flow in CSS
+ * columns, where each card is exactly as tall as what is in it and the last
+ * one lands in whichever column is shortest rather than starting a new row on
+ * its own.
  */
 import type { Metadata } from 'next'
 import Link from 'next/link'
@@ -25,15 +39,133 @@ export const metadata: Metadata = {
   alternates: { canonical: 'https://virtualfreaks.co/testimonials' },
 }
 
+interface Item {
+  id: string
+  body: string
+  roleTitle: string | null
+  company: string | null
+  videoUrl: string | null
+  user: { name: string | null; seekerProfile: { username: string; avatarUrl: string | null } | null }
+}
+
+const roleOf = (t: Item) =>
+  [t.roleTitle, t.company].filter(Boolean).join(' · ') || 'Placed through Virtual Freaks'
+
+/* The person is the point of the page, so they get a ring rather than a
+   thumbnail. The 2px gradient edge is the same warm half of the mark the
+   headline uses. */
+function Avatar({ t, px }: { t: Item; px: number }) {
+  const url = t.user.seekerProfile?.avatarUrl
+  return (
+    <span
+      className="flex-none rounded-full p-[2px] block"
+      style={{ backgroundImage: 'linear-gradient(135deg, #e879f9, #f97316)' }}
+    >
+      {url ? (
+        <Image
+          src={url}
+          alt=""
+          width={px * 2}
+          height={px * 2}
+          className="rounded-full object-cover block"
+          style={{ width: px, height: px }}
+        />
+      ) : (
+        <span className="rounded-full bg-brand-card block" style={{ width: px, height: px }} />
+      )}
+    </span>
+  )
+}
+
+function Video({ src }: { src: string }) {
+  return (
+    /* eslint-disable-next-line jsx-a11y/media-has-caption */
+    <video
+      src={src}
+      controls
+      playsInline
+      preload="metadata"
+      className="w-full rounded-lg bg-black mb-4 aspect-video object-cover"
+    />
+  )
+}
+
+/* Wrapped in a link only where there is a profile to reach — the story and
+   the person it belongs to are more use together than apart. */
+function Linked({ t, className, children }: { t: Item; className: string; children: React.ReactNode }) {
+  const username = t.user.seekerProfile?.username
+  return username
+    ? <Link href={`/@${username}`} className={className}>{children}</Link>
+    : <div className={className}>{children}</div>
+}
+
+/*
+ * The lead. Sideways on anything above a phone: who said it on the left,
+ * what they said on the right, at a size that reads like a pull quote rather
+ * than a card. A long story is an asset here instead of the thing that broke
+ * the row.
+ */
+function Lead({ t }: { t: Item }) {
+  return (
+    <Linked t={t} className="card block p-6 sm:p-9 mb-5">
+      <div className="sm:flex sm:gap-9">
+        <div className="flex sm:block items-center gap-4 flex-none sm:w-44 mb-6 sm:mb-0">
+          <Avatar t={t} px={60} />
+          <div className="min-w-0 sm:mt-4">
+            <cite className="not-italic font-semibold text-brand-text text-base block">
+              {t.user.name ?? 'Virtual Freaks member'}
+            </cite>
+            <span className="text-[13px] text-brand-muted block leading-snug mt-1">
+              {roleOf(t)}
+            </span>
+            {/* The same rule the solo quote on the homepage uses. It anchors a
+                column that is otherwise mostly air. */}
+            <span
+              aria-hidden
+              className="hidden sm:block w-10 h-[3px] rounded-full mt-5"
+              style={{ background: 'linear-gradient(to right,#a21caf,#e879f9,#f97316)' }}
+            />
+          </div>
+        </div>
+        <blockquote className="flex-1 min-w-0">
+          {t.videoUrl && <Video src={t.videoUrl} />}
+          <p className="text-[15px] sm:text-base leading-[1.75] text-brand-text whitespace-pre-wrap">
+            {t.body}
+          </p>
+        </blockquote>
+      </div>
+    </Linked>
+  )
+}
+
+/* One of the rest. No h-full and no flex-1: the card is exactly as tall as
+   what it holds, which is the entire fix. */
+function Card({ t }: { t: Item }) {
+  return (
+    <Linked t={t} className="card block p-6 mb-5 break-inside-avoid">
+      <blockquote>
+        {t.videoUrl && <Video src={t.videoUrl} />}
+        <p className="text-[14.5px] leading-[1.7] text-brand-text whitespace-pre-wrap">
+          {t.body}
+        </p>
+      </blockquote>
+      <footer className="flex items-center gap-3.5 mt-5 pt-4 border-t border-brand-border">
+        <Avatar t={t} px={48} />
+        <div className="min-w-0">
+          <cite className="not-italic font-semibold text-[15px] text-brand-text block truncate">
+            {t.user.name ?? 'Virtual Freaks member'}
+          </cite>
+          <span className="text-xs text-brand-muted block leading-snug mt-0.5">
+            {roleOf(t)}
+          </span>
+        </div>
+      </footer>
+    </Linked>
+  )
+}
+
 export default async function TestimonialsPage() {
-  let items: {
-    id: string
-    body: string
-    roleTitle: string | null
-    company: string | null
-    videoUrl: string | null
-    user: { name: string | null; seekerProfile: { username: string; avatarUrl: string | null } | null }
-  }[] = []
+  let items: Item[] = []
 
   try {
     items = await withRetry(() => db.testimonial.findMany({
@@ -53,8 +185,14 @@ export default async function TestimonialsPage() {
     console.error('Testimonials page load failed:', error)
   }
 
+  // Below three there is nothing to lead — one wide card and a lone straggler
+  // looks like a mistake, so they simply sit side by side.
+  const leads = items.length >= 3
+  const lead = leads ? items[0] : null
+  const rest = leads ? items.slice(1) : items
+
   return (
-    <div className="page-ink"><div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+    <div className="page-ink"><div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
       <h1 className="text-3xl sm:text-4xl font-black text-brand-text mb-3">
         Stories from <span className="mark-warm">people we placed</span>
       </h1>
@@ -73,69 +211,22 @@ export default async function TestimonialsPage() {
           </p>
         </div>
       ) : (
-        <div
-          className={
-            items.length === 1 ? 'grid gap-5 max-w-2xl'
-            : items.length === 2 ? 'grid sm:grid-cols-2 gap-5'
-            : 'grid sm:grid-cols-2 lg:grid-cols-3 gap-5'
-          }
-        >
-          {items.map(t => {
-            const username = t.user.seekerProfile?.username
-            const body = (
-              <blockquote className="rounded-xl border border-white/12 bg-white/[0.03] p-6 flex flex-col h-full">
-                {t.videoUrl && (
-                  /* eslint-disable-next-line jsx-a11y/media-has-caption */
-                  <video
-                    src={t.videoUrl}
-                    controls
-                    playsInline
-                    preload="metadata"
-                    className="w-full rounded-lg bg-black mb-4 aspect-video object-cover"
-                  />
-                )}
-                <p className="text-sm leading-relaxed text-brand-text flex-1 whitespace-pre-wrap">
-                  {t.body}
-                </p>
-                <footer className="flex items-center gap-3.5 mt-5 pt-4 border-t border-brand-border">
-                  {/* The person is the point of the page, so they get a ring
-                      rather than a thumbnail. The 2px gradient edge is the
-                      same warm half of the mark the headline uses. */}
-                  <span
-                    className="flex-none rounded-full p-[2px]"
-                    style={{ backgroundImage: 'linear-gradient(135deg, #e879f9, #f97316)' }}
-                  >
-                    {t.user.seekerProfile?.avatarUrl ? (
-                      <Image
-                        src={t.user.seekerProfile.avatarUrl}
-                        alt=""
-                        width={112}
-                        height={112}
-                        className="w-14 h-14 rounded-full object-cover block"
-                      />
-                    ) : (
-                      <span className="w-14 h-14 rounded-full bg-brand-card block" />
-                    )}
-                  </span>
-                  <div className="min-w-0">
-                    <cite className="not-italic font-semibold text-[15px] block truncate">
-                      {t.user.name ?? 'Virtual Freaks member'}
-                    </cite>
-                    <span className="text-xs text-brand-muted block leading-snug line-clamp-2 mt-0.5">
-                      {[t.roleTitle, t.company].filter(Boolean).join(' · ') || 'Placed through Virtual Freaks'}
-                    </span>
-                  </div>
-                </footer>
-              </blockquote>
-            )
-
-            // Linked to their profile where there is one — the story and the
-            // person it belongs to are more use together than apart.
-            return username
-              ? <Link key={t.id} href={`/@${username}`} className="block h-full hover-glow rounded-2xl">{body}</Link>
-              : <div key={t.id} className="h-full">{body}</div>
-          })}
-        </div>
+        <>
+          {lead && <Lead t={lead} />}
+          {rest.length > 0 && (
+            {/* Two columns, not three, until there are enough stories to fill
+                three. Three columns of four stories is a narrow, choppy line
+                length in service of a shape nobody asked for. */}
+            <div className={
+              rest.length === 1 ? 'max-w-2xl'
+              : rest.length === 2 ? 'grid sm:grid-cols-2 gap-5 [&>*]:mb-0'
+              : rest.length <= 4 ? 'columns-1 md:columns-2 gap-5'
+              : 'columns-1 md:columns-2 xl:columns-3 gap-5'
+            }>
+              {rest.map(t => <Card key={t.id} t={t} />)}
+            </div>
+          )}
+        </>
       )}
 
       <div className="mt-12 pt-8 border-t border-brand-border">

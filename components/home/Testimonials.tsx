@@ -121,8 +121,15 @@ export async function Testimonials({ limit = 3 }: { limit?: number }) {
         </figure>
       ) : (
         /* Rules between, not boxes around — the same move as every other
-           section on the page. */
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-10 border-t border-white/10 pt-10">
+           section on the page.
+
+           items-start, and no flex-1 on the quote. Stretching every column to
+           the tallest and pinning the name to the bottom left whoever wrote
+           four lines sitting above an acre of nothing, next to somebody who
+           wrote four paragraphs. The name now follows the words it belongs to.
+           The excerpt is clamped for the same reason: this is the teaser, and
+           the whole story is one click away on /testimonials. */
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-10 border-t border-white/10 pt-10 items-start">
           {items.map(t => (
             <blockquote key={t.id} className="flex flex-col">
               {t.videoUrl && (
@@ -135,10 +142,10 @@ export async function Testimonials({ limit = 3 }: { limit?: number }) {
                   className="w-full rounded-lg bg-black mb-5 aspect-video object-cover"
                 />
               )}
-              <p className="text-[15px] leading-relaxed text-white/80 flex-1 whitespace-pre-wrap">
+              <p className="text-[15px] leading-relaxed text-white/80 whitespace-pre-wrap line-clamp-[11]">
                 {t.body}
               </p>
-              <footer className="flex items-center gap-3 mt-6">
+              <footer className="flex items-center gap-3 mt-5">
                 {t.user.seekerProfile?.avatarUrl ? (
                   /* eslint-disable-next-line @next/next/no-img-element */
                   <img
