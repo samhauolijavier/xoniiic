@@ -26,6 +26,7 @@
  * its own.
  */
 import type { Metadata } from 'next'
+import type { ReactNode } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { db, withRetry } from '@/lib/db'
@@ -77,6 +78,8 @@ function Avatar({ t, px }: { t: Item; px: number }) {
   )
 }
 
+/* The rule wants a <track>. These are recordings people send in themselves;
+   there is no caption file to point at. */
 function Video({ src }: { src: string }) {
   return (
     /* eslint-disable-next-line jsx-a11y/media-has-caption */
@@ -92,7 +95,7 @@ function Video({ src }: { src: string }) {
 
 /* Wrapped in a link only where there is a profile to reach — the story and
    the person it belongs to are more use together than apart. */
-function Linked({ t, className, children }: { t: Item; className: string; children: React.ReactNode }) {
+function Linked({ t, className, children }: { t: Item; className: string; children: ReactNode }) {
   const username = t.user.seekerProfile?.username
   return username
     ? <Link href={`/@${username}`} className={className}>{children}</Link>
@@ -213,10 +216,10 @@ export default async function TestimonialsPage() {
       ) : (
         <>
           {lead && <Lead t={lead} />}
+          {/* Two columns, not three, until there are enough stories to fill
+              three. Three columns of four stories is a narrow, choppy line
+              length in service of a shape nobody asked for. */}
           {rest.length > 0 && (
-            {/* Two columns, not three, until there are enough stories to fill
-                three. Three columns of four stories is a narrow, choppy line
-                length in service of a shape nobody asked for. */}
             <div className={
               rest.length === 1 ? 'max-w-2xl'
               : rest.length === 2 ? 'grid sm:grid-cols-2 gap-5 [&>*]:mb-0'
