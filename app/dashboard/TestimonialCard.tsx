@@ -134,15 +134,30 @@ export function TestimonialCard({ alwaysOpen = false }: { alwaysOpen?: boolean }
         xhr.upload.onprogress = ev => {
           if (ev.lengthComputable) setVideoPct(Math.round((ev.loaded / ev.total) * 100))
         }
-        xhr.onload = () => (xhr.status >= 200 && xhr.status < 300 ? resolve() : reject(new Error(`HTTP ${xhr.status}`)))
+        xhr.onload = () => (xhr.status >= 200 && xhr.status < 300 ? resolve() : reject(new Error(String(xhr.status))))
         xhr.onerror = () => reject(new Error('network'))
         xhr.send(file)
       })
 
       setVideoUrl(data.publicUrl)
       toast.success('Video uploaded.')
-    } catch {
-      setVideoError('The upload did not finish. A stronger connection usually fixes it.')
+    } catch (err) {
+      /*
+       * Storage has its own ceiling, and it is not the one checked above.
+       *
+       * The size check on this page is ours. Supabase then applies the bucket's
+       * own limit, which can be lower — and when it refuses, it does so with a
+       * 413 after the whole file has already gone up the wire. That used to be
+       * reported as "a stronger connection usually fixes it", which sent people
+       * to hunt a wifi problem that was not there while the real answer was that
+       * the file was simply too big.
+       */
+      const status = err instanceof Error ? err.message : ''
+      setVideoError(
+        status === '413'
+          ? `${(file.size / 1024 / 1024).toFixed(0)}MB was too big for storage, even though it passed the check on this page. Trim it in your phone's photo app and try again — and let Spencer know, because that limit is ours to raise.`
+          : 'The upload did not finish. A stronger connection usually fixes it.'
+      )
     } finally {
       setVideoPct(null)
     }
@@ -287,7 +302,16 @@ export function TestimonialCard({ alwaysOpen = false }: { alwaysOpen?: boolean }
             </p>
             <p className="text-xs text-brand-muted leading-relaxed mt-1 mb-3">
               Sixty seconds on your phone, saying the same thing in your own voice. A face and a
-              real accent do more than any paragraph — and it does not need to be polished.
+              real accent do more than any paragraph &mdash; and it does not need to be polished.
+            </p>
+            {/* Said before the file picker, not after a rejection. Somebody hit
+                the limit, was told to shorten the video, and had no idea how —
+                which is a question we can simply answer up front. */}
+            <p className="text-xs text-brand-muted leading-relaxed mb-3">
+              <span className="text-brand-text font-medium">Keep it under {VIDEO_MAX_MB}MB.</span>{' '}
+              A minute of phone video is usually well inside that. If yours is too big, open it in
+              your phone&rsquo;s photo app and trim the ends &mdash; that is quicker than recording
+              again. Filming at 1080p rather than 4K roughly quarters the size.
             </p>
 
             {videoUrl ? (
