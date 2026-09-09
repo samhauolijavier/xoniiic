@@ -97,9 +97,13 @@ function Video({ src }: { src: string }) {
    the person it belongs to are more use together than apart. */
 function Linked({ t, className, children }: { t: Item; className: string; children: ReactNode }) {
   const username = t.user.seekerProfile?.username
+  /* The homepage links here per person, so each story is its own anchor.
+     scroll-mt clears the fixed header, which otherwise lands the reader on the
+     middle of the story they were sent to read. */
+  const anchor = { id: `t-${t.id}`, className: `${className} scroll-mt-24` }
   return username
-    ? <Link href={`/@${username}`} className={className}>{children}</Link>
-    : <div className={className}>{children}</div>
+    ? <Link href={`/@${username}`} {...anchor}>{children}</Link>
+    : <div {...anchor}>{children}</div>
 }
 
 /*

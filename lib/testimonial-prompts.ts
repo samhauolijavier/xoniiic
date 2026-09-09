@@ -67,6 +67,36 @@ export const PROMPT_GROUPS: PromptGroup[] = [
       'What surprised you most in the first month?',
     ],
   },
+  /*
+   * The part a reader recognises themselves in.
+   *
+   * Everything above this establishes that the work is real. None of it
+   * explains why somebody would put themselves through the effort of getting
+   * it — and that is the thing a person still deciding is actually weighing.
+   * Somebody reads "about double what I made locally" and files it as a fact;
+   * they read what a first payment was spent on and see their own family.
+   *
+   * The hint says only what you are comfortable sharing, and it means it. These
+   * touch on money, family and doubt, and it is not our place to draw those out
+   * of somebody who would rather keep them. Answering none of these is a
+   * complete testimonial.
+   */
+  {
+    key: 'personal',
+    title: 'What it has meant',
+    hint: 'Only what you are comfortable sharing — skip any of these. This is the part people recognise themselves in.',
+    questions: [
+      'Who were you doing this for? Is there somebody at home it changed things for?',
+      'Honestly, did you believe it would work when you started?',
+      'What were you afraid of that turned out not to be true?',
+      'Was there a moment you knew it had actually worked? What was it?',
+      'What did you tell your family when you got hired, and what did they say?',
+      'What did the first real payment go on?',
+      'What did you have to give up to make it happen — sleep, hours, time with people?',
+      'What can you do for the people around you now that you could not before?',
+      'Has the way you think about yourself changed?',
+    ],
+  },
   {
     key: 'advice',
     title: 'What you would tell someone else',
