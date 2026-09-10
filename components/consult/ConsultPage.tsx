@@ -84,14 +84,28 @@ export function ConsultPage() {
               you at what I would do instead.
             </p>
 
-            <p className="text-xs text-brand-muted mt-7">
-              Prefer email?{' '}
+            {/* wa.me is WhatsApp's own click-to-chat host: it opens the desktop
+                app or WhatsApp Web on a computer and the app on a phone, and
+                falls back to a download prompt rather than a dead end. The
+                number carries no + or spaces — wa.me rejects both. */}
+            <p className="text-xs text-brand-muted mt-7 leading-relaxed">
+              Rather not book a slot? Email{' '}
               <a
                 href="mailto:spencer@insomniac.systems"
                 className="text-brand-purple hover:text-brand-pink underline underline-offset-2"
               >
                 spencer@insomniac.systems
+              </a>{' '}
+              or{' '}
+              <a
+                href="https://wa.me/639279888301"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-brand-purple hover:text-brand-pink underline underline-offset-2"
+              >
+                message me on WhatsApp
               </a>
+              .
             </p>
           </header>
 
