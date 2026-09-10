@@ -1,8 +1,6 @@
 /* Same page as /consult. Kept as its own route rather than a redirect so the
    link Spencer hands out never shows a redirect hop in a preview card. */
 import type { Metadata } from 'next'
-import { existsSync } from 'fs'
-import { join } from 'path'
 import { ConsultPage } from '@/components/consult/ConsultPage'
 
 export const metadata: Metadata = {
@@ -14,5 +12,5 @@ export const metadata: Metadata = {
 }
 
 export default function Page() {
-  return <ConsultPage hasHeadshot={existsSync(join(process.cwd(), 'public', 'spencer.jpg'))} />
+  return <ConsultPage />
 }

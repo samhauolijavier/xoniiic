@@ -5,8 +5,6 @@
  * has to be retired if the other gets used somewhere permanent.
  */
 import type { Metadata } from 'next'
-import { existsSync } from 'fs'
-import { join } from 'path'
 import { ConsultPage } from '@/components/consult/ConsultPage'
 
 export const metadata: Metadata = {
@@ -21,5 +19,5 @@ export const metadata: Metadata = {
 }
 
 export default function Page() {
-  return <ConsultPage hasHeadshot={existsSync(join(process.cwd(), 'public', 'spencer.jpg'))} />
+  return <ConsultPage />
 }

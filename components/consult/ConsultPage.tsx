@@ -10,50 +10,63 @@
  * one practical reason: Calendly's embed is white, and recolouring it is a paid
  * feature. A white widget sitting in a dark page looks broken, and looking
  * broken is expensive on the one page where the visit was already earned.
+ *
+ * No headshot. The Calendly widget below already shows Spencer's photo once the
+ * booking flow starts, and a second portrait forty pixels above it is the kind
+ * of repetition that reads as a template. The Insomniac wordmark does the job a
+ * photo would have — it says whose page this is — without the duplication.
+ *
+ * The wordmark is set rather than drawn. There is no logo file in the repo yet;
+ * type set with care reads as deliberate branding, where a missing image reads
+ * as a broken one. Swap in the real mark when there is a file for it.
  */
-import Image from 'next/image'
 import Script from 'next/script'
 
 const CALENDLY = 'https://calendly.com/samhauolijavier/30min'
 
-/* Dropped into public/ whenever there is one. Until then the monogram renders,
-   which is better than a broken image on a page whose whole job is to look
-   like somebody is home. */
-const HEADSHOT = '/spencer.jpg'
-
-export function ConsultPage({ hasHeadshot = false }: { hasHeadshot?: boolean }) {
+export function ConsultPage() {
   return (
     <div className="min-h-screen bg-brand-bg">
-      <div className="max-w-2xl mx-auto px-5 sm:px-6 pt-16 pb-20 sm:pt-20">
+      <div className="max-w-2xl mx-auto px-5 sm:px-6 pt-14 pb-20 sm:pt-16">
 
         <header className="text-center">
-          {/* The same 2px gradient ring the testimonials use — the one place
-              the brand mark shows up on a page that otherwise stays quiet. */}
-          <span
-            className="inline-block rounded-full p-[3px] mb-5"
-            style={{ backgroundImage: 'linear-gradient(135deg, #a21caf, #e879f9, #f97316)' }}
-          >
-            {hasHeadshot ? (
-              <Image
-                src={HEADSHOT}
-                alt="Spencer Javier"
-                width={224}
-                height={224}
-                priority
-                className="w-28 h-28 rounded-full object-cover block bg-white"
-              />
-            ) : (
-              <span className="w-28 h-28 rounded-full bg-white flex items-center justify-center block">
-                <span className="text-3xl font-black text-brand-text tracking-tight">SJ</span>
-              </span>
-            )}
-          </span>
+          <div className="inline-block mb-9">
+            <p
+              className="font-black text-brand-text leading-none"
+              style={{ fontSize: 30, letterSpacing: '-0.03em' }}
+            >
+              INSOMNIAC
+            </p>
+            <p
+              className="font-semibold text-brand-text/70 leading-none mt-1.5"
+              style={{ fontSize: 11, letterSpacing: '0.42em', paddingLeft: '0.42em' }}
+            >
+              SYSTEMS
+            </p>
+            {/* The one place the brand gradient appears. It ties the page to the
+                site it is hosted on without putting a Virtual Freaks mark above
+                an Insomniac name. */}
+            <span
+              aria-hidden
+              className="block h-[2.5px] rounded-full mt-3.5 mx-auto"
+              style={{ width: 64, background: 'linear-gradient(to right,#a21caf,#e879f9,#f97316)' }}
+            />
+            <p
+              className="text-brand-muted mt-3"
+              style={{ fontSize: 9.5, letterSpacing: '0.24em' }}
+            >
+              SOLUTIONS THAT NEVER SLEEP
+            </p>
+          </div>
 
-          <h1 className="text-3xl sm:text-4xl font-black text-brand-text tracking-tight mb-2">
+          <h1 className="text-3xl sm:text-4xl font-black text-brand-text tracking-tight mb-2.5">
             Spencer Javier
           </h1>
-          <p className="text-brand-muted text-[15px] mb-8">
-            Fractional COO &middot; Operations, systems and the team to run them
+          <p className="text-brand-text text-[15px] font-medium">
+            Fractional COO &mdash; operations, systems and the team to run them
+          </p>
+          <p className="text-brand-muted text-[13.5px] mt-1.5 mb-9">
+            Founder, Insomniac Systems &nbsp;&middot;&nbsp; Head Freak, Virtual Freaks
           </p>
 
           <div className="max-w-lg mx-auto text-left sm:text-center">
