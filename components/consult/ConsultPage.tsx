@@ -31,28 +31,32 @@ export function ConsultPage() {
 
         <header className="text-center">
           <div className="inline-block mb-9">
-            <p
-              className="font-black text-brand-text leading-none"
-              style={{ fontSize: 30, letterSpacing: '-0.03em' }}
-            >
-              INSOMNIAC
-            </p>
-            <p
-              className="font-semibold text-brand-text/70 leading-none mt-1.5"
-              style={{ fontSize: 11, letterSpacing: '0.42em', paddingLeft: '0.42em' }}
-            >
-              SYSTEMS
-            </p>
+            {/* The real mark, cropped out of the LinkedIn banner SVG.
+                Everything below the eye was left behind on purpose: the banner
+                was auto-traced from a raster, and the tracer turned the thin
+                tagline letterforms into "SO Ui ONS THAI NEVER SLEEP". The words
+                are set in type underneath instead, which is legible and scales.
+                Plain <img> rather than next/image — an SVG has no sizes to
+                optimise, and the loader only adds a request. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/insomniac.svg"
+              alt="Insomniac Systems"
+              width={190}
+              height={123}
+              className="block mx-auto"
+              style={{ width: 190, height: 'auto' }}
+            />
             {/* The one place the brand gradient appears. It ties the page to the
                 site it is hosted on without putting a Virtual Freaks mark above
                 an Insomniac name. */}
             <span
               aria-hidden
-              className="block h-[2.5px] rounded-full mt-3.5 mx-auto"
+              className="block h-[2.5px] rounded-full mt-4 mx-auto"
               style={{ width: 64, background: 'linear-gradient(to right,#a21caf,#e879f9,#f97316)' }}
             />
             <p
-              className="text-brand-muted mt-3"
+              className="text-brand-muted mt-3.5"
               style={{ fontSize: 9.5, letterSpacing: '0.24em' }}
             >
               SOLUTIONS THAT NEVER SLEEP
