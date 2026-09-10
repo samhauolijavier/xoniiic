@@ -84,29 +84,31 @@ export function ConsultPage() {
               you at what I would do instead.
             </p>
 
-            {/* wa.me is WhatsApp's own click-to-chat host: it opens the desktop
+            {/* Each route on its own line, and the whole line is the link
+                rather than a phrase inside a sentence — a bigger tap target on
+                a phone, and two clear choices instead of one run-on offer.
+
+                wa.me is WhatsApp's own click-to-chat host: it opens the desktop
                 app or WhatsApp Web on a computer and the app on a phone, and
                 falls back to a download prompt rather than a dead end. The
                 number carries no + or spaces — wa.me rejects both. */}
-            <p className="text-xs text-brand-muted mt-7 leading-relaxed">
-              Rather not book a slot? Email{' '}
+            <div className="mt-7 text-[13px] leading-relaxed">
+              <p className="text-brand-muted mb-1.5">Rather not book a slot?</p>
               <a
                 href="mailto:spencer@insomniac.systems"
-                className="text-brand-purple hover:text-brand-pink underline underline-offset-2"
+                className="block text-brand-purple hover:text-brand-pink underline underline-offset-2 w-fit mx-auto lg:mx-0"
               >
-                spencer@insomniac.systems
-              </a>{' '}
-              or{' '}
+                Email spencer@insomniac.systems
+              </a>
               <a
                 href="https://wa.me/639279888301"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-brand-purple hover:text-brand-pink underline underline-offset-2"
+                className="block text-brand-purple hover:text-brand-pink underline underline-offset-2 w-fit mx-auto lg:mx-0 mt-1"
               >
-                message me on WhatsApp
+                Message me on WhatsApp
               </a>
-              .
-            </p>
+            </div>
           </header>
 
           {/* min-width is Calendly's own floor; below it the widget scrolls
