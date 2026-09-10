@@ -16,7 +16,7 @@ export const dynamic = 'force-dynamic'
 const TESTIMONIAL_BUCKET = 'testimonials'
 
 /** Roughly two minutes of phone video. Past that it stops being a testimonial. */
-const MAX_BYTES = 100 * 1024 * 1024
+const MAX_BYTES = 50 * 1024 * 1024
 
 const ALLOWED = ['video/mp4', 'video/quicktime', 'video/webm']
 

@@ -30,7 +30,7 @@ interface Testimonial {
 }
 
 const VIDEO_TYPES = ['video/mp4', 'video/quicktime', 'video/webm']
-const VIDEO_MAX_MB = 100
+const VIDEO_MAX_MB = 50
 
 const MIN_BODY = 80
 
@@ -48,8 +48,8 @@ export function TestimonialCard({ alwaysOpen = false }: { alwaysOpen?: boolean }
   const [consent, setConsent] = useState(true)
   const [videoUrl, setVideoUrl] = useState<string | null>(null)
   // Null when nothing is uploading; 0-100 while it is. Philippine mobile data
-  // makes a 100MB upload a genuinely long wait, and a form that looks frozen
-  // for four minutes gets abandoned or submitted twice.
+  // makes even a 50MB upload a genuinely long wait, and a form that looks
+  // frozen for two minutes gets abandoned or submitted twice.
   const [videoPct, setVideoPct] = useState<number | null>(null)
   const [videoError, setVideoError] = useState('')
   const toast = useToast()
@@ -109,7 +109,7 @@ export function TestimonialCard({ alwaysOpen = false }: { alwaysOpen?: boolean }
     }
     if (file.size > VIDEO_MAX_MB * 1024 * 1024) {
       setVideoError(
-        `That file is ${(file.size / 1024 / 1024).toFixed(0)}MB. Keep it under ${VIDEO_MAX_MB}MB — record a shorter one rather than compressing it.`
+        `That file is ${(file.size / 1024 / 1024).toFixed(0)}MB, and the limit is ${VIDEO_MAX_MB}MB. Open "How to make your video smaller" just below — trimming the ends usually does it in about thirty seconds.`
       )
       return
     }
@@ -155,7 +155,7 @@ export function TestimonialCard({ alwaysOpen = false }: { alwaysOpen?: boolean }
       const status = err instanceof Error ? err.message : ''
       setVideoError(
         status === '413'
-          ? `${(file.size / 1024 / 1024).toFixed(0)}MB was too big for storage, even though it passed the check on this page. Trim it in your phone's photo app and try again — and let Spencer know, because that limit is ours to raise.`
+          ? `Storage refused the file at ${(file.size / 1024 / 1024).toFixed(0)}MB even though it passed the check on this page, which means the two limits have drifted apart. Trim the video and try again, and please tell Spencer — that mismatch is ours to fix, not yours.`
           : 'The upload did not finish. A stronger connection usually fixes it.'
       )
     } finally {
@@ -305,14 +305,59 @@ export function TestimonialCard({ alwaysOpen = false }: { alwaysOpen?: boolean }
               real accent do more than any paragraph &mdash; and it does not need to be polished.
             </p>
             {/* Said before the file picker, not after a rejection. Somebody hit
-                the limit, was told to shorten the video, and had no idea how —
-                which is a question we can simply answer up front. */}
-            <p className="text-xs text-brand-muted leading-relaxed mb-3">
+                the limit, was told to shorten the video, and replied that she
+                did not know how — which is a question we can simply answer up
+                front rather than leaving people to search for it. */}
+            <p className="text-xs text-brand-muted leading-relaxed mb-2">
               <span className="text-brand-text font-medium">Keep it under {VIDEO_MAX_MB}MB.</span>{' '}
-              A minute of phone video is usually well inside that. If yours is too big, open it in
-              your phone&rsquo;s photo app and trim the ends &mdash; that is quicker than recording
-              again. Filming at 1080p rather than 4K roughly quarters the size.
+              That is about 45 seconds filmed at 1080p, or 90 seconds at 720p.
             </p>
+
+            <details className="mb-3 group">
+              {/* list-none alone does not do it in Safari, which draws its own
+                  marker through a pseudo-element. Both are needed. */}
+              <summary className="text-xs text-brand-purple hover:text-brand-pink cursor-pointer select-none list-none [&::-webkit-details-marker]:hidden">
+                <span className="underline underline-offset-2 group-open:hidden">How to make your video smaller</span>
+                <span className="underline underline-offset-2 hidden group-open:inline">Hide</span>
+              </summary>
+
+              <div className="text-xs text-brand-muted leading-relaxed mt-2.5 grid gap-2.5 pl-0.5">
+                <p>
+                  <span className="text-brand-text font-medium">1 &middot; Trim it &mdash; try this first.</span>{' '}
+                  Nothing to install and no loss of quality.
+                  <br />
+                  <span className="text-brand-text">iPhone:</span> Photos &rarr; open the video &rarr;
+                  Edit &rarr; drag the arrows at each end inwards &rarr; Done &rarr; Save as New Clip.
+                  <br />
+                  <span className="text-brand-text">Android:</span> Google Photos &rarr; open the
+                  video &rarr; Edit &rarr; drag the ends in &rarr; Save copy.
+                </p>
+                <p>
+                  <span className="text-brand-text font-medium">2 &middot; Film smaller next time.</span>{' '}
+                  4K is four times the size of 1080p for no benefit here. On iPhone:
+                  Settings &rarr; Camera &rarr; Record Video &rarr; 1080p at 30fps.
+                </p>
+                <p>
+                  <span className="text-brand-text font-medium">3 &middot; On a computer, if it is still too big.</span>{' '}
+                  <span className="text-brand-text">Mac:</span> open it in QuickTime &rarr; File &rarr;
+                  Export As &rarr; 720p. <span className="text-brand-text">Windows:</span>{' '}
+                  <a
+                    href="https://handbrake.fr"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-brand-purple hover:text-brand-pink underline underline-offset-2"
+                  >
+                    HandBrake
+                  </a>{' '}
+                  is free &mdash; choose the &ldquo;Fast 720p30&rdquo; preset.
+                </p>
+                <p className="text-brand-muted/80">
+                  Everything above happens on your own phone or computer. We would rather you did not
+                  use a &ldquo;compress video online&rdquo; site &mdash; your face and voice are in
+                  this file, and those sites work by uploading it to a stranger&rsquo;s server.
+                </p>
+              </div>
+            </details>
 
             {videoUrl ? (
               <div className="grid gap-2">
