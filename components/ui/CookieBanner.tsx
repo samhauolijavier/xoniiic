@@ -15,6 +15,23 @@ export function CookieBanner() {
     }
   }, [])
 
+  /*
+   * A fixed bar covers whatever is behind it, and on the homepage that is the
+   * stats row — a first-time visitor met "80 people looking for work" with the
+   * bottom of it clipped off, which is the one row on the page whose whole job
+   * is to be read. Padding the body while the bar is up gives it somewhere to
+   * sit instead of on top of something.
+   *
+   * Applied after the bar appears rather than on mount, so the page does not
+   * shift under somebody who is already reading.
+   */
+  useEffect(() => {
+    if (!visible) return
+    const previous = document.body.style.paddingBottom
+    document.body.style.paddingBottom = '5.5rem'
+    return () => { document.body.style.paddingBottom = previous }
+  }, [visible])
+
   const accept = () => {
     localStorage.setItem('vf-cookie-consent', 'accepted')
     setVisible(false)
